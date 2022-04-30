@@ -1,0 +1,16 @@
+*.map
+.github
+build
+docs
+src/templates
+.babelrc
+.browserslistrc
+.editorconfig
+.env
+.eslintignore
+.eslintrc.js
+.prettierrc.js
+CHANGELOG.md
+CODE_OF_CONDUCT.md
+
+node_modules
