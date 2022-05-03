@@ -5,6 +5,31 @@
 
 			<v-row>
 				<v-col cols="12">
+					Vuetify Resize Drawer uses Vuetify's
+					<a
+						href="https://vuetifyjs.com/en/api/v-navigation-drawer/"
+						target="_blank"
+						>Navigation Drawer</a
+					>
+					behind the scenes. Most props that work for the Vuetify Navigation
+					Drawer are supported. For a list of those props, you can find them
+					<a
+						href="https://vuetifyjs.com/en/api/v-navigation-drawer/#props"
+						target="_blank"
+						>here</a
+					>.
+				</v-col>
+			</v-row>
+
+			<v-row>
+				<v-col>
+					Additional props that are supported (or have different defaults) by
+					Vuetify Resize Drawer:
+				</v-col>
+			</v-row>
+
+			<v-row>
+				<v-col cols="12">
 					<v-card>
 						<v-card-title>
 							<v-text-field
@@ -44,10 +69,199 @@
 										>
 									</td>
 
-									<td>{{ item.desc }}</td>
+									<td v-html="item.type" class="success--text"></td>
+									<td>
+										<div
+											v-if="
+												item.name === 'handlePosition' || item.name === 'color'
+											"
+										>
+											<v-select
+												:items="selectOptions[item.name]"
+												v-model="options[item.name]"
+											></v-select>
+										</div>
+										<v-switch
+											v-else-if="item.type === 'boolean'"
+											v-model="options[item.name]"
+											:label="`${options[item.name]}`"
+											dense
+										></v-switch>
+
+										<v-text-field
+											v-else-if="
+												item.type === 'string' || item.altType === 'number'
+											"
+											v-model="options[item.name]"
+											:type="item.altType ? 'number' : 'text'"
+										>
+										</v-text-field>
+									</td>
+									<td class="accent--text" v-html="item.default"></td>
+									<td v-html="item.desc"></td>
 								</tr>
 							</template>
 						</v-data-table>
+					</v-card>
+				</v-col>
+			</v-row>
+
+			<v-row>
+				<v-col cols="12">
+					<v-card>
+						<v-simple-table>
+							<template v-slot:default>
+								<thead>
+									<tr>
+										<th class="text-left">Name</th>
+										<th class="text-left">Status</th>
+										<th class="text-left">Notes</th>
+									</tr>
+								</thead>
+
+								<tbody>
+									<tr class="regular-row">
+										<td>absolute</td>
+										<td class="success--text">pass</td>
+										<td></td>
+									</tr>
+									<tr class="regular-row">
+										<td>app</td>
+										<td>not supported / buggy</td>
+										<td></td>
+									</tr>
+									<tr class="regular-row">
+										<td>bottom</td>
+										<td class="success--text">pass</td>
+										<td></td>
+									</tr>
+									<tr class="regular-row">
+										<td>clipped</td>
+										<td class="success--text">pass</td>
+										<td></td>
+									</tr>
+									<tr class="regular-row">
+										<td>color</td>
+										<td class="success--text">pass</td>
+										<td></td>
+									</tr>
+									<tr class="regular-row">
+										<td>dark</td>
+										<td class="success--text">pass</td>
+										<td></td>
+									</tr>
+									<tr class="regular-row">
+										<td>disable-resize-watcher</td>
+										<td class="warning--text">untested</td>
+										<td></td>
+									</tr>
+									<tr class="regular-row">
+										<td>disable-route-watcher</td>
+										<td class="warning--text">untested</td>
+										<td></td>
+									</tr>
+									<tr class="regular-row">
+										<td>expand-on-hover</td>
+										<td>not supported</td>
+										<td></td>
+									</tr>
+									<tr class="regular-row">
+										<td>fixed</td>
+										<td class="success--text">pass</td>
+										<td></td>
+									</tr>
+									<tr class="regular-row">
+										<td>floating</td>
+										<td class="success--text">pass</td>
+										<td></td>
+									</tr>
+									<tr class="regular-row">
+										<td>height</td>
+										<td class="success--text">pass</td>
+										<td></td>
+									</tr>
+									<tr class="regular-row">
+										<td>hide-overlay</td>
+										<td class="warning--text">untested</td>
+										<td></td>
+									</tr>
+									<tr class="regular-row">
+										<td>light</td>
+										<td class="warning--text">untested</td>
+										<td></td>
+									</tr>
+									<tr class="regular-row">
+										<td>mini-variant</td>
+										<td>not supported</td>
+										<td></td>
+									</tr>
+									<tr class="regular-row">
+										<td>mini-variant-width</td>
+										<td>not supported</td>
+									</tr>
+									<tr class="regular-row">
+										<td>mobile-breakpoint</td>
+										<td class="warning--text">untested</td>
+										<td></td>
+									</tr>
+									<tr class="regular-row">
+										<td>overlay-color</td>
+										<td class="success--text">pass</td>
+										<td></td>
+									</tr>
+									<tr class="regular-row">
+										<td>overlay-opacity</td>
+										<td class="success--text">pass</td>
+										<td></td>
+									</tr>
+									<tr class="regular-row">
+										<td>permanent</td>
+										<td>pass - needs more testing</td>
+										<td></td>
+									</tr>
+									<tr class="regular-row">
+										<td>right</td>
+										<td class="success--text">pass</td>
+										<td></td>
+									</tr>
+									<tr class="regular-row">
+										<td>src</td>
+										<td class="success--text">pass</td>
+										<td></td>
+									</tr>
+									<tr class="regular-row">
+										<td>stateless</td>
+										<td class="warning--text">untested</td>
+										<td></td>
+									</tr>
+									<tr class="regular-row">
+										<td>tag</td>
+										<td class="success--text">pass</td>
+										<td></td>
+									</tr>
+									<tr class="regular-row">
+										<td>temporary</td>
+										<td>pass - needs more testing</td>
+										<td></td>
+									</tr>
+									<tr class="regular-row">
+										<td>touchless</td>
+										<td class="warning--text">untested</td>
+										<td></td>
+									</tr>
+									<tr class="regular-row">
+										<td>value</td>
+										<td class="success--text">pass</td>
+										<td></td>
+									</tr>
+									<tr class="regular-row">
+										<td>width</td>
+										<td>pass - needs more testing</td>
+										<td></td>
+									</tr>
+								</tbody>
+							</template>
+						</v-simple-table>
 					</v-card>
 				</v-col>
 			</v-row>
@@ -59,35 +273,162 @@
 
 export default {
 	name: 'Props',
-	props: {},
+	props: {
+		classes: {
+			type: Object,
+			required: true,
+		},
+		drawerOptions: {
+			type: Object,
+			required: true,
+		},
+	},
 	data: () => ({
 		items: [
 			{
-				name: 'tbd',
-				desc: 'tbd',
+				name: 'color',
+				type: 'string',
+				default: 'undefined',
+				desc: '<p>Applies specified color to the control - it can be the name of material color (for example <code>success</code> or <code>purple</code>) or css color (<code>#033</code> or <code>rgba(255, 0, 0, 0.5)</code>). You can find a list of built-in classes on the <a href="https://vuetifyjs.com/en/styles/colors/#material-colors" target="_blank">colors page</a>.</p>',
+			},
+			{
+				name: 'handle.color',
+				type: 'object',
+				default: "<pre><code>{ dark: '#555', light: '#ccc' }</code></pre>",
+				desc: 'Determines the color of the handle for dark and light modes.',
+			},
+			{
+				name: 'handlePosition',
+				type: 'string',
+				default: 'center',
+				desc: 'Specifies the position or the handle. Valid values are <strong>border</strong>, <strong>center</strong>, <strong>top</strong>, <strong>top-icon</strong>.',
+			},
+			{
+				name: 'paddingTop',
+				type: 'number <span class="operators--text">|</span> string',
+				altType: 'number',
+				default: '0',
+				desc: 'Applies <strong>padding-top: 0</strong> to the component.',
+			},
+			{
+				name: 'overflow',
+				type: 'boolean',
+				default: 'false',
+				desc: 'Applies <strong>overflow: visible</strong> to the component.',
+			},
+			{
+				name: 'resizable',
+				type: 'boolean',
+				default: 'true',
+				desc: 'Enables resize functionality.',
+			},
+			{
+				name: 'right',
+				type: 'boolean',
+				default: 'false',
+				desc: '',
+			},
+			{
+				name: 'saveWidth',
+				type: 'boolean',
+				default: 'true',
+				desc: 'Determines if the width of the component is saved in local storage.',
+			},
+			{
+				name: 'showCloseIcon',
+				type: 'boolean',
+				default: 'false',
+				desc: 'Controls whether the close icon is enabled.',
+			},
+			{
+				name: 'storageName',
+				type: 'string',
+				default: 'vuetify-resize-drawer',
+				desc: 'Determines the name of the local storage item.',
 			},
 		],
 		headers: [
 			{
 				text: 'Name',
 				value: 'name',
-				align: 'start',
+				align: 'left',
 				filterable: true,
+				sortable: false,
+				width: '15%',
+			},
+			{
+				text: 'Type',
+				value: 'type',
+				align: 'left',
+				filterable: false,
+				sortable: false,
+				width: '10%',
+			},
+			{
+				text: 'Try',
+				value: 'try',
+				align: 'left',
+				filterable: false,
+				sortable: false,
+			},
+			{
+				text: 'Default',
+				value: 'default',
+				align: 'left',
+				filterable: false,
 				sortable: false,
 			},
 			{
 				text: 'Description',
 				value: 'desc',
+				align: 'start',
 				filterable: false,
 				sortable: false,
 			},
 		],
+		options: {},
 		search: '',
+		selectOptions: {
+			color: [
+				{ text: 'None', value: '' },
+				{ text: 'Primary', value: 'primary' },
+				{ text: 'Secondary', value: 'secondary' },
+				{ text: 'Accent', value: 'accent' },
+				{ text: 'Error', value: 'error' },
+				{ text: 'Info', value: 'info' },
+				{ text: 'Success', value: 'success' },
+			],
+			handlePosition: [
+				{ text: 'border', value: 'border' },
+				{ text: 'center', value: 'center' },
+				{ text: 'top', value: 'top' },
+				{ text: 'top-icon', value: 'top-icon' },
+			],
+		},
 	}),
+	watch: {
+		options(newVal) {
+			const options = newVal;
+			options.paddingTop = parseInt(newVal.paddingTop, 10);
+			this.$bus.$emit('updateOptions', options);
+		},
+	},
 	methods: {
 	},
-	mounted() { },
+	mounted() {
+		this.options = { ...this.options, ...this.drawerOptions };
+	},
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.type {
+	color: #690;
+
+	&__ {
+		&default {
+			color: #905;
+		}
+	}
+}
+</style>

@@ -1,27 +1,18 @@
 <template>
 	<v-navigation-drawer
-		:app="app"
+		v-bind="$attrs"
+		v-on="$listeners"
 		ref="resizeDrawer"
-		v-model="drawerOptions.open"
 		class="resize-drawer"
 		:class="`resize-drawer-overflow-${drawerOptions.overflow}`"
-		:absolute="drawerOptions.absolute"
-		:bottom="drawerOptions.bottom"
-		:fixed="drawerOptions.fixed"
-		:right="drawerPosition"
-		:src="drawerOptions.src"
-		:tag="drawerOptions.tag"
-		:temporary="drawerOptions.temporary"
 		:width="drawerOptions.width"
-		:style="`padding-top: ${drawerOptions.paddingTop}`"
-		@transitionend="$emit('transitionend', $event)"
-		@input="drawerInput"
+		:style="drawerStyle"
 	>
 		<!-- Resize handle -->
 		<div
 			v-if="drawerOptions.resizable"
 			class="handle-container d-flex"
-			:class="{ [handleContainerClass]: drawerOptions.handle.position }"
+			:class="{ [handleContainerClass]: drawerOptions.handlePosition }"
 			:style="handleContainerStyle"
 			@dblclick="handleDoubleClick"
 			@mousedown="handleMouseDown"
@@ -31,10 +22,9 @@
 			<!-- Icon -->
 			<div
 				v-if="
-					drawerOptions.handle.position === 'border' ||
-					drawerOptions.handle.position === 'left' ||
-					drawerOptions.handle.position === 'right' ||
-					drawerOptions.handle.position === 'center'
+					drawerOptions.handlePosition === 'left' ||
+					drawerOptions.handlePosition === 'right' ||
+					drawerOptions.handlePosition === 'center'
 				"
 				class="
 					handle-container-icon
@@ -43,16 +33,49 @@
 					justify-content-center
 				"
 				:class="{
-					[`handle-container-${drawerOptions.handle.position}-icon`]:
-						drawerOptions.handle.position,
+					[`handle-container-${drawerOptions.handlePosition}-icon`]:
+						drawerOptions.handlePosition,
 				}"
 			>
 				<slot v-if="$scopedSlots.handle" name="handle"></slot>
 				<div v-else>&raquo;</div>
 			</div>
 
-			<!-- Lines -->
-			<div v-else class="handle-container-lines"></div>
+			<!-- Top Icon -->
+			<template
+				v-if="
+					$scopedSlots.handle && drawerOptions.handlePosition === 'top-icon'
+				"
+			>
+				<slot
+					v-if="$scopedSlots.handle"
+					name="handle"
+					:class="{
+						'theme--dark': isDark,
+						'theme--light': !isDark,
+						'float-end': drawerOptions.right,
+						'float-start': !drawerOptions.right,
+					}"
+				></slot>
+			</template>
+
+			<v-icon
+				v-else-if="drawerOptions.handlePosition === 'top-icon'"
+				:class="{
+					'theme--dark': isDark,
+					'theme--light': !isDark,
+					'float-end': drawerOptions.right,
+					'float-start': !drawerOptions.right,
+				}"
+			>
+				mdi-resize-bottom-right
+			</v-icon>
+
+			<!-- Top -->
+			<div
+				v-else-if="drawerOptions.handlePosition === 'top'"
+				class="handle-container-lines"
+			></div>
 		</div>
 
 		<!-- Header Slot -->
@@ -66,19 +89,14 @@
 					:class="{
 						'theme--dark': isDark,
 						'theme--light': !isDark,
-						'float-end': drawerOptions.position === 'right',
-						'float-start': drawerOptions.position !== 'right',
+						'float-end': drawerOptions.right,
+						'float-start': !drawerOptions.right,
 					}"
-					class="close-drawer float-end v-icon fa-fw"
-					:icon="['fas', 'times']"
+					class="close-drawer float-end v-icon"
 					@click="drawerClose"
 				>
 					mdi-close
 				</v-icon>
-
-				<!-- Drawer Title -->
-				<slot v-if="$scopedSlots.title" name="title"></slot>
-				<h3 v-else>{{ drawerOptions.title }}</h3>
 			</v-col>
 		</v-row>
 
@@ -109,9 +127,6 @@ Vue.use(Vuetify, {
 export default {
 	name: 'ResizeDrawer',
 	props: {
-		app: {
-			required: false,
-		},
 		options: {
 			type: Object,
 			required: true,
@@ -129,42 +144,20 @@ export default {
 	data: () => ({
 		defaultWidth: '256px',
 		drawerOptions: {
-			absolute: false,
-			bottom: false,
-			fixed: true,
 			handle: {
-				background: {
+				color: {
 					dark: '#555',
 					light: '#ccc',
 				},
-				/*
-				 * Positions of the resize handle
-				 ? @value: 'top' 		- top of the drawer
-				 ? @value: 'center' - center along border of the drawer
-				 ? @value: 'border' - border of the drawer
-				 ? @value: 'left' 	- border of the drawer
-				 ? @value: 'right' 	- border of the drawer
-				*/
-				position: 'center',
 			},
-			icon: '',
-			iconColor: '',
-			open: true,
-			overlayColor: '',
-			overlayOpacity: '',
-			paddingTop: '0',
-			position: 'left',
+			handlePosition: 'center',
 			overflow: false,
+			paddingTop: 0,
 			resizable: true,
 			saveWidth: true,
-			showCloseIcon: true,
-			src: '',
+			showCloseIcon: false,
 			storageName: 'vuetify-resize-drawer',
-			tag: 'nav',
-			temporary: false,
-			title: '',
 			width: '256px',
-			widthDefault: '256px',
 		},
 		isDark: false,
 		loading: false,
@@ -177,46 +170,61 @@ export default {
 		},
 	}),
 	computed: {
+		drawerStyle() {
+			const options = this.drawerOptions;
+			let styles = '';
+			let paddingValue = options.paddingTop;
+
+			if (+options.paddingTop) {
+				paddingValue = `${options.paddingTop}px`;
+			}
+
+			styles += `padding-top: ${paddingValue}`;
+
+			return styles;
+		},
 		containerClass() {
-			const position = this.drawerOptions.handle.position;
+			const position = this.drawerOptions.handlePosition;
 			let className = '';
 
 			if (position === 'center' || position === 'border' || position === 'left' || position === 'right') {
-				const paddingSide = this.drawerOptions.position === 'left' ? 'e' : 's';
+				const paddingSide = this.$attrs.right ? 's' : 'e';
 				className += ` p${paddingSide}-8`;
 			}
 
 			return className;
 		},
-		drawerPosition() {
-			return this.drawerOptions.position === 'right';
-		},
 		handleContainerClass() {
 			const options = this.drawerOptions;
-			let className = `handle-container-${options.handle.position}`;
+			let className = `handle-container-${options.handlePosition}`;
 
-			if (options.handle.position === 'border' || options.handle.position === 'left' || options.handle.position === 'right' || options.handle.position === 'center') {
+			if (this.$scopedSlots.handle && options.handlePosition === 'top-icon') {
+				className += '-slot';
+			}
+
+			if (options.handlePosition === 'border' || options.handlePosition === 'left' || options.handlePosition === 'right' || options.handlePosition === 'center') {
 				className += ' align-center justify-center';
 			}
 
 			// Parent //
-			className += ` handle-container-parent-${options.position}`;
+			const parentPosition = this.$attrs.right ? 'right' : 'left';
+			className += ` handle-container-parent-${parentPosition}`;
 
 			return className;
 		},
 		handleContainerStyle() {
 			const options = this.drawerOptions;
-			const color = this.isDark ? options.handle.background.dark : options.handle.background.light;
-			let styles = `border-${options.handle.position}-color: ${color};`;
+			const color = this.isDark ? options.handle.color.dark : options.handle.color.light;
+			let styles = `border-${options.handlePosition}-color: ${color};`;
 
-			if (options.handle.position === 'left' || options.handle.position === 'right' || options.handle.position === 'border') {
+			if (options.handlePosition === 'left' || options.handlePosition === 'right' || options.handlePosition === 'border') {
 				styles = `
 					background-color: ${color};
 					color: ${color};
 				`;
 			}
 
-			if (options.handle.position === 'center') {
+			if (options.handlePosition === 'center') {
 				styles = `
 					background-color: transparent;
 					color: ${color};
@@ -245,7 +253,7 @@ export default {
 			},
 			deep: true,
 		},
-		'drawerOptions.open': {
+		'$attrs.value': {
 			handler(val) {
 				this.offsetWith = this.drawerOptions.width;
 
@@ -258,6 +266,8 @@ export default {
 	},
 	mounted() {
 		this.setOptions();
+
+		console.log('$attrs', this.$attrs);
 	},
 	beforeDestroy() {
 		if (this.drawerOptions.resizable) {
@@ -344,7 +354,7 @@ export default {
 		drawerResize(el) {
 			let width = el.clientX;
 
-			if (this.drawerOptions.position === 'right') {
+			if (this.$attrs.right) {
 				width = document.body.scrollWidth - width;
 			}
 
@@ -465,7 +475,58 @@ export default {
 			}
 		}
 
-		&-border,
+		&-top-icon {
+			height: 24px;
+			opacity: 0.5;
+			left: initial;
+			right: 0;
+			top: 0;
+			transition: opacity 0.3s ease;
+			transform: rotate(-90deg);
+			width: 24px;
+
+			&:hover {
+				opacity: 1;
+			}
+
+			&.handle-container-parent {
+				&-right {
+					left: 0;
+					right: initial;
+					transform: rotate(-180deg);
+				}
+			}
+		}
+
+		&-top-icon-slot {
+			align-items: center;
+			height: 24px;
+			right: 0;
+			opacity: 0.5;
+			padding: 2px;
+			top: 0;
+			transition: opacity 0.3s ease;
+			width: auto;
+
+			&:hover {
+				opacity: 1;
+			}
+
+			&.handle-container-parent {
+				&-right {
+					left: 0;
+				}
+			}
+		}
+
+		&-border {
+			background-color: transparent !important;
+			cursor: col-resize;
+			height: 100%;
+			top: 0;
+			width: 8px;
+		}
+
 		&-left,
 		&-right {
 			height: 100%;

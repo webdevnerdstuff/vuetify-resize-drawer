@@ -1,7 +1,7 @@
 <template>
 	<v-row>
 		<v-col class="mb-5" cols="12" id="events">
-			<h2 class="v-heading text-h4 text-sm-h4 mb-3">Events</h2>
+			<h2 :class="classes.h2">Events</h2>
 
 			<v-row>
 				<v-col cols="12">
@@ -59,7 +59,12 @@
 
 export default {
 	name: 'Events',
-	props: {},
+	props: {
+		classes: {
+			type: Object,
+			required: true,
+		},
+	},
 	data: () => ({
 		items: [
 			// Drawer Events //

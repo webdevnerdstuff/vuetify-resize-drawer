@@ -5,14 +5,11 @@
 			<v-app-bar-nav-icon
 				app
 				class="nav-drawer-btn mr-2"
-				height="32"
-				width="32"
-				@click.stop="
-					drawerOptions.open = !drawerOptions.open;
-					drawer = !drawer;
-				"
 				clipped-left
 				clipped-right
+				height="32"
+				width="32"
+				@click.stop="drawer = !drawer"
 			>
 				<v-icon>mdi-menu</v-icon>
 			</v-app-bar-nav-icon>
@@ -20,15 +17,29 @@
 			<div class="site-title">Vuetify Resize Drawer</div>
 
 			<v-spacer></v-spacer>
+
+			<v-btn :href="links.github" class="mr-2" icon small>
+				<v-icon>mdi-github</v-icon>
+			</v-btn>
+
+			<v-btn :href="links.npm" class="mr-2" icon small target="_blank">
+				<v-icon>mdi-npm</v-icon>
+			</v-btn>
+
+			<v-btn class="mr-1" icon small @click="toggleDark">
+				<v-icon v-if="!dark">mdi-weather-sunny</v-icon>
+				<v-icon v-else>mdi-weather-night</v-icon>
+			</v-btn>
 		</v-app-bar>
 
 		<!-- ====================================================== Navigation Drawer -->
 		<v-navigation-drawer
-			clipped
 			v-model="drawer"
-			right
+			clipped
 			fixed
-			:style="`padding-top: ${drawerOptions.paddingTop}`"
+			right
+			:color="drawerOptions.color"
+			:style="`padding-top: ${drawerOptions.paddingTop}px`"
 		>
 			<v-list-item>
 				<v-list-item-content>
@@ -41,14 +52,18 @@
 
 			<v-divider></v-divider>
 
-			<Menu />
+			<Menu :drawerOptions="drawerOptions" />
 		</v-navigation-drawer>
 
 		<!-- @update="logEvent($event, 'update')" -->
 		<ResizeDrawer
 			name="ResizeDrawer"
 			clipped
+			fixed
 			:options="drawerOptions"
+			:color="drawerOptions.color"
+			:right="drawerOptions.right"
+			:value="drawer"
 			@close="drawerClose"
 			@handle:click="logEvent($event, 'handle:click')"
 			@handle:dblclick="handleDoubleClick"
@@ -58,9 +73,9 @@
 			@input="drawerInput"
 			@transitionend="drawerTransitionend"
 		>
-			<template #handle>
-				<div>&raquo;</div>
-			</template>
+			<!-- <template #handle>
+				<v-icon>mdi-arrow-right-circle</v-icon>
+			</template> -->
 
 			<template #prepend>
 				<header>
@@ -79,7 +94,7 @@
 				</header>
 			</template>
 
-			<Menu />
+			<Menu :drawerOptions="drawerOptions" />
 
 			<template #append>
 				<v-footer fixed color="primary" dark> Footer Prop </v-footer>
@@ -90,7 +105,7 @@
 		<v-main
 			:class="[
 				{
-					'drawer-open': drawer || drawerOptions.open,
+					'drawer-open': drawer,
 				},
 			]"
 			:style="mainStyles"
@@ -101,9 +116,20 @@
 </template>
 
 <script>
+import Vue from 'vue';
 import Documentation from './components/Documentation.vue';
 import Menu from './components/Menu.vue';
 import ResizeDrawer from './components/ResizeDrawer.vue';
+
+const EventBus = new Vue();
+
+Object.defineProperties(Vue.prototype, {
+	$bus: {
+		get() {
+			return EventBus;
+		},
+	},
+});
 
 export default {
 	name: 'App',
@@ -114,62 +140,66 @@ export default {
 	},
 	computed: {
 		mainStyles() {
-			const options = this.drawerOptions;
 			let styles = '';
 
 			styles += `padding-left: ${this.drawerOffset} !important;`;
-			styles += `padding-right: ${options.open ? '256px' : '0'} !important;`;
+			styles += `padding-right: ${this.drawer ? '256px' : '0'} !important;`;
 
 			return styles;
 		},
 	},
 	data: () => ({
+		dark: false,
 		drawer: true,
 		drawerOptions: {
-			absolute: false,
-			bottom: true,
-			fixed: true,
+			color: undefined,
 			handle: {
 				background: {
 					dark: '#555',
 					light: '#ccc',
 				},
-				position: 'center',
 			},
-			icon: '',
-			iconColor: '',
-			open: true,
-			overlayColor: '',
-			overlayOpacity: '',
-			paddingTop: '48px',
-			position: 'left',
-			temporary: false,
-			src: '',
-			storageName: 'resize-drawer',
-			tag: 'nav',
-			title: '',
+			handlePosition: 'center',
+			overlayColor: '#f00',
+			overlayOpacity: '100%',
+			paddingTop: 48,
+			right: false,
+			saveWidth: true,
+			storageName: 'vuetify-resize-drawer',
 			width: '256px',
 			widthDefault: '256px',
-			// mini: true,
+			// Used for examples //
+			showCloseIcon: false,
+			resizable: true,
 		},
 		drawerOffset: '256px',
+		links: {
+			github: 'https://github.com/webdevnerdstuff/vuetify-resize-drawer',
+			npm: 'https://www.npmjs.com/package/vuetify-resize-drawer',
+		},
 	}),
 	created() {
-
+		this.$bus.$on('updateOptions', (options) => {
+			console.log({ options });
+			this.drawerOptions = options;
+		});
 	},
 	mounted() {
 		this.getLocalStorage();
+		this.getDarkLocalStorage();
 	},
 	methods: {
-		getLocalStorage(name = this.drawerOptions.storageName) {
-			this.drawerOffset = localStorage.getItem(`vrd-${name}`) || this.drawerOffset;
+		toggleDark() {
+			this.dark = !this.dark;
+			this.$vuetify.theme.dark = this.dark;
+			this.setDarkLocalStorage(this.dark);
 		},
+
 		logEvent(el, name) {
 			console.log('----------------------------------- logEvent', { name, el });
 		},
 		drawerClose(val) {
 			console.log('----------------------------------- drawerClose', { val });
-			this.drawerOptions.open = false;
 			this.drawer = false;
 		},
 		drawerInput(val) {
@@ -196,6 +226,18 @@ export default {
 		},
 		handleDrag(evt) {
 			this.drawerOffset = evt.offsetWidth;
+		},
+		getLocalStorage(name = this.drawerOptions.storageName) {
+			this.drawerOffset = localStorage.getItem(`vrd-${name}`) || this.drawerOffset;
+		},
+		getDarkLocalStorage() {
+			const isDark = localStorage.getItem('vuetify-resize-drawer-dark');
+
+			this.dark = isDark === 'true';
+			this.$vuetify.theme.dark = this.dark;
+		},
+		setDarkLocalStorage(val) {
+			localStorage.setItem('vuetify-resize-drawer-dark', val);
 		},
 	},
 };
