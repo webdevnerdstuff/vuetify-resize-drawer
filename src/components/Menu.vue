@@ -45,7 +45,6 @@ export default {
 			{ title: 'Slots', icon: 'mdi-slot-machine', href: '#slots' },
 			{ title: 'Examples', icon: 'mdi-code-json', href: '#examples' },
 			{ title: 'Dependencies', icon: 'mdi-asterisk-circle-outline', href: '#dependencies' },
-			{ title: 'Change Log', icon: 'mdi-notebook', href: '#change-log' },
 			{ title: 'License', icon: 'mdi-scale-balance', href: '#license' },
 		],
 	}),
