@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuetify from 'vuetify/lib';
-// import colors from 'vuetify/lib/util/colors';
+import colors from 'vuetify/lib/util/colors';
 
 Vue.use(Vuetify);
 
@@ -9,7 +9,7 @@ const opts = {
 		themes: {
 			light: {
 				primary: '#1867c0',
-				secondary: '#5cbbf6',
+				secondary: colors.cyan.darken4,
 				accent: '#905',
 				error: '#ff5252',
 				info: '#2196f3',
@@ -19,7 +19,7 @@ const opts = {
 			},
 			dark: {
 				primary: '#099FFF',
-				secondary: '#cc00ff',
+				secondary: colors.cyan.darken1,
 				accent: '#cd0373',
 				error: '#ff5252',
 				info: '#fe019a',

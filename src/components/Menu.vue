@@ -62,7 +62,7 @@ export default {
 
 					const hash = anchor.hash;
 					const id = hash.replace('#', '');
-					const yOffset = -48;
+					const yOffset = -55;
 					const element = document.getElementById(id);
 					const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
 

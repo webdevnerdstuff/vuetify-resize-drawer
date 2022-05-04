@@ -1,7 +1,10 @@
 <template>
 	<v-row>
 		<v-col class="mb-5" cols="12" id="examples">
-			<h2 :class="classes.h2">Examples</h2>
+			<h2 :class="classes.h2">
+				<a href="#examples" :class="classes.headerA">#</a>
+				Examples
+			</h2>
 
 			<v-row>
 				<v-col cols="12"> TBD </v-col>

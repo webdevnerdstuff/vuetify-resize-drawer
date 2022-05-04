@@ -1,7 +1,10 @@
 <template>
 	<v-row>
 		<v-col class="mb-5" cols="12" id="slots">
-			<h2 :class="classes.h2">Slots</h2>
+			<h2 :class="classes.h2">
+				<a href="#slots" :class="classes.headerA">#</a>
+				Slots
+			</h2>
 
 			<v-row>
 				<v-col cols="12">
@@ -67,6 +70,10 @@ export default {
 	},
 	data: () => ({
 		items: [
+			{
+				name: 'handle',
+				desc: 'A slot for the resize handle.',
+			},
 			{
 				name: 'prepend',
 				desc: 'A slot at the top of the drawer',

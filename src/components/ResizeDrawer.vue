@@ -411,8 +411,6 @@ export default {
 
 <style lang="scss" scoped>
 .resize-drawer {
-	max-height: 100vh !important;
-
 	&.resize-drawer-overflow-true {
 		::v-deep .v-navigation-drawer__content {
 			overflow: visible;

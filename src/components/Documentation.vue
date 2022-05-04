@@ -18,7 +18,10 @@
 		<!-- Installation -->
 		<v-row id="installation">
 			<v-col class="mb-5" cols="12">
-				<h2 :class="classes.h2">Installation</h2>
+				<h2 :class="classes.h2">
+					<a href="#installation" :class="classes.headerA">#</a>
+					Installation
+				</h2>
 
 				<v-row>
 					<v-col cols="12">
@@ -32,48 +35,11 @@
 			</v-col>
 		</v-row>
 
-		<!-- TBD -->
-		<v-row>
-			<v-col class="mb-5" cols="12" id="description">
-				<h2 :class="classes.h2">Description</h2>
+		<!-- Description -->
+		<Description :drawerOptions="drawerOptions" :classes="classes" />
 
-				<v-row>
-					<v-col cols="12">
-						<p>
-							The <code>vuetify-resize-drawer</code> component extends the
-							functionality of the
-							<a
-								href="https://vuetifyjs.com/en/components/navigation-drawers/"
-								target="_blank"
-								>v-navigation-drawer</a
-							>
-							so that it is resizable by the user.
-						</p>
-					</v-col>
-				</v-row>
-			</v-col>
-		</v-row>
-
-		<v-row>
-			<v-col class="mb-5" cols="12" id="Usage">
-				<h2 :class="classes.h2">Usage</h2>
-
-				<v-row>
-					<v-col cols="12">
-						<p>
-							The <code>vuetify-resize-drawer</code> component usage is mostly
-							the same as the
-							<a
-								href="https://vuetifyjs.com/en/components/navigation-drawers/"
-								target="_blank"
-								>v-navigation-drawer</a
-							>. It can also be used as a component in its own right for things
-							such as a settings panel or to display data.
-						</p>
-					</v-col>
-				</v-row>
-			</v-col>
-		</v-row>
+		<!-- Usage -->
+		<Usage :drawerOptions="drawerOptions" :classes="classes" />
 
 		<!-- Props -->
 		<Props :drawerOptions="drawerOptions" :classes="classes" />
@@ -90,7 +56,10 @@
 		<!-- Dependencies -->
 		<v-row>
 			<v-col class="mb-5" cols="12" id="dependencies">
-				<h2 :class="classes.h2">Dependencies</h2>
+				<h2 :class="classes.h2">
+					<a href="#dependencies" :class="classes.headerA">#</a>
+					Dependencies
+				</h2>
 
 				<v-row>
 					<v-col cols="12">
@@ -102,27 +71,13 @@
 			</v-col>
 		</v-row>
 
-		<!-- Change Log -->
-		<v-row>
-			<v-col class="mb-5" cols="12" id="change-log">
-				<h2 :class="classes.h2">Change Log</h2>
-
-				<v-row>
-					<v-col cols="12">
-						Component changes for each release are documented in the
-						<a
-							href="https://github.com/webdevnerdstuff/vuetify-resize-drawer/blob/master/CHANGELOG.md"
-							>Change Log</a
-						>
-					</v-col>
-				</v-row>
-			</v-col>
-		</v-row>
-
 		<!-- License -->
 		<v-row>
 			<v-col class="mb-5" cols="12" id="license">
-				<h2 :class="classes.h2">License</h2>
+				<h2 :class="classes.h2">
+					<a href="#license" :class="classes.headerA">#</a>
+					License
+				</h2>
 
 				<v-row>
 					<v-col cols="12">
@@ -142,18 +97,22 @@
 
 <script>
 import { component as VueCodeHighlight } from 'vue-code-highlight';
+import Description from '@components/documentation/Description.vue';
 import Events from '@components/documentation/Events.vue';
 import Examples from '@components/documentation/Examples.vue';
 import Props from '@components/documentation/Props.vue';
 import Slots from '@components/documentation/Slots.vue';
+import Usage from '@components/documentation/Usage.vue';
 
 export default {
 	name: 'Documentation',
 	components: {
+		Description,
 		Events,
 		Examples,
 		Props,
 		Slots,
+		Usage,
 		VueCodeHighlight,
 	},
 	props: {
@@ -172,6 +131,8 @@ export default {
 		},
 		classes: {
 			h2: 'v-heading text-h4 text-sm-h4 mb-3',
+			h3: 'v-heading text-h5 text-sm-h5 mb-1',
+			headerA: 'text-decoration-none text-right text-md-left',
 		},
 	}),
 	created() {

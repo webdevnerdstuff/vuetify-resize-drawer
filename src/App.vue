@@ -53,6 +53,10 @@
 			<v-divider></v-divider>
 
 			<Menu :drawerOptions="drawerOptions" />
+
+			<template #append>
+				<v-footer fixed color="primary" dark> Footer Prop </v-footer>
+			</template>
 		</v-navigation-drawer>
 
 		<!-- @update="logEvent($event, 'update')" -->
@@ -141,9 +145,16 @@ export default {
 	computed: {
 		mainStyles() {
 			let styles = '';
+			let paddingLeftVal = this.drawerOffset;
+			let paddingRightVal = this.drawer ? '256px' : '0';
 
-			styles += `padding-left: ${this.drawerOffset} !important;`;
-			styles += `padding-right: ${this.drawer ? '256px' : '0'} !important;`;
+			if (this.$vuetify.breakpoint.mobile) {
+				paddingLeftVal = 0;
+				paddingRightVal = 0;
+			}
+
+			styles += `padding-left: ${paddingLeftVal} !important;`;
+			styles += `padding-right: ${paddingRightVal} !important;`;
 
 			return styles;
 		},
@@ -177,6 +188,7 @@ export default {
 			github: 'https://github.com/webdevnerdstuff/vuetify-resize-drawer',
 			npm: 'https://www.npmjs.com/package/vuetify-resize-drawer',
 		},
+		mainContainerEl: null,
 	}),
 	created() {
 		this.$bus.$on('updateOptions', (options) => {
@@ -218,17 +230,17 @@ export default {
 		},
 		handleDoubleClick(evt) {
 			console.log('----------------------------------- handleDoubleClick', { evt });
-			this.drawerOffset = evt.offsetWidth;
+			this.updateDrawerOffset(evt.offsetWidth);
 		},
 		handleMouseup(evt) {
 			console.log('----------------------------------- handleMouseup', { evt });
-			this.drawerOffset = evt.offsetWidth;
+			this.updateDrawerOffset(evt.offsetWidth);
 		},
 		handleDrag(evt) {
-			this.drawerOffset = evt.offsetWidth;
+			this.updateDrawerOffset(evt.offsetWidth);
 		},
 		getLocalStorage(name = this.drawerOptions.storageName) {
-			this.drawerOffset = localStorage.getItem(`vrd-${name}`) || this.drawerOffset;
+			this.updateDrawerOffset(localStorage.getItem(`vrd-${name}`) || this.drawerOffset);
 		},
 		getDarkLocalStorage() {
 			const isDark = localStorage.getItem('vuetify-resize-drawer-dark');
@@ -239,11 +251,14 @@ export default {
 		setDarkLocalStorage(val) {
 			localStorage.setItem('vuetify-resize-drawer-dark', val);
 		},
+		updateDrawerOffset(val) {
+			this.drawerOffset = val;
+		},
 	},
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 html {
 	scroll-behavior: smooth;
 	scroll-padding-top: 70px;
@@ -263,6 +278,24 @@ html {
 
 	.site-title {
 		font-family: 'Roboto', sans-serif !important;
+	}
+}
+
+.v-heading {
+	position: relative;
+
+	> a {
+		bottom: 0;
+		display: inline-block;
+		left: 0;
+		margin: 0 -0.7em;
+		position: absolute;
+		right: 0;
+		top: 0;
+
+		&:not(:hover):not(:focus) {
+			opacity: 0;
+		}
 	}
 }
 
