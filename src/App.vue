@@ -44,9 +44,7 @@
 			<v-list-item>
 				<v-list-item-content>
 					<v-list-item-title class="text-h6">Default Drawer</v-list-item-title>
-					<v-list-item-subtitle>
-						Stuck in the middle with you
-					</v-list-item-subtitle>
+					<v-list-item-subtitle> Stuck With You </v-list-item-subtitle>
 				</v-list-item-content>
 			</v-list-item>
 
@@ -297,6 +295,10 @@ html {
 			opacity: 0;
 		}
 	}
+}
+
+.name-item:not(:hover):not(:focus) span {
+	opacity: 0;
 }
 
 .v-divider {

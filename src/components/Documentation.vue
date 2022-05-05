@@ -50,6 +50,9 @@
 		<!-- Slots -->
 		<Slots :classes="classes" />
 
+		<!-- SASS Variables -->
+		<SassVariables :classes="classes" />
+
 		<!-- Examples -->
 		<Examples :classes="classes" />
 
@@ -101,6 +104,7 @@ import Description from '@components/documentation/Description.vue';
 import Events from '@components/documentation/Events.vue';
 import Examples from '@components/documentation/Examples.vue';
 import Props from '@components/documentation/Props.vue';
+import SassVariables from '@components/documentation/SassVariables.vue';
 import Slots from '@components/documentation/Slots.vue';
 import Usage from '@components/documentation/Usage.vue';
 
@@ -111,6 +115,7 @@ export default {
 		Events,
 		Examples,
 		Props,
+		SassVariables,
 		Slots,
 		Usage,
 		VueCodeHighlight,
@@ -133,6 +138,7 @@ export default {
 			h2: 'v-heading text-h4 text-sm-h4 mb-3',
 			h3: 'v-heading text-h5 text-sm-h5 mb-1',
 			headerA: 'text-decoration-none text-right text-md-left',
+			appLink: 'app-link text-decoration-none primary--text font-weight-medium d-inline-block font-weight-bold',
 		},
 	}),
 	created() {

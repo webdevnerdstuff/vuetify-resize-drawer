@@ -51,6 +51,26 @@ const scssRule = {
 	],
 };
 
+// Use to test sass variable overrides //
+// const sassRule = {
+// 	rules: [
+// 		{
+// 			test: /\.sass$/,
+// 			use: [
+// 				'vue-style-loader',
+// 				'css-loader',
+// 				{
+// 					loader: 'sass-loader',
+// 					options: {
+// 						implementation: sass,
+// 						additionalData: "@import './src/sass/variables.sass'",
+// 					},
+// 				},
+// 			],
+// 		},
+// 	],
+// };
+
 /*
  |--------------------------------------------------------------------------
  | File Configs
@@ -223,6 +243,7 @@ module.exports = merge(base, {
 		rules: [
 			fileRule,
 			scssRule,
+			// sassRule,
 			svgRule,
 		],
 	},

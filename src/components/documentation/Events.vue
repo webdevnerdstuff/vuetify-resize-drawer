@@ -34,14 +34,7 @@
 											><span class="primary--text">#</span
 											><a
 												:href="`#events-${item.name}`"
-												class="
-													app-link
-													text-decoration-none
-													primary--text
-													font-weight-medium
-													d-inline-block
-													font-weight-bold
-												"
+												:class="classes.appLink"
 												>{{ item.name }}</a
 											></span
 										>

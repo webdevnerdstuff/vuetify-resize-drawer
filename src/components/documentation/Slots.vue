@@ -9,16 +9,6 @@
 			<v-row>
 				<v-col cols="12">
 					<v-card>
-						<v-card-title>
-							<v-text-field
-								v-model="search"
-								append-icon="mdi-magnify"
-								label="Search"
-								single-line
-								hide-details
-							></v-text-field>
-						</v-card-title>
-
 						<v-data-table
 							:headers="headers"
 							:items="items"
@@ -34,14 +24,7 @@
 											><span class="primary--text">#</span
 											><a
 												:href="`#slots-${item.name}`"
-												class="
-													app-link
-													text-decoration-none
-													primary--text
-													font-weight-medium
-													d-inline-block
-													font-weight-bold
-												"
+												:class="classes.appLink"
 												>{{ item.name }}</a
 											></span
 										>
@@ -92,18 +75,15 @@ export default {
 				text: 'Name',
 				value: 'name',
 				align: 'start',
-				filterable: true,
 				sortable: false,
 				width: '273px',
 			},
 			{
 				text: 'Description',
 				value: 'desc',
-				filterable: false,
 				sortable: false,
 			},
 		],
-		search: '',
 	}),
 	methods: {
 	},

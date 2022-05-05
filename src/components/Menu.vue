@@ -43,6 +43,7 @@ export default {
 			{ title: 'Props', icon: 'mdi-cog', href: '#props' },
 			{ title: 'Events', icon: 'mdi-calendar-star', href: '#events' },
 			{ title: 'Slots', icon: 'mdi-slot-machine', href: '#slots' },
+			{ title: 'SASS Variables', icon: 'mdi-sass', href: '#sass-variables' },
 			{ title: 'Examples', icon: 'mdi-code-json', href: '#examples' },
 			{ title: 'Dependencies', icon: 'mdi-asterisk-circle-outline', href: '#dependencies' },
 			{ title: 'License', icon: 'mdi-scale-balance', href: '#license' },
