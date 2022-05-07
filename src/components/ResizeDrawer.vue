@@ -3,7 +3,7 @@
 		v-bind="$attrs"
 		v-on="$listeners"
 		ref="resizeDrawer"
-		class="resize-drawer"
+		class="vuetify-resize-drawer"
 		:class="`resize-drawer-overflow-${drawerOptions.overflow}`"
 		:width="drawerOptions.width"
 		:style="drawerStyle"
@@ -410,7 +410,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.resize-drawer {
+.vuetify-resize-drawer {
 	&.resize-drawer-overflow-true {
 		::v-deep .v-navigation-drawer__content {
 			overflow: visible;
@@ -420,156 +420,156 @@ export default {
 	.close-drawer {
 		cursor: pointer;
 	}
-}
 
-::v-deep .v-navigation-drawer__content {
-	position: relative;
+	::v-deep .v-navigation-drawer__content {
+		position: relative;
 
-	.handle-container {
-		cursor: grab;
-		position: absolute;
-		width: 24px;
-		z-index: 1;
-
-		&:active {
-			cursor: grabbing;
-		}
-
-		&-parent {
-			&-left {
-				left: initial;
-				right: 0;
-			}
-		}
-
-		&-top {
-			border-right: 24px solid transparent;
-			border-top-style: solid;
-			border-top-width: 24px;
-			height: 24px;
-			left: 0;
-			top: 0;
+		.handle-container {
+			cursor: grab;
+			position: absolute;
 			width: 24px;
+			z-index: 1;
 
-			&.handle-container-parent {
+			&:active {
+				cursor: grabbing;
+			}
+
+			&-parent {
 				&-left {
-					border-left: 24px solid transparent;
-					border-right: transparent;
 					left: initial;
 					right: 0;
+				}
+			}
 
-					.handle-container-lines {
+			&-top {
+				border-right: 24px solid transparent;
+				border-top-style: solid;
+				border-top-width: 24px;
+				height: 24px;
+				left: 0;
+				top: 0;
+				width: 24px;
+
+				&.handle-container-parent {
+					&-left {
+						border-left: 24px solid transparent;
+						border-right: transparent;
 						left: initial;
-						right: -5px;
-						top: -19px;
-						transform: rotate(45deg);
+						right: 0;
+
+						.handle-container-lines {
+							left: initial;
+							right: -5px;
+							top: -19px;
+							transform: rotate(45deg);
+						}
+					}
+				}
+
+				.handle-container-lines {
+					top: -19px;
+					transform: rotate(-45deg);
+				}
+			}
+
+			&-top-icon {
+				height: 24px;
+				opacity: 0.5;
+				left: initial;
+				right: 0;
+				top: 0;
+				transition: opacity 0.3s ease;
+				transform: rotate(-90deg);
+				width: 24px;
+
+				&:hover {
+					opacity: 1;
+				}
+
+				&.handle-container-parent {
+					&-right {
+						left: 0;
+						right: initial;
+						transform: rotate(-180deg);
 					}
 				}
 			}
 
-			.handle-container-lines {
-				top: -19px;
-				transform: rotate(-45deg);
-			}
-		}
+			&-top-icon-slot {
+				align-items: center;
+				height: 24px;
+				right: 0;
+				opacity: 0.5;
+				padding: 2px;
+				top: 0;
+				transition: opacity 0.3s ease;
+				width: auto;
 
-		&-top-icon {
-			height: 24px;
-			opacity: 0.5;
-			left: initial;
-			right: 0;
-			top: 0;
-			transition: opacity 0.3s ease;
-			transform: rotate(-90deg);
-			width: 24px;
+				&:hover {
+					opacity: 1;
+				}
 
-			&:hover {
-				opacity: 1;
-			}
-
-			&.handle-container-parent {
-				&-right {
-					left: 0;
-					right: initial;
-					transform: rotate(-180deg);
+				&.handle-container-parent {
+					&-right {
+						left: 0;
+					}
 				}
 			}
-		}
 
-		&-top-icon-slot {
-			align-items: center;
-			height: 24px;
-			right: 0;
-			opacity: 0.5;
-			padding: 2px;
-			top: 0;
-			transition: opacity 0.3s ease;
-			width: auto;
-
-			&:hover {
-				opacity: 1;
+			&-border {
+				background-color: transparent !important;
+				cursor: col-resize;
+				height: 100%;
+				top: 0;
+				width: 8px;
 			}
 
-			&.handle-container-parent {
-				&-right {
-					left: 0;
+			&-left,
+			&-right {
+				height: 100%;
+				top: 0;
+				width: 12px;
+			}
+
+			&-center {
+				height: 24px;
+				top: 50%;
+				transform: translateY(-50%);
+			}
+
+			&-lines {
+				align-items: center;
+				display: flex;
+				flex-direction: column;
+				height: auto;
+				justify-content: center;
+				left: -5px;
+				position: absolute;
+				width: 24px;
+
+				&::before,
+				&::after {
+					border-radius: 4px;
+					border-top: 2px inset #ccc;
+					content: '';
+					display: block;
+					height: 1px;
+				}
+
+				&::before {
+					margin-bottom: 3px;
+					width: 30%;
+				}
+
+				&::after {
+					width: 60%;
 				}
 			}
-		}
 
-		&-border {
-			background-color: transparent !important;
-			cursor: col-resize;
-			height: 100%;
-			top: 0;
-			width: 8px;
-		}
-
-		&-left,
-		&-right {
-			height: 100%;
-			top: 0;
-			width: 12px;
-		}
-
-		&-center {
-			height: 24px;
-			top: 50%;
-			transform: translateY(-50%);
-		}
-
-		&-lines {
-			align-items: center;
-			display: flex;
-			flex-direction: column;
-			height: auto;
-			justify-content: center;
-			left: -5px;
-			position: absolute;
-			width: 24px;
-
-			&::before,
-			&::after {
-				border-radius: 4px;
-				border-top: 2px inset #ccc;
-				content: '';
-				display: block;
-				height: 1px;
+			&-icon {
+				height: auto;
+				width: 7px;
 			}
-
-			&::before {
-				margin-bottom: 3px;
-				width: 30%;
-			}
-
-			&::after {
-				width: 60%;
-			}
-		}
-
-		&-icon {
-			height: auto;
-			width: 7px;
 		}
 	}
 }

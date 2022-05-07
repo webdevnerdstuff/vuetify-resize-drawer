@@ -57,52 +57,24 @@
 		<Examples :classes="classes" />
 
 		<!-- Dependencies -->
-		<v-row>
-			<v-col class="mb-5" cols="12" id="dependencies">
-				<h2 :class="classes.h2">
-					<a href="#dependencies" :class="classes.headerA">#</a>
-					Dependencies
-				</h2>
-
-				<v-row>
-					<v-col cols="12">
-						<a :href="links.vuetify2" target="_blank">Vuetify v2</a>
-						<br />
-						<a :href="links.vue2" target="_blank">Vue 2</a>
-					</v-col>
-				</v-row>
-			</v-col>
-		</v-row>
+		<Dependencies :classes="classes" :links="links" />
 
 		<!-- License -->
-		<v-row>
-			<v-col class="mb-5" cols="12" id="license">
-				<h2 :class="classes.h2">
-					<a href="#license" :class="classes.headerA">#</a>
-					License
-				</h2>
+		<License :classes="classes" />
 
-				<v-row>
-					<v-col cols="12">
-						Copyright &copy; {{ new Date().getFullYear() }} WebDevNerdStuff
-						<br />
-						Licensed under the
-						<a
-							href="https://github.com/webdevnerdstuff/vuetify-resize-drawer/blob/master/LICENSE.md"
-							>MIT License</a
-						>.
-					</v-col>
-				</v-row>
-			</v-col>
-		</v-row>
+		<!-- Legal -->
+		<Legal :classes="classes" />
 	</v-container>
 </template>
 
 <script>
 import { component as VueCodeHighlight } from 'vue-code-highlight';
+import Dependencies from '@components/documentation/Dependencies.vue';
 import Description from '@components/documentation/Description.vue';
 import Events from '@components/documentation/Events.vue';
 import Examples from '@components/documentation/Examples.vue';
+import Legal from '@components/documentation/Legal.vue';
+import License from '@components/documentation/License.vue';
 import Props from '@components/documentation/Props.vue';
 import SassVariables from '@components/documentation/SassVariables.vue';
 import Slots from '@components/documentation/Slots.vue';
@@ -111,9 +83,12 @@ import Usage from '@components/documentation/Usage.vue';
 export default {
 	name: 'Documentation',
 	components: {
+		Dependencies,
 		Description,
 		Events,
 		Examples,
+		Legal,
+		License,
 		Props,
 		SassVariables,
 		Slots,

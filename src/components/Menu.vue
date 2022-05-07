@@ -46,7 +46,8 @@ export default {
 			{ title: 'SASS Variables', icon: 'mdi-sass', href: '#sass-variables' },
 			{ title: 'Examples', icon: 'mdi-code-json', href: '#examples' },
 			{ title: 'Dependencies', icon: 'mdi-asterisk-circle-outline', href: '#dependencies' },
-			{ title: 'License', icon: 'mdi-scale-balance', href: '#license' },
+			{ title: 'License', icon: 'mdi-card-account-details-outline', href: '#license' },
+			{ title: 'Legal', icon: 'mdi-scale-balance', href: '#legal' },
 		],
 	}),
 	mounted() {

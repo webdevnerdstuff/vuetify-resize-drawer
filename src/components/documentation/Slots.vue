@@ -9,12 +9,7 @@
 			<v-row>
 				<v-col cols="12">
 					<v-card>
-						<v-data-table
-							:headers="headers"
-							:items="items"
-							:search="search"
-							hide-default-footer
-						>
+						<v-data-table :headers="headers" :items="items" hide-default-footer>
 							<template #item="{ item }">
 								<tr>
 									<td>
