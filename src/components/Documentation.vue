@@ -25,10 +25,8 @@
 
 				<v-row>
 					<v-col cols="12">
-						<vue-code-highlight language="js">
-							<vue-code-highlight language="shell">
-								<pre>npm i vuetify-resize-drawer</pre>
-							</vue-code-highlight>
+						<vue-code-highlight language="bash">
+							<pre>npm i vuetify-resize-drawer</pre>
 						</vue-code-highlight>
 					</v-col>
 				</v-row>
@@ -53,8 +51,8 @@
 		<!-- SASS Variables -->
 		<SassVariables :classes="classes" />
 
-		<!-- Examples -->
-		<Examples :classes="classes" />
+		<!-- Example -->
+		<Example :classes="classes" />
 
 		<!-- Dependencies -->
 		<Dependencies :classes="classes" :links="links" />
@@ -72,7 +70,7 @@ import { component as VueCodeHighlight } from 'vue-code-highlight';
 import Dependencies from '@components/documentation/Dependencies.vue';
 import Description from '@components/documentation/Description.vue';
 import Events from '@components/documentation/Events.vue';
-import Examples from '@components/documentation/Examples.vue';
+import Example from '@components/documentation/Example.vue';
 import Legal from '@components/documentation/Legal.vue';
 import License from '@components/documentation/License.vue';
 import Props from '@components/documentation/Props.vue';
@@ -86,7 +84,7 @@ export default {
 		Dependencies,
 		Description,
 		Events,
-		Examples,
+		Example,
 		Legal,
 		License,
 		Props,
@@ -116,13 +114,5 @@ export default {
 			appLink: 'app-link text-decoration-none primary--text font-weight-medium d-inline-block font-weight-bold',
 		},
 	}),
-	created() {
-
-	},
 };
 </script>
-
-<style lang="scss">
-@import 'vue-code-highlight/themes/prism-tomorrow.css';
-@import 'vue-code-highlight/themes/window.css';
-</style>

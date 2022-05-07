@@ -57,7 +57,6 @@
 			</template>
 		</v-navigation-drawer>
 
-		<!-- @update="logEvent($event, 'update')" -->
 		<ResizeDrawer
 			name="ResizeDrawer"
 			clipped
@@ -75,10 +74,6 @@
 			@input="drawerInput"
 			@transitionend="drawerTransitionend"
 		>
-			<!-- <template #handle>
-				<v-icon>mdi-arrow-right-circle</v-icon>
-			</template> -->
-
 			<template #prepend>
 				<header>
 					<v-list-item>
@@ -257,6 +252,9 @@ export default {
 </script>
 
 <style lang="scss">
+@import 'prism-themes/themes/prism-night-owl.css';
+@import 'vue-code-highlight/themes/window.css';
+
 html {
 	scroll-behavior: smooth;
 	scroll-padding-top: 70px;
