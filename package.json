@@ -1,7 +1,7 @@
 {
 	"name": "vuetify-resize-drawer",
 	"version": "1.0.0",
-	"description": "tbd",
+	"description": "The vuetify-resize-drawer component extends the functionality of the v-navigation-drawer so that it is resizable by the user.",
 	"private": false,
 	"scripts": {
 		"serve": "npm run development",
@@ -34,17 +34,21 @@
 	"homepage": "https://webdevnerdstuff.github.io/vuetify-resize-drawer/",
 	"keywords": [
 		"vuetify-resize-drawer",
+		"vuetifyResizeDrawer",
+		"v-resize-drawer",
+		"vResizeDrawer",
 		"vuetify",
 		"navigation drawer",
+		"v-navigation-drawer",
+		"vNavigationDrawer",
+		"api",
 		"drawer",
 		"resize",
 		"resizable",
 		"vue",
 		"vue2",
-		"plugin",
-		"log",
+		"component",
 		"javascript",
-		"magical",
 		"webdevnerdstuff",
 		"wdns"
 	],
