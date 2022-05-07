@@ -118,7 +118,7 @@
 import Vue from 'vue';
 import Documentation from './components/Documentation.vue';
 import Menu from './components/Menu.vue';
-import VResizeDrawer from './components/ResizeDrawer.vue';
+import VResizeDrawer from './components/VResizeDrawer.vue';
 
 const EventBus = new Vue();
 

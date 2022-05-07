@@ -1,8 +1,8 @@
-import ResizeDrawer from './components/ResizeDrawer.vue';
+import VResizeDrawer from './components/VResizeDrawer.vue';
 
 const VuetifyResizeDrawer = {
 	install(Vue, options = {}) {
-		Vue.component(ResizeDrawer.name, ResizeDrawer);
+		Vue.component(VResizeDrawer.name, VResizeDrawer);
 	},
 };
 
