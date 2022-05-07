@@ -52,17 +52,19 @@
 
 			<Menu :drawerOptions="drawerOptions" />
 
-			<template #append>
-				<v-footer fixed color="primary" dark> Footer Prop </v-footer>
-			</template>
+			<!-- <template #append>
+				<v-footer fixed color="primary" dark></v-footer>
+			</template> -->
 		</v-navigation-drawer>
 
-		<ResizeDrawer
+		<v-resize-drawer
 			name="ResizeDrawer"
 			clipped
 			fixed
 			:options="drawerOptions"
 			:color="drawerOptions.color"
+			:dark="drawerOptions.dark"
+			:light="drawerOptions.light"
 			:right="drawerOptions.right"
 			:value="drawer"
 			@close="drawerClose"
@@ -93,10 +95,10 @@
 
 			<Menu :drawerOptions="drawerOptions" />
 
-			<template #append>
-				<v-footer fixed color="primary" dark> Footer Prop </v-footer>
-			</template>
-		</ResizeDrawer>
+			<!-- <template #append>
+				<v-footer fixed color="primary" dark></v-footer>
+			</template> -->
+		</v-resize-drawer>
 
 		<!-- ====================================================== Main Container -->
 		<v-main
@@ -116,7 +118,7 @@
 import Vue from 'vue';
 import Documentation from './components/Documentation.vue';
 import Menu from './components/Menu.vue';
-import ResizeDrawer from './components/ResizeDrawer.vue';
+import VResizeDrawer from './components/ResizeDrawer.vue';
 
 const EventBus = new Vue();
 
@@ -133,7 +135,7 @@ export default {
 	components: {
 		Documentation,
 		Menu,
-		ResizeDrawer,
+		VResizeDrawer,
 	},
 	computed: {
 		mainStyles() {
@@ -149,6 +151,11 @@ export default {
 			styles += `padding-left: ${paddingLeftVal} !important;`;
 			styles += `padding-right: ${paddingRightVal} !important;`;
 
+			if (this.drawerOptions.right) {
+				styles += `padding-left: ${paddingRightVal} !important;`;
+				styles += `padding-right: ${paddingLeftVal} !important;`;
+			}
+
 			return styles;
 		},
 	},
@@ -157,24 +164,17 @@ export default {
 		drawer: true,
 		drawerOptions: {
 			color: undefined,
-			handle: {
-				background: {
-					dark: '#555',
-					light: '#ccc',
-				},
-			},
+			dark: false,
+			light: false,
 			handlePosition: 'center',
 			overlayColor: '#f00',
 			overlayOpacity: '100%',
 			paddingTop: 48,
+			resizable: true,
 			right: false,
 			saveWidth: true,
 			storageName: 'vuetify-resize-drawer',
 			width: '256px',
-			widthDefault: '256px',
-			// Used for examples //
-			showCloseIcon: false,
-			resizable: true,
 		},
 		drawerOffset: '256px',
 		links: {

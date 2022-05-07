@@ -21,7 +21,7 @@
 									<pre>
 &lt;template>
 	&lt;v-app id="home">
-		&lt;ResizeDrawer
+		&lt;v-resize-drawer
 			name="ResizeDrawer"
 			fixed
 			:color="drawerOptions.color"
@@ -50,7 +50,7 @@
 			&lt;template #append>
 				&lt;v-footer>Footer Slot&lt;/v-footer>
 			&lt;/template>
-		&lt;/ResizeDrawer>
+		&lt;/v-resize-drawer>
 	&lt;/v-app>
 &lt;/template></pre
 									>
@@ -60,12 +60,12 @@
 								<vue-code-highlight language="js">
 									<pre>
 &lt;script>
-	import ResizeDrawer from 'vuetify-resize-drawer';
+	import VResizeDrawer from 'vuetify-resize-drawer';
 
 	export default {
 		name: 'App',
 		components: {
-			ResizeDrawer,
+			VResizeDrawer,
 		},
 		data: () => ({
 			drawer: true,

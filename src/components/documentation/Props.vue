@@ -66,33 +66,6 @@
 									</td>
 
 									<td v-html="item.type" class="success--text"></td>
-									<td>
-										<div
-											v-if="
-												item.name === 'handlePosition' || item.name === 'color'
-											"
-										>
-											<v-select
-												:items="selectOptions[item.name]"
-												v-model="options[item.name]"
-											></v-select>
-										</div>
-										<v-switch
-											v-else-if="item.type === 'boolean'"
-											v-model="options[item.name]"
-											:label="`${options[item.name]}`"
-											dense
-										></v-switch>
-
-										<v-text-field
-											v-else-if="
-												item.type === 'string' || item.altType === 'number'
-											"
-											v-model="options[item.name]"
-											:type="item.altType ? 'number' : 'text'"
-										>
-										</v-text-field>
-									</td>
 									<td class="accent--text" v-html="item.default"></td>
 									<td v-html="item.desc"></td>
 								</tr>
@@ -102,11 +75,123 @@
 				</v-col>
 			</v-row>
 
+			<v-row>
+				<v-col>
+					<v-dialog v-model="dialog" width="500" hide-overlay>
+						<template v-slot:activator="{ on, attrs }">
+							<v-btn color="primary" dark v-bind="attrs" v-on="on">
+								Try out some of the props
+							</v-btn>
+						</template>
+
+						<v-card>
+							<v-toolbar color="primary" dark dense>
+								<v-toolbar-title>Try out props</v-toolbar-title>
+							</v-toolbar>
+
+							<v-card-text class="py-2">
+								<v-row>
+									<v-col cols="12" sm="12" md="6">
+										<v-switch
+											:label="`resizable: ${options.resizable}`"
+											dense
+											inset
+											v-model="options.resizable"
+										></v-switch>
+									</v-col>
+
+									<v-col cols="12" sm="12" md="6">
+										<v-switch
+											:label="`right: ${options.right}`"
+											dense
+											inset
+											v-model="options.right"
+										></v-switch>
+									</v-col>
+
+									<v-col cols="12" sm="12" md="6">
+										<v-select
+											label="handlePosition"
+											v-model="options.handlePosition"
+											:items="selectOptions.handlePosition"
+										></v-select>
+									</v-col>
+
+									<v-col cols="12" sm="12" md="6">
+										<v-text-field
+											label="paddingTop"
+											type="number"
+											v-model="options.paddingTop"
+										>
+										</v-text-field>
+									</v-col>
+
+									<v-col cols="12" sm="12" md="6">
+										<v-switch
+											:label="`dark: ${options.dark || 'undefined'}`"
+											dense
+											inset
+											v-model="options.dark"
+										></v-switch>
+									</v-col>
+
+									<v-col cols="12" sm="12" md="6">
+										<v-switch
+											:label="`light: ${options.light || 'undefined'}`"
+											dense
+											inset
+											v-model="options.light"
+										></v-switch>
+									</v-col>
+
+									<v-col cols="12">
+										<p><strong>Local Storage Options</strong></p>
+										<p class="mb-0">
+											Values can be viewed in the browser DevTools Application
+											tab under Local Storage
+										</p>
+									</v-col>
+
+									<v-col cols="12" sm="12" md="6">
+										<v-switch
+											:label="`saveWidth: ${options.saveWidth}`"
+											dense
+											inset
+											v-model="options.saveWidth"
+										></v-switch>
+									</v-col>
+
+									<v-col cols="12" sm="12" md="6">
+										<v-text-field
+											label="storageName"
+											v-model="options.storageName"
+										>
+										</v-text-field>
+									</v-col>
+								</v-row>
+							</v-card-text>
+
+							<v-divider></v-divider>
+
+							<v-card-actions>
+								<v-spacer></v-spacer>
+								<v-btn color="default" text @click="dialog = false">
+									Close
+								</v-btn>
+								<v-btn color="primary" text @click="resetOptions">
+									Reset
+								</v-btn>
+							</v-card-actions>
+						</v-card>
+					</v-dialog>
+				</v-col>
+			</v-row>
+
 			<v-row id="props-not-supported">
 				<v-col cols="12">
 					<h3 :class="classes.h3">
 						<a href="#props-not-supported" :class="classes.headerA">#</a>
-						Props not supported
+						Props with partial and/or no support
 					</h3>
 				</v-col>
 			</v-row>
@@ -161,6 +246,8 @@ export default {
 		},
 	},
 	data: () => ({
+		defaultOptions: {},
+		dialog: false,
 		options: {},
 		propsSupported: {
 			headers: [
@@ -204,16 +291,10 @@ export default {
 			],
 			items: [
 				{
-					name: 'color',
-					type: 'string',
-					default: 'undefined',
-					desc: '<p>Applies specified color to the control - it can be the name of material color (for example <code>success</code> or <code>purple</code>) or css color (<code>#033</code> or <code>rgba(255, 0, 0, 0.5)</code>). You can find a list of built-in classes on the <a href="https://vuetifyjs.com/en/styles/colors/#material-colors" target="_blank">colors page</a>.</p>',
-				},
-				{
 					name: 'handle.color',
 					type: 'object',
 					default: "<pre><code>{ dark: '#555', light: '#ccc' }</code></pre>",
-					desc: 'Determines the color of the handle for dark and light modes.',
+					desc: 'Determines the color of the handle for dark and light modes. Used when the <code>handlePosition</code> is set to <strong>top</strong>. Alternatively you can use CSS styles to adjust the colors.',
 				},
 				{
 					name: 'handlePosition',
@@ -224,7 +305,6 @@ export default {
 				{
 					name: 'paddingTop',
 					type: 'number <span class="operators--text">|</span> string',
-					altType: 'number',
 					default: '0',
 					desc: 'Applies <strong>padding-top: 0</strong> to the component.',
 				},
@@ -251,12 +331,6 @@ export default {
 					type: 'boolean',
 					default: 'true',
 					desc: 'Determines if the width of the component is saved in local storage.',
-				},
-				{
-					name: 'showCloseIcon',
-					type: 'boolean',
-					default: 'false',
-					desc: 'Controls whether the close icon is enabled.',
 				},
 				{
 					name: 'storageName',
@@ -309,18 +383,18 @@ export default {
 				},
 				{
 					name: 'expand-on-hover',
-					status: 'pending',
-					notes: 'Needs more development to support the <code>mini-variant</code> prop.',
+					status: 'partial support',
+					notes: 'The <code>expand-on-hover</code> prop for use with the <code>mini-variant</code> prop will work, but the resizable functionality is disabled.',
 				},
 				{
 					name: 'mini-variant',
-					status: 'pending',
-					notes: 'Needs more development to support the <code>mini-variant</code> prop.',
+					status: 'partial support',
+					notes: 'The <code>mini-variant</code> prop will work, but the resizable functionality is disabled.',
 				},
 				{
 					name: 'mini-variant-width',
-					status: 'pending',
-					notes: 'Needs more development to support the <code>mini-variant</code> prop.',
+					status: 'partial support',
+					notes: 'The <code>mini-variant-width</code> prop for use with the <code>mini-variant</code> prop will work, but the resizable functionality is disabled.',
 				},
 				{
 					name: 'mobile-breakpoint',
@@ -371,9 +445,14 @@ export default {
 		},
 	},
 	methods: {
+		resetOptions() {
+			this.options = { ...this.defaultOptions };
+			this.$bus.$emit('updateOptions', this.options);
+		},
 	},
 	mounted() {
 		this.options = { ...this.options, ...this.drawerOptions };
+		this.defaultOptions = { ...this.options };
 	},
 };
 </script>

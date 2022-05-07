@@ -38,7 +38,12 @@
 				}"
 			>
 				<slot v-if="$scopedSlots.handle" name="handle"></slot>
-				<div v-else>&raquo;</div>
+				<div
+					v-else
+					:class="{ 'handle-container-handle-flip': drawerOptions.right }"
+				>
+					&raquo;
+				</div>
 			</div>
 
 			<!-- Top Icon -->
@@ -77,28 +82,6 @@
 				class="handle-container-lines"
 			></div>
 		</div>
-
-		<!-- Header Slot -->
-		<v-row class="text-center" v-if="$scopedSlots.header">
-			<v-col cols="12">
-				<!-- Close Icon -->
-				<slot v-if="$scopedSlots.closeIcon" name="closeIcon"></slot>
-
-				<v-icon
-					v-else-if="drawerOptions.showCloseIcon"
-					:class="{
-						'theme--dark': isDark,
-						'theme--light': !isDark,
-						'float-end': drawerOptions.right,
-						'float-start': !drawerOptions.right,
-					}"
-					class="close-drawer float-end v-icon"
-					@click="drawerClose"
-				>
-					mdi-close
-				</v-icon>
-			</v-col>
-		</v-row>
 
 		<!-- Prepend Slot -->
 		<template v-if="$scopedSlots.prepend">
@@ -155,7 +138,6 @@ export default {
 			paddingTop: 0,
 			resizable: true,
 			saveWidth: true,
-			showCloseIcon: false,
 			storageName: 'vuetify-resize-drawer',
 			width: '256px',
 		},
@@ -264,11 +246,11 @@ export default {
 			deep: true,
 		},
 	},
-	mounted() {
-		this.setOptions();
+	// mounted() {
+	// 	this.setOptions();
 
-		console.log('$attrs', this.$attrs);
-	},
+	// 	console.log('$attrs', this.$attrs);
+	// },
 	beforeDestroy() {
 		if (this.drawerOptions.resizable) {
 			document.removeEventListener('mouseup', this.handleMouseUp, false);
@@ -393,6 +375,13 @@ export default {
 		// Mounted Event //
 		setOptions() {
 			this.drawerOptions = _merge(this.drawerOptions, this.options);
+			const isMiniVariant = this.$attrs['mini-variant'] !== undefined && this.$attrs['mini-variant'] !== false;
+
+			// Disable resize if mini-variant is set //
+			if (isMiniVariant) {
+				this.drawerOptions.resizable = false;
+				this.drawerOptions.width = this.drawerOptions['mini-variant-width'] || undefined;
+			}
 
 			// Set storage name if not defined //
 			const defaultStorageName = `drawer-${this.name}`;
@@ -400,7 +389,7 @@ export default {
 
 			const storageWidth = this.getLocalStorage(this.drawerOptions.storageName);
 
-			if (this.drawerOptions.saveWidth && storageWidth) {
+			if (this.drawerOptions.saveWidth && storageWidth && !isMiniVariant) {
 				this.defaultWidth = this.drawerOptions.width;
 				this.drawerOptions.width = this.getLocalStorage(this.drawerOptions.storageName);
 			}
@@ -569,6 +558,10 @@ export default {
 			&-icon {
 				height: auto;
 				width: 7px;
+			}
+
+			&-handle-flip {
+				transform: scaleX(-1);
 			}
 		}
 	}
