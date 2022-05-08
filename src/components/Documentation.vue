@@ -3,7 +3,7 @@
 		<v-row class="text-center">
 			<v-col cols="12">
 				<v-img
-					src="images/vuetify-logo-dark.svg"
+					src="images/vuetify-logo-light-atom.svg"
 					class="my-3"
 					contain
 					height="200"
