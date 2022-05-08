@@ -3,7 +3,7 @@
 		<v-row class="text-center">
 			<v-col cols="12">
 				<v-img
-					src="images/vuetify-logo-dark.svg"
+					src="images/vuetify-logo-light-atom.svg"
 					class="my-3"
 					contain
 					height="200"
@@ -18,98 +18,84 @@
 		<!-- Installation -->
 		<v-row id="installation">
 			<v-col class="mb-5" cols="12">
-				<h2 class="v-heading text-h4 text-sm-h4 mb-3">Installation</h2>
+				<h2 :class="classes.h2">
+					<a href="#installation" :class="classes.headerA">#</a>
+					Installation
+				</h2>
 
 				<v-row>
 					<v-col cols="12">
-						<vue-code-highlight language="js">
-							<vue-code-highlight language="shell">
-								<pre>
-npm i vuetify-resize-drawer
-						</pre
-								>
-							</vue-code-highlight>
+						<vue-code-highlight language="bash">
+							<pre>npm i vuetify-resize-drawer</pre>
 						</vue-code-highlight>
 					</v-col>
 				</v-row>
 			</v-col>
 		</v-row>
 
-		<!-- TBD -->
-		<v-row>
-			<v-col class="mb-5" cols="12" id="section-a">
-				<h2 class="v-heading text-h4 text-sm-h4 mb-3">Section A</h2>
+		<!-- Description -->
+		<Description :drawerOptions="drawerOptions" :classes="classes" />
 
-				<v-row>
-					<v-col cols="12"> Stuff </v-col>
-				</v-row>
-			</v-col>
-		</v-row>
+		<!-- Usage -->
+		<Usage :drawerOptions="drawerOptions" :classes="classes" />
 
 		<!-- Props -->
-		<Props />
+		<Props :drawerOptions="drawerOptions" :classes="classes" />
 
 		<!-- Events -->
-		<Events />
+		<Events :classes="classes" />
 
 		<!-- Slots -->
-		<Slots />
+		<Slots :classes="classes" />
+
+		<!-- SASS Variables -->
+		<SassVariables :classes="classes" />
+
+		<!-- Example -->
+		<Example :classes="classes" />
 
 		<!-- Dependencies -->
-		<v-row>
-			<v-col class="mb-5" cols="12" id="dependencies">
-				<h2 class="v-heading text-h4 text-sm-h4 mb-3">Dependencies</h2>
-
-				<v-row>
-					<v-col cols="12">
-						<a :href="links.vuetify2" target="_blank">Vuetify v2</a>
-						<br />
-						<a :href="links.vue2" target="_blank">Vue 2</a>
-					</v-col>
-				</v-row>
-			</v-col>
-		</v-row>
-
-		<!-- Change Log -->
-		<v-row>
-			<v-col class="mb-5" cols="12" id="change-log">
-				<h2 class="v-heading text-h4 text-sm-h4 mb-3">Change Log</h2>
-
-				<v-row>
-					<v-col cols="12"> Stuff </v-col>
-				</v-row>
-			</v-col>
-		</v-row>
+		<Dependencies :classes="classes" :links="links" />
 
 		<!-- License -->
-		<v-row>
-			<v-col class="mb-5" cols="12" id="license">
-				<h2 class="v-heading text-h4 text-sm-h4 mb-3">License</h2>
+		<License :classes="classes" />
 
-				<v-row>
-					<v-col cols="12"> Stuff </v-col>
-				</v-row>
-			</v-col>
-		</v-row>
+		<!-- Legal -->
+		<Legal :classes="classes" />
 	</v-container>
 </template>
 
 <script>
 import { component as VueCodeHighlight } from 'vue-code-highlight';
+import Dependencies from '@components/documentation/Dependencies.vue';
+import Description from '@components/documentation/Description.vue';
 import Events from '@components/documentation/Events.vue';
+import Example from '@components/documentation/Example.vue';
+import Legal from '@components/documentation/Legal.vue';
+import License from '@components/documentation/License.vue';
 import Props from '@components/documentation/Props.vue';
+import SassVariables from '@components/documentation/SassVariables.vue';
 import Slots from '@components/documentation/Slots.vue';
+import Usage from '@components/documentation/Usage.vue';
 
 export default {
 	name: 'Documentation',
 	components: {
+		Dependencies,
+		Description,
 		Events,
+		Example,
+		Legal,
+		License,
 		Props,
+		SassVariables,
 		Slots,
+		Usage,
 		VueCodeHighlight,
 	},
 	props: {
 		drawerOptions: {
+			type: Object,
 			required: true,
 		},
 	},
@@ -121,14 +107,12 @@ export default {
 			github: '',
 			npm: '',
 		},
+		classes: {
+			h2: 'v-heading text-h4 text-sm-h4 mb-3',
+			h3: 'v-heading text-h5 text-sm-h5 mb-1',
+			headerA: 'text-decoration-none text-right text-md-left',
+			appLink: 'app-link text-decoration-none primary--text font-weight-medium d-inline-block font-weight-bold',
+		},
 	}),
-	created() {
-
-	},
 };
 </script>
-
-<style lang="scss">
-@import 'vue-code-highlight/themes/prism-tomorrow.css';
-@import 'vue-code-highlight/themes/window.css';
-</style>

@@ -1,27 +1,15 @@
 <template>
 	<v-row>
 		<v-col class="mb-5" cols="12" id="slots">
-			<h2 class="v-heading text-h4 text-sm-h4 mb-3">Slots</h2>
+			<h2 :class="classes.h2">
+				<a href="#slots" :class="classes.headerA">#</a>
+				Slots
+			</h2>
 
 			<v-row>
 				<v-col cols="12">
 					<v-card>
-						<v-card-title>
-							<v-text-field
-								v-model="search"
-								append-icon="mdi-magnify"
-								label="Search"
-								single-line
-								hide-details
-							></v-text-field>
-						</v-card-title>
-
-						<v-data-table
-							:headers="headers"
-							:items="items"
-							:search="search"
-							hide-default-footer
-						>
+						<v-data-table :headers="headers" :items="items" hide-default-footer>
 							<template #item="{ item }">
 								<tr>
 									<td>
@@ -31,14 +19,7 @@
 											><span class="primary--text">#</span
 											><a
 												:href="`#slots-${item.name}`"
-												class="
-													app-link
-													text-decoration-none
-													primary--text
-													font-weight-medium
-													d-inline-block
-													font-weight-bold
-												"
+												:class="classes.appLink"
 												>{{ item.name }}</a
 											></span
 										>
@@ -59,9 +40,18 @@
 
 export default {
 	name: 'Slots',
-	props: {},
+	props: {
+		classes: {
+			type: Object,
+			required: true,
+		},
+	},
 	data: () => ({
 		items: [
+			{
+				name: 'handle',
+				desc: 'A slot for the resize handle.',
+			},
 			{
 				name: 'prepend',
 				desc: 'A slot at the top of the drawer',
@@ -80,18 +70,15 @@ export default {
 				text: 'Name',
 				value: 'name',
 				align: 'start',
-				filterable: true,
 				sortable: false,
 				width: '273px',
 			},
 			{
 				text: 'Description',
 				value: 'desc',
-				filterable: false,
 				sortable: false,
 			},
 		],
-		search: '',
 	}),
 	methods: {
 	},

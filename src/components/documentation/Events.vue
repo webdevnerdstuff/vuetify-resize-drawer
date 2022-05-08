@@ -1,7 +1,10 @@
 <template>
 	<v-row>
 		<v-col class="mb-5" cols="12" id="events">
-			<h2 class="v-heading text-h4 text-sm-h4 mb-3">Events</h2>
+			<h2 :class="classes.h2">
+				<a href="#events" :class="classes.headerA">#</a>
+				Events
+			</h2>
 
 			<v-row>
 				<v-col cols="12">
@@ -31,14 +34,7 @@
 											><span class="primary--text">#</span
 											><a
 												:href="`#events-${item.name}`"
-												class="
-													app-link
-													text-decoration-none
-													primary--text
-													font-weight-medium
-													d-inline-block
-													font-weight-bold
-												"
+												:class="classes.appLink"
 												>{{ item.name }}</a
 											></span
 										>
@@ -59,7 +55,12 @@
 
 export default {
 	name: 'Events',
-	props: {},
+	props: {
+		classes: {
+			type: Object,
+			required: true,
+		},
+	},
 	data: () => ({
 		items: [
 			// Drawer Events //
