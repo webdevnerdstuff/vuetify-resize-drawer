@@ -61,6 +61,9 @@
 			name="ResizeDrawer"
 			clipped
 			fixed
+			:saveWidth="drawerOptions.saveWidth"
+			:paddingTop="drawerOptions.paddingTop"
+			:resizable="drawerOptions.resizable"
 			:options="drawerOptions"
 			:color="drawerOptions.color"
 			:dark="drawerOptions.dark"
@@ -163,18 +166,20 @@ export default {
 		dark: false,
 		drawer: true,
 		drawerOptions: {
+			width: '256px',
+			// Should be good / Updated //
 			color: undefined,
-			dark: false,
 			light: false,
+			// Updated //
+			dark: false,
 			handlePosition: 'center',
 			overlayColor: '#f00',
 			overlayOpacity: '100%',
 			paddingTop: 48,
 			resizable: true,
 			right: false,
-			saveWidth: true,
+			saveWidth: false,
 			storageName: 'vuetify-resize-drawer',
-			width: '256px',
 		},
 		drawerOffset: '256px',
 		links: {
