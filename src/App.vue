@@ -1,12 +1,18 @@
 <template>
 	<v-app id="home">
 		<!-- ====================================================== App Bar -->
-		<v-app-bar app class="top-app-bar" color="primary" dark dense fixed>
+		<v-app-bar
+			app
+			class="top-app-bar"
+			color="primary"
+			dark
+			dense
+			fixed
+			clipped-left
+			clipped-right
+		>
 			<v-app-bar-nav-icon
-				app
 				class="nav-drawer-btn mr-2"
-				clipped-left
-				clipped-right
 				height="32"
 				width="32"
 				@click.stop="drawer = !drawer"
@@ -37,9 +43,10 @@
 			v-model="drawer"
 			clipped
 			fixed
-			right
+			:right="!drawerOptions.right"
 			:color="drawerOptions.color"
-			:style="`padding-top: ${drawerOptions.paddingTop}px`"
+			:mini-variant="drawerOptions.miniVariant"
+			:expand-on-hover="drawerOptions.expandOnHover"
 		>
 			<v-list-item>
 				<v-list-item-content>
@@ -58,12 +65,13 @@
 			name="ResizeDrawer"
 			clipped
 			fixed
+			:mini-variant="drawerOptions.miniVariant"
+			:expand-on-hover="drawerOptions.expandOnHover"
 			:color="drawerOptions.color"
 			:dark="drawerOptions.dark"
 			:handlePosition="drawerOptions.handlePosition"
 			:light="drawerOptions.light"
 			:options="drawerOptions"
-			:paddingTop="drawerOptions.paddingTop"
 			:resizable="drawerOptions.resizable"
 			:right="drawerOptions.right"
 			:saveWidth="drawerOptions.saveWidth"
@@ -77,22 +85,20 @@
 			@input="drawerInput"
 			@transitionend="drawerTransitionend"
 		>
-			<template #prepend>
-				<header>
-					<v-list-item>
-						<v-list-item-content>
-							<v-list-item-title class="text-h6">
-								Resize Drawer
-							</v-list-item-title>
-							<v-list-item-subtitle>
-								I'm as free as a bird now
-							</v-list-item-subtitle>
-						</v-list-item-content>
-					</v-list-item>
+			<header>
+				<v-list-item>
+					<v-list-item-content>
+						<v-list-item-title class="text-h6">
+							Resize Drawer
+						</v-list-item-title>
+						<v-list-item-subtitle>
+							I'm as free as a bird now
+						</v-list-item-subtitle>
+					</v-list-item-content>
+				</v-list-item>
 
-					<v-divider></v-divider>
-				</header>
-			</template>
+				<v-divider></v-divider>
+			</header>
 
 			<Menu :drawerOptions="drawerOptions" />
 		</v-resize-drawer>
@@ -137,20 +143,10 @@ export default {
 	computed: {
 		mainStyles() {
 			let styles = '';
-			let paddingLeftVal = this.drawerOffset;
-			let paddingRightVal = this.drawer ? '256px' : '0';
 
 			if (this.$vuetify.breakpoint.mobile) {
-				paddingLeftVal = 0;
-				paddingRightVal = 0;
-			}
-
-			styles += `padding-left: ${paddingLeftVal} !important;`;
-			styles += `padding-right: ${paddingRightVal} !important;`;
-
-			if (this.drawerOptions.right) {
-				styles += `padding-left: ${paddingRightVal} !important;`;
-				styles += `padding-right: ${paddingLeftVal} !important;`;
+				styles += 'padding-left: 0 !important;';
+				styles += 'padding-right: 0 !important;';
 			}
 
 			return styles;
@@ -167,11 +163,12 @@ export default {
 			// Updated //
 			dark: false,
 			handlePosition: 'center',
+			miniVariant: true,
+			expandOnHover: true,
 			overlayColor: '#f00',
 			overlayOpacity: '100%',
-			paddingTop: 48,
 			resizable: true,
-			right: true,
+			right: false,
 			saveWidth: true,
 			storageName: 'vuetify-resize-drawer',
 		},

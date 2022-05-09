@@ -303,12 +303,6 @@ export default {
 					desc: 'Specifies the position or the handle. Valid values are <strong>border</strong>, <strong>center</strong>, <strong>top</strong>, <strong>top-icon</strong>.',
 				},
 				{
-					name: 'paddingTop',
-					type: 'number <span class="operators--text">|</span> string',
-					default: '0',
-					desc: 'Applies <strong>padding-top: 0</strong> to the component.',
-				},
-				{
 					name: 'overflow',
 					type: 'boolean',
 					default: 'false',
@@ -319,12 +313,6 @@ export default {
 					type: 'boolean',
 					default: 'true',
 					desc: 'Enables resize functionality.',
-				},
-				{
-					name: 'right',
-					type: 'boolean',
-					default: 'false',
-					desc: '',
 				},
 				{
 					name: 'saveWidth',
@@ -367,24 +355,14 @@ export default {
 			],
 			items: [
 				{
-					name: 'app',
-					status: 'debugging',
-					notes: 'Seems to be mostly working. Needs more testing.',
-				},
-				{
-					name: 'disable-resize-watcher',
-					status: 'pending',
-					notes: 'Needs a successful test to figure out if this work.',
-				},
-				{
 					name: 'disable-route-watcher',
 					status: 'pending',
 					notes: 'An environment that uses routes is need to test.',
 				},
 				{
 					name: 'expand-on-hover',
-					status: 'partial support',
-					notes: 'The <code>expand-on-hover</code> prop for use with the <code>mini-variant</code> prop will work, but the resizable functionality is disabled.',
+					status: 'debugging',
+					notes: 'The <code>expand-on-hover</code> prop for use with the <code>mini-variant</code> prop does not currently work, and/but the resizable functionality is disabled.',
 				},
 				{
 					name: 'mini-variant',
@@ -440,7 +418,6 @@ export default {
 	watch: {
 		options(newVal) {
 			const options = newVal;
-			options.paddingTop = parseInt(newVal.paddingTop, 10);
 			this.$bus.$emit('updateOptions', options);
 		},
 	},

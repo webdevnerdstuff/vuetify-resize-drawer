@@ -4,13 +4,14 @@
 		ref="resizeDrawer"
 		class="v-resize-drawer"
 		:class="classes"
-		:style="drawerStyle"
+		:style="styles"
+		:tag="tag"
 		:value="value"
 		:width="drawerOptions.width"
 	>
 		<!-- Resize handle -->
 		<div
-			v-if="resizable"
+			v-if="isResizable"
 			class="handle-container d-flex"
 			:class="{ [handleContainerClass]: handlePosition }"
 			:style="handleContainerStyle"
@@ -96,7 +97,7 @@ import { VNavigationDrawer } from 'vuetify/lib';
 
 export default {
 	extends: VNavigationDrawer,
-	name: 'ResizeDrawer',
+	name: 'v-resize-drawer',
 	props: {
 		options: {
 			type: Object,
@@ -117,14 +118,10 @@ export default {
 			default: 'center',
 		},
 		overflow: Boolean,
-		paddingTop: {
-			type: [Number, String],
-			default: 0,
-		},
 		resizable: {
 			type: Boolean,
 			default() {
-				return !this.miniVariant;
+				return !this.isMiniVariant;
 			},
 		},
 		saveWidth: {
@@ -145,12 +142,6 @@ export default {
 					light: '#ccc',
 				},
 			},
-			// handlePosition: 'center',
-			// overflow: false,
-			// paddingTop: 0,
-			// resizable: true,
-			// saveWidth: true,
-			// storageName: 'v-resize-drawer',
 			width: '256px',
 		},
 		loading: false,
@@ -191,19 +182,23 @@ export default {
 				'v-navigation-drawer--overflow': this.overflow,
 			};
 		},
-		drawerStyle() {
-			let styles = '';
-			let paddingValue = this.paddingTop;
+		styles() {
+			const translate = this.isBottom ? 'translateY' : 'translateX';
+			let top = this.$vuetify.application.bar;
 
-			if (+this.paddingTop) {
-				paddingValue = `${this.paddingTop}px`;
-			}
+			top += this.clipped ? this.$vuetify.application.top : 0;
 
-			styles += `padding-top: ${paddingValue};`;
+			const styles = {
+				height: this.convertToUnit(this.height),
+				top: !this.isBottom ? this.convertToUnit(top) : 'auto',
+				maxHeight: this.computedMaxHeight != null ?
+					`calc(100% - ${this.convertToUnit(this.computedMaxHeight)})` :
+					undefined,
+				transform: `${translate}(${this.convertToUnit(this.computedTransform, '%')})`,
+				width: this.isMiniVariant ? this.convertToUnit(this.miniVariantWidth) : this.drawerOptions.width,
+			};
 
-			if (this.right) {
-				styles += 'left: initial;';
-			}
+			console.log({ styles });
 
 			return styles;
 		},
@@ -256,6 +251,9 @@ export default {
 
 			return styles;
 		},
+		isResizable() {
+			return this.resizable && !this.isMiniVariant;
+		},
 	},
 	watch: {
 		options: {
@@ -265,26 +263,42 @@ export default {
 			deep: true,
 		},
 	},
-	updated() {
-		console.log(this);
-		console.log(this.isActive);
-		console.log(this.isBottom);
-		console.log(this.right);
-	},
 	mounted() {
 		console.log(this);
+		this.setLocalStorage('set');
 	},
 	beforeDestroy() {
-		if (this.resizable) {
+		if (this.isResizable) {
 			document.removeEventListener('mouseup', this.handleMouseUp, false);
 			document.removeEventListener('mousemove', this.drawerResize, false);
 		}
 	},
 	methods: {
+		computeTop() {
+			if (!this.hasApp) return 0;
+
+			let top = this.$vuetify.application.bar;
+
+			top += this.clipped ?
+				this.$vuetify.application.top :
+				0;
+
+			return top;
+		},
 		genContent() {
 			return this.$createElement('div', {
 				staticClass: 'v-navigation-drawer__content',
 			}, this.$slots.default);
+		},
+		convertToUnit(str, unit = 'px') {
+			if (str == null || str === '') {
+				return undefined;
+			}
+			else if (!+str) {
+				return String(str);
+			}
+
+			return `${Number(str)}${unit}`;
 		},
 		emitEvent(name, evt) {
 			const drawerData = {
@@ -430,7 +444,7 @@ export default {
 		getLocalStorage() {
 			return localStorage.getItem(this.storageName);
 		},
-		setLocalStorage() {
+		setLocalStorage(action = 'update') {
 			if (!this.saveWidth) {
 				return false;
 			}
@@ -438,8 +452,10 @@ export default {
 			let width = this.drawerOptions.width;
 			width = width ?? undefined;
 
-			const oldValue = (localStorage.getItem(this.storageName) === 'true');
-			width = width || !oldValue;
+			if (action === 'set') {
+				width = this.getLocalStorage();
+				this.updateAppWidth(width);
+			}
 
 			localStorage.setItem(this.storageName, width);
 
@@ -449,32 +465,38 @@ export default {
 		// Mounted Event //
 		setOptions() {
 			this.drawerOptions = _merge(this.drawerOptions, this.options);
-			const isMiniVariant = this.miniVariant !== undefined && this.miniVariant !== false;
 
 			// Disable resize if mini-variant is set //
-			if (isMiniVariant) {
-				this.drawerOptions.width = this.drawerOptions['mini-variant-width'] || undefined;
+			if (this.isMiniVariant) {
+				this.drawerOptions.width = this.miniVariantWidth || undefined;
+				return false;
 			}
 			const storageWidth = this.getLocalStorage();
 
-			if (this.saveWidth && storageWidth && !isMiniVariant) {
+			if (this.saveWidth && storageWidth && !this.isMiniVariant) {
 				this.defaultWidth = this.drawerOptions.width;
 				this.drawerOptions.width = this.getLocalStorage();
 			}
 
 			this.updateAppWidth(this.drawerOptions.width);
+			return false;
 		},
 		updateAppWidth(width) {
-			if (!this.app) {
+			if (!this.app || this.isMiniVariant) {
 				return false;
 			}
 
+			console.log('blarg');
+
+			const intWidth = typeof width === 'number' ? width : width.replace('px', '');
+
+			console.log({ intWidth });
 			if (this.right) {
-				this.$vuetify.application.right = width;
+				this.$vuetify.application.right = intWidth;
 				return false;
 			}
 
-			this.$vuetify.application.left = width;
+			this.$vuetify.application.left = intWidth;
 			return false;
 		},
 	},
@@ -486,13 +508,6 @@ export default {
 	&.v-navigation-drawer--overflow {
 		::v-deep .v-navigation-drawer__content {
 			overflow: visible;
-		}
-	}
-
-	// ! Look into why I need to do this for the drawer to translate correctly ! //
-	&.v-navigation-drawer--right {
-		&:not(.v-navigation-drawer--open) {
-			transform: translateX(100%) !important;
 		}
 	}
 
