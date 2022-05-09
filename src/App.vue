@@ -54,7 +54,9 @@
 		>
 			<v-list-item>
 				<v-list-item-content>
-					<v-list-item-title class="text-h6">Default Drawer</v-list-item-title>
+					<v-list-item-title class="text-h6">
+						Navigation Drawer
+					</v-list-item-title>
 					<v-list-item-subtitle>Stuck With You</v-list-item-subtitle>
 				</v-list-item-content>
 			</v-list-item>
@@ -69,21 +71,22 @@
 			v-model="drawer"
 			clipped
 			fixed
-			:stateless="drawerOptions.stateless"
-			:overflow="drawerOptions.overflow"
-			:touchless="drawerOptions.touchless"
-			:mini-variant="drawerOptions.miniVariant"
-			:mini-variant-width="drawerOptions.miniVariantWidth"
-			:expand-on-hover="drawerOptions.expandOnHover"
 			:color="drawerOptions.color"
 			:dark="drawerOptions.dark"
+			:expand-on-hover="drawerOptions.expandOnHover"
 			:handlePosition="drawerOptions.handlePosition"
 			:light="drawerOptions.light"
+			:mini-variant-width="drawerOptions.miniVariantWidth"
+			:mini-variant="drawerOptions.miniVariant"
 			:options="drawerOptions"
+			:overflow="drawerOptions.overflow"
 			:resizable="drawerOptions.resizable"
 			:right="drawerOptions.right"
 			:saveWidth="drawerOptions.saveWidth"
+			:stateless="drawerOptions.stateless"
 			:storageName="drawerOptions.storageName"
+			:touchless="drawerOptions.touchless"
+			:width="drawerOptions.width"
 			@close="drawerClose"
 			@handle:click="handleClick"
 			@handle:dblclick="handleDoubleClick"
@@ -184,8 +187,6 @@ export default {
 			right: false,
 			stateless: false,
 			touchless: false,
-
-			// TODO: Maybe try to get this working with the built in width prop //
 			width: '256px',
 
 			// overlay //
@@ -194,7 +195,7 @@ export default {
 
 			// storage //
 			saveWidth: true,
-			storageName: 'vuetify-resize-drawer',
+			storageName: 'v-resize-drawer-width',
 
 			// mini-variant //
 			expandOnHover: false,

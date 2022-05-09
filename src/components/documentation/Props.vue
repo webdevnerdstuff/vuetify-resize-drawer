@@ -271,13 +271,6 @@ export default {
 					width: '10%',
 				},
 				{
-					text: 'Try',
-					value: 'try',
-					align: 'left',
-					filterable: false,
-					sortable: false,
-				},
-				{
 					text: 'Default',
 					value: 'default',
 					align: 'left',
@@ -326,7 +319,7 @@ export default {
 				{
 					name: 'storageName',
 					type: 'string',
-					default: 'vuetify-resize-drawer',
+					default: 'v-resize-drawer-width',
 					desc: 'Determines the name of the local storage item.',
 				},
 			],
@@ -386,11 +379,6 @@ export default {
 					name: 'touchless',
 					status: 'debugging',
 					notes: 'Drawer does not function like it should with <code>touchless</code> enabled.',
-				},
-				{
-					name: 'width',
-					status: 'not supported',
-					notes: 'The width prop is not supported as it would interfere with the functionality of resizing the drawer.',
 				},
 			],
 		},

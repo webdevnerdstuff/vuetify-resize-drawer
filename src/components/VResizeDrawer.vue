@@ -8,7 +8,7 @@
 		tag="nav"
 		:value="value"
 		:stateless="stateless"
-		:width="drawerOptions.width"
+		:width="resizedWidth"
 	>
 		<!-- Resize handle -->
 		<div
@@ -127,7 +127,7 @@ export default {
 		},
 		storageName: {
 			type: String,
-			default: 'v-resize-drawer',
+			default: 'v-resize-drawer-width',
 		},
 	},
 	data: () => ({
@@ -141,14 +141,14 @@ export default {
 			},
 			width: '256px',
 		},
-		loading: false,
-		offsetWidth: '256px',
 		events: {
 			handle: {
 				mouseUp: true,
 				mouseDown: false,
 			},
 		},
+		loading: false,
+		resizedWidth: '256px',
 		unicornLog: {
 			styles: [
 				'background: black',
@@ -190,7 +190,7 @@ export default {
 					`calc(100% - ${this.convertToUnit(this.computedMaxHeight)})` :
 					undefined,
 				transform: `${translate}(${this.convertToUnit(this.computedTransform, '%')})`,
-				width: this.isMiniVariant ? this.convertToUnit(this.miniVariantWidth) : this.drawerOptions.width,
+				width: this.isMiniVariant ? this.convertToUnit(this.miniVariantWidth) : this.resizedWidth,
 			};
 
 			console.log({ styles });
@@ -279,11 +279,6 @@ export default {
 
 			return top;
 		},
-		genContent() {
-			return this.$createElement('div', {
-				staticClass: 'v-navigation-drawer__content',
-			}, this.$slots.default);
-		},
 		convertToUnit(str, unit = 'px') {
 			if (str == null || str === '') {
 				return undefined;
@@ -298,8 +293,8 @@ export default {
 			const drawerData = {
 				eventName: name,
 				evt,
-				offsetWidth: this.offsetWidth,
-				width: this.drawerOptions.width,
+				resizedWidth: this.resizedWidth,
+				width: this.resizedWidth,
 			};
 
 			if (name !== 'handle:drag') {
@@ -312,6 +307,11 @@ export default {
 			}
 
 			this.$emit(name, drawerData);
+		},
+		genContent() {
+			return this.$createElement('div', {
+				staticClass: 'v-navigation-drawer__content',
+			}, this.$slots.default);
 		},
 
 		// Handle Events //
@@ -333,11 +333,10 @@ export default {
 				objects: evt,
 			});
 
-			this.drawerOptions.width = this.defaultWidth;
-			this.offsetWidth = this.defaultWidth;
+			this.resizedWidth = this.defaultWidth;
 			this.setLocalStorage();
 
-			this.updateAppWidth(this.offsetWidth);
+			this.updateAppWidth(this.resizedWidth);
 			this.emitEvent('handle:dblclick', evt);
 		},
 		handleMouseDown(evt) {
@@ -370,7 +369,7 @@ export default {
 			const drawer = this.$refs.resizeDrawer.$el;
 
 			this.events.handle.mouseDown = false;
-			this.drawerOptions.width = drawer.style.width;
+			this.resizedWidth = drawer.style.width;
 
 			document.body.style.cursor = '';
 
@@ -378,13 +377,12 @@ export default {
 
 			if (!this.events.handle.mouseUp) {
 				this.events.handle.mouseUp = true;
-				this.offsetWidth = this.drawerOptions.width;
 
-				this.updateAppWidth(this.offsetWidth);
+				this.updateAppWidth(this.resizedWidth);
 
 				const logStuff = {
-					drawerOptionsWidth: this.drawerOptions.width,
-					offsetWidth: this.offsetWidth,
+					drawerOptionsWidth: this.resizedWidth,
+					resizedWidth: this.resizedWidth,
 				};
 
 				this.$unicornLog({
@@ -424,10 +422,9 @@ export default {
 				width = document.body.scrollWidth - width;
 			}
 
-			this.drawerOptions.width = `${width}px`;
+			this.resizedWidth = `${width}px`;
 
 			document.body.style.cursor = 'grabbing';
-			this.offsetWidth = this.drawerOptions.width;
 
 			this.updateAppWidth(width);
 
@@ -443,11 +440,13 @@ export default {
 				return false;
 			}
 
-			let width = this.drawerOptions.width;
+			let width = this.resizedWidth;
 			width = width ?? undefined;
 
 			if (action === 'set') {
 				width = this.getLocalStorage();
+				width = width || this.resizedWidth;
+
 				this.updateAppWidth(width);
 			}
 
@@ -462,17 +461,17 @@ export default {
 
 			// Disable resize if mini-variant is set //
 			if (this.isMiniVariant) {
-				this.drawerOptions.width = this.miniVariantWidth || undefined;
+				this.resizedWidth = this.miniVariantWidth || undefined;
 				return false;
 			}
 			const storageWidth = this.getLocalStorage();
 
 			if (this.saveWidth && storageWidth && !this.isMiniVariant) {
-				this.defaultWidth = this.drawerOptions.width;
-				this.drawerOptions.width = this.getLocalStorage();
+				this.defaultWidth = this.resizedWidth;
+				this.resizedWidth = this.getLocalStorage();
 			}
 
-			this.updateAppWidth(this.drawerOptions.width);
+			this.updateAppWidth(this.resizedWidth);
 			return false;
 		},
 		updateAppWidth(width) {
