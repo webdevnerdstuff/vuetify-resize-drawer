@@ -193,8 +193,6 @@ export default {
 				width: this.isMiniVariant ? this.convertToUnit(this.miniVariantWidth) : this.resizedWidth,
 			};
 
-			console.log({ styles });
-
 			return styles;
 		},
 		containerClass() {
