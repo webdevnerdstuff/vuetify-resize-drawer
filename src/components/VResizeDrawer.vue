@@ -1,12 +1,12 @@
 <template>
 	<v-navigation-drawer
 		v-bind="$attrs"
-		v-on="$listeners"
 		ref="resizeDrawer"
 		class="v-resize-drawer"
 		:class="classes"
-		:width="drawerOptions.width"
 		:style="drawerStyle"
+		:value="value"
+		:width="drawerOptions.width"
 	>
 		<!-- Resize handle -->
 		<div
@@ -91,27 +91,8 @@
 </template>
 
 <script>
-import Vue from 'vue';
 import { merge as _merge } from 'lodash';
 import { VNavigationDrawer } from 'vuetify/lib';
-
-// const VNavigationDrawer = Vue.options.components.VNavigationDrawer;
-
-// const VResizeDrawer = {
-// 	extends: VNavigationDrawer,
-// 	methods: {
-// 		genContent() {
-// 			console.log('yo');
-// 			return this.$createElement(
-// 				'div',
-// 				{
-// 					staticClass: 'v-btn__contents',
-// 				},
-// 				['Activate ', this.$slots.default],
-// 			);
-// 		},
-// 	},
-// };
 
 export default {
 	extends: VNavigationDrawer,
@@ -173,12 +154,20 @@ export default {
 			width: '256px',
 		},
 		loading: false,
-		offsetWith: '256px',
+		offsetWidth: '256px',
 		events: {
 			handle: {
 				mouseUp: true,
 				mouseDown: false,
 			},
+		},
+		unicornLog: {
+			styles: [
+				'background: black',
+				'color: #0f0',
+				'padding: 5px',
+			],
+			prefix: '[VResizeDrawer.vue]',
 		},
 	}),
 	computed: {
@@ -203,7 +192,6 @@ export default {
 			};
 		},
 		drawerStyle() {
-			// const options = this.drawerOptions;
 			let styles = '';
 			let paddingValue = this.paddingTop;
 
@@ -211,7 +199,11 @@ export default {
 				paddingValue = `${this.paddingTop}px`;
 			}
 
-			styles += `padding-top: ${paddingValue}`;
+			styles += `padding-top: ${paddingValue};`;
+
+			if (this.right) {
+				styles += 'left: initial;';
+			}
 
 			return styles;
 		},
@@ -227,10 +219,9 @@ export default {
 			return className;
 		},
 		handleContainerClass() {
-			const options = this.drawerOptions;
 			let className = `handle-container-${this.handlePosition}`;
 
-			if (this.$scopedSlots.handle && options.handlePosition === 'top-icon') {
+			if (this.$scopedSlots.handle && this.handlePosition === 'top-icon') {
 				className += '-slot';
 			}
 
@@ -267,37 +258,21 @@ export default {
 		},
 	},
 	watch: {
-		item: {
-			handler() {
-				this.getDailyBreakdown();
-			},
-			deep: true,
-		},
 		options: {
 			handler() {
 				this.setOptions();
 			},
 			deep: true,
 		},
-		// ! BUG ! //
-		// TODO: Fix input event throwing off offset width //
-		value: {
-			handler(val) {
-				console.log('======= value', val, this.drawerOptions.width);
-				this.offsetWith = this.drawerOptions.width;
-
-				if (!val) {
-					this.offsetWith = 0;
-				}
-			},
-			deep: true,
-		},
+	},
+	updated() {
+		console.log(this);
+		console.log(this.isActive);
+		console.log(this.isBottom);
+		console.log(this.right);
 	},
 	mounted() {
-		// this.setOptions();
-		console.log('MOUNTED', this);
-
-		// console.log('$attrs', this.$attrs);
+		console.log(this);
 	},
 	beforeDestroy() {
 		if (this.resizable) {
@@ -312,24 +287,49 @@ export default {
 			}, this.$slots.default);
 		},
 		emitEvent(name, evt) {
-			console.log('emitEvent', { name, evt });
-			console.log('emitEvent this.offsetWith', this.offsetWith);
-			// this.offsetWidth = '0px';
+			const drawerData = {
+				eventName: name,
+				evt,
+				offsetWidth: this.offsetWidth,
+				width: this.drawerOptions.width,
+			};
 
-			this.$emit(name, { evt, action: name, offsetWidth: this.offsetWith, width: this.drawerOptions.width });
+			if (name !== 'handle:drag') {
+				this.$unicornLog({
+					text: `emitEvent: ${name}`,
+					styles: this.unicornLog.styles,
+					logPrefix: this.unicornLog.prefix,
+					objects: { evt, drawerData },
+				});
+			}
+
+			this.$emit(name, drawerData);
 		},
 
 		// Handle Events //
 		handleClick(evt) {
-			console.log('handleClick', { evt });
+			this.$unicornLog({
+				text: 'handleClick',
+				styles: this.unicornLog.styles,
+				logPrefix: this.unicornLog.prefix,
+				objects: evt,
+			});
+
 			this.emitEvent('handle:click', evt);
 		},
 		handleDoubleClick(evt) {
-			console.log('handleDoubleClick', { evt });
+			this.$unicornLog({
+				text: 'handleDoubleClick',
+				styles: this.unicornLog.styles,
+				logPrefix: this.unicornLog.prefix,
+				objects: evt,
+			});
+
 			this.drawerOptions.width = this.defaultWidth;
-			this.offsetWith = this.defaultWidth;
+			this.offsetWidth = this.defaultWidth;
 			this.setLocalStorage();
 
+			this.updateAppWidth(this.offsetWidth);
 			this.emitEvent('handle:dblclick', evt);
 		},
 		handleMouseDown(evt) {
@@ -343,14 +343,19 @@ export default {
 			}
 
 			if (!this.events.handle.mouseDown) {
-				console.log('handleMouseDown', { evt });
+				this.$unicornLog({
+					text: 'handleMouseDown',
+					styles: this.unicornLog.styles,
+					logPrefix: this.unicornLog.prefix,
+					objects: evt,
+				});
+
 				this.events.handle.mouseDown = true;
 				document.addEventListener('mouseup', this.handleMouseUp, false);
 				this.emitEvent('handle:mousedown', evt);
 			}
 		},
 		handleMouseUp(evt) {
-			console.log('handleMouseUp', { evt });
 			evt.preventDefault();
 			evt.stopPropagation();
 
@@ -366,7 +371,20 @@ export default {
 			if (!this.events.handle.mouseUp) {
 				this.events.handle.mouseUp = true;
 				this.offsetWidth = this.drawerOptions.width;
-				console.log('this.offsetWidth', this.offsetWidth);
+
+				this.updateAppWidth(this.offsetWidth);
+
+				const logStuff = {
+					drawerOptionsWidth: this.drawerOptions.width,
+					offsetWidth: this.offsetWidth,
+				};
+
+				this.$unicornLog({
+					text: 'handleMouseUp',
+					styles: this.unicornLog.styles,
+					logPrefix: this.unicornLog.prefix,
+					objects: logStuff,
+				});
 				document.removeEventListener('mouseup', this.handleMouseUp, false);
 				document.removeEventListener('mousemove', this.drawerResize, false);
 				this.emitEvent('handle:mouseup', evt);
@@ -388,6 +406,9 @@ export default {
 				document.addEventListener('mousemove', this.drawerResize, false);
 			}
 		},
+		drawerInput(val) {
+			this.emitEvent('input', val);
+		},
 		drawerResize(el) {
 			let width = el.clientX;
 
@@ -398,50 +419,63 @@ export default {
 			this.drawerOptions.width = `${width}px`;
 
 			document.body.style.cursor = 'grabbing';
-			this.offsetWith = this.drawerOptions.width;
+			this.offsetWidth = this.drawerOptions.width;
+
+			this.updateAppWidth(width);
+
 			this.emitEvent('handle:drag', el);
 		},
 
-		drawerInput(val) {
-			console.log('drawerInput', { val });
-			this.$emit('input', val);
-		},
-
 		// Storage Events //
-		getLocalStorage(name = this.storageName) {
-			return localStorage.getItem(name);
+		getLocalStorage() {
+			return localStorage.getItem(this.storageName);
 		},
-		setLocalStorage(settings = { name: this.storageName, width: this.drawerOptions.width }) {
+		setLocalStorage() {
 			if (!this.saveWidth) {
 				return false;
 			}
 
-			const name = settings.name;
-			let newValue = settings.width;
-			newValue = newValue ?? undefined;
+			let width = this.drawerOptions.width;
+			width = width ?? undefined;
 
-			const oldValue = (localStorage.getItem(name) === 'true');
-			newValue = newValue || !oldValue;
+			const oldValue = (localStorage.getItem(this.storageName) === 'true');
+			width = width || !oldValue;
 
-			localStorage.setItem(name, newValue);
-			return newValue;
+			localStorage.setItem(this.storageName, width);
+
+			return width;
 		},
 
 		// Mounted Event //
 		setOptions() {
 			this.drawerOptions = _merge(this.drawerOptions, this.options);
-			const isMiniVariant = this.$attrs['mini-variant'] !== undefined && this.$attrs['mini-variant'] !== false;
+			const isMiniVariant = this.miniVariant !== undefined && this.miniVariant !== false;
 
 			// Disable resize if mini-variant is set //
 			if (isMiniVariant) {
 				this.drawerOptions.width = this.drawerOptions['mini-variant-width'] || undefined;
 			}
-			const storageWidth = this.getLocalStorage(this.storageName);
+			const storageWidth = this.getLocalStorage();
 
 			if (this.saveWidth && storageWidth && !isMiniVariant) {
 				this.defaultWidth = this.drawerOptions.width;
-				this.drawerOptions.width = this.getLocalStorage(this.storageName);
+				this.drawerOptions.width = this.getLocalStorage();
 			}
+
+			this.updateAppWidth(this.drawerOptions.width);
+		},
+		updateAppWidth(width) {
+			if (!this.app) {
+				return false;
+			}
+
+			if (this.right) {
+				this.$vuetify.application.right = width;
+				return false;
+			}
+
+			this.$vuetify.application.left = width;
+			return false;
 		},
 	},
 };
@@ -452,6 +486,13 @@ export default {
 	&.v-navigation-drawer--overflow {
 		::v-deep .v-navigation-drawer__content {
 			overflow: visible;
+		}
+	}
+
+	// ! Look into why I need to do this for the drawer to translate correctly ! //
+	&.v-navigation-drawer--right {
+		&:not(.v-navigation-drawer--open) {
+			transform: translateX(100%) !important;
 		}
 	}
 

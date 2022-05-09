@@ -44,37 +44,35 @@
 			<v-list-item>
 				<v-list-item-content>
 					<v-list-item-title class="text-h6">Default Drawer</v-list-item-title>
-					<v-list-item-subtitle> Stuck With You </v-list-item-subtitle>
+					<v-list-item-subtitle>Stuck With You</v-list-item-subtitle>
 				</v-list-item-content>
 			</v-list-item>
 
 			<v-divider></v-divider>
 
 			<Menu :drawerOptions="drawerOptions" />
-
-			<!-- <template #append>
-				<v-footer fixed color="primary" dark></v-footer>
-			</template> -->
 		</v-navigation-drawer>
 
 		<v-resize-drawer
+			v-model="drawer"
 			name="ResizeDrawer"
 			clipped
 			fixed
-			:saveWidth="drawerOptions.saveWidth"
-			:paddingTop="drawerOptions.paddingTop"
-			:resizable="drawerOptions.resizable"
-			:options="drawerOptions"
 			:color="drawerOptions.color"
 			:dark="drawerOptions.dark"
+			:handlePosition="drawerOptions.handlePosition"
 			:light="drawerOptions.light"
+			:options="drawerOptions"
+			:paddingTop="drawerOptions.paddingTop"
+			:resizable="drawerOptions.resizable"
 			:right="drawerOptions.right"
-			:value="drawer"
+			:saveWidth="drawerOptions.saveWidth"
+			:storageName="drawerOptions.storageName"
 			@close="drawerClose"
-			@handle:click="logEvent($event, 'handle:click')"
+			@handle:click="handleClick"
 			@handle:dblclick="handleDoubleClick"
 			@handle:drag="handleDrag"
-			@handle:mousedown="logEvent($event, 'handle:mousedown')"
+			@handle:mousedown="handleMousedown"
 			@handle:mouseup="handleMouseup"
 			@input="drawerInput"
 			@transitionend="drawerTransitionend"
@@ -97,10 +95,6 @@
 			</template>
 
 			<Menu :drawerOptions="drawerOptions" />
-
-			<!-- <template #append>
-				<v-footer fixed color="primary" dark></v-footer>
-			</template> -->
 		</v-resize-drawer>
 
 		<!-- ====================================================== Main Container -->
@@ -177,8 +171,8 @@ export default {
 			overlayOpacity: '100%',
 			paddingTop: 48,
 			resizable: true,
-			right: false,
-			saveWidth: false,
+			right: true,
+			saveWidth: true,
 			storageName: 'vuetify-resize-drawer',
 		},
 		drawerOffset: '256px',
@@ -186,11 +180,25 @@ export default {
 			github: 'https://github.com/webdevnerdstuff/vuetify-resize-drawer',
 			npm: 'https://www.npmjs.com/package/vuetify-resize-drawer',
 		},
+		unicornLog: {
+			styles: [
+				'background: black',
+				'color: magenta',
+				'padding: 5px',
+			],
+			prefix: '[App.vue]',
+		},
 		mainContainerEl: null,
 	}),
 	created() {
 		this.$bus.$on('updateOptions', (options) => {
-			console.log({ options });
+			this.$unicornLog({
+				text: 'updateOptions',
+				styles: this.unicornLog.styles,
+				logPrefix: this.unicornLog.prefix,
+				objects: options,
+			});
+
 			this.drawerOptions = options;
 		});
 	},
@@ -205,15 +213,21 @@ export default {
 			this.setDarkLocalStorage(this.dark);
 		},
 
-		logEvent(el, name) {
-			console.log('----------------------------------- logEvent', { name, el });
-		},
 		drawerClose(val) {
-			console.log('----------------------------------- drawerClose', { val });
+			this.$unicornLog({
+				text: `drawerClose: ${val}`,
+				styles: this.unicornLog.styles,
+				logPrefix: this.unicornLog.prefix,
+			});
+
 			this.drawer = false;
 		},
 		drawerInput(val) {
-			console.log('----------------------------------- drawerInput', { val });
+			this.$unicornLog({
+				text: `drawerInput: ${val}`,
+				styles: this.unicornLog.styles,
+				logPrefix: this.unicornLog.prefix,
+			});
 
 			if (val) {
 				this.getLocalStorage();
@@ -224,21 +238,54 @@ export default {
 			return false;
 		},
 		drawerTransitionend(evt) {
-			console.log('----------------------------------- drawerTransitionend', { evt });
+			this.$unicornLog({
+				text: 'drawerTransitionend',
+				styles: this.unicornLog.styles,
+				logPrefix: this.unicornLog.prefix,
+				object: evt,
+			});
+		},
+		handleClick(evt) {
+			this.$unicornLog({
+				text: 'handleClick',
+				styles: this.unicornLog.styles,
+				logPrefix: this.unicornLog.prefix,
+				object: evt,
+			});
 		},
 		handleDoubleClick(evt) {
-			console.log('----------------------------------- handleDoubleClick', { evt });
+			this.$unicornLog({
+				text: 'handleDoubleClick',
+				styles: this.unicornLog.styles,
+				logPrefix: this.unicornLog.prefix,
+				object: evt,
+			});
+
 			this.updateDrawerOffset(evt.offsetWidth);
 		},
+		handleMousedown(evt) {
+			this.$unicornLog({
+				text: 'handleMousedown',
+				styles: this.unicornLog.styles,
+				logPrefix: this.unicornLog.prefix,
+				object: evt,
+			});
+		},
 		handleMouseup(evt) {
-			console.log('----------------------------------- handleMouseup', { evt });
+			this.$unicornLog({
+				text: 'handleMouseup',
+				styles: this.unicornLog.styles,
+				logPrefix: this.unicornLog.prefix,
+				object: evt,
+			});
+
 			this.updateDrawerOffset(evt.offsetWidth);
 		},
 		handleDrag(evt) {
 			this.updateDrawerOffset(evt.offsetWidth);
 		},
-		getLocalStorage(name = this.drawerOptions.storageName) {
-			this.updateDrawerOffset(localStorage.getItem(`vrd-${name}`) || this.drawerOffset);
+		getLocalStorage() {
+			this.updateDrawerOffset(localStorage.getItem(this.drawerOptions.storageName) || this.drawerOffset);
 		},
 		getDarkLocalStorage() {
 			const isDark = localStorage.getItem('vuetify-resize-drawer-dark');

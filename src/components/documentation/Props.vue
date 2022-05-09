@@ -368,8 +368,8 @@ export default {
 			items: [
 				{
 					name: 'app',
-					status: 'buggy',
-					notes: 'When resizing the drawer, other <code>app</code> elements do not responded correctly.',
+					status: 'debugging',
+					notes: 'Seems to be mostly working. Needs more testing.',
 				},
 				{
 					name: 'disable-resize-watcher',
