@@ -242,7 +242,7 @@ module.exports = merge(base, {
 	module: {
 		rules: [
 			fileRule,
-			scssRule,
+			// scssRule,
 			// sassRule,
 			svgRule,
 		],

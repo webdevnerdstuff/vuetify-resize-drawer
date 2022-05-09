@@ -1,5 +1,6 @@
 const path = require('path');
 const { VueLoaderPlugin } = require('vue-loader');
+const sass = require('sass');
 const webpack = require('webpack');
 const packageJson = require('../package.json');
 
@@ -18,7 +19,7 @@ const banner = `Vuetify Resize Drawer
 @homepage ${packageJson.homepage}
 @repository ${packageJson.repository}
 @license https://github.com/webdevnerdstuff/vuetify-resize-drawer/blob/main/LICENSE.md
-@supports Magical Creatures`;
+`;
 
 /*
  |--------------------------------------------------------------------------
@@ -29,6 +30,29 @@ const vueRule = {
 	test: /\.vue$/,
 	loader: 'vue-loader',
 	exclude: /node_modules/,
+};
+
+/*
+ |--------------------------------------------------------------------------
+ | SCSS Configs
+ |--------------------------------------------------------------------------
+ */
+const scssRule = {
+	rules: [
+		{
+			test: /\.s(c|a)ss$/,
+			use: [
+				'vue-style-loader',
+				'css-loader',
+				{
+					loader: 'sass-loader',
+					options: {
+						implementation: sass,
+					},
+				},
+			],
+		},
+	],
 };
 
 /*
@@ -70,6 +94,7 @@ module.exports = {
 	module: {
 		rules: [
 			vueRule,
+			scssRule,
 			jsRule,
 		],
 	},

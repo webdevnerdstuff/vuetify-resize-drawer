@@ -1,18 +1,20 @@
 <template>
 	<v-navigation-drawer
 		v-bind="$attrs"
-		v-on="$listeners"
 		ref="resizeDrawer"
 		class="v-resize-drawer"
-		:class="`resize-drawer-overflow-${drawerOptions.overflow}`"
-		:width="drawerOptions.width"
-		:style="drawerStyle"
+		:class="classes"
+		:style="styles"
+		tag="nav"
+		:value="value"
+		:stateless="stateless"
+		:width="resizedWidth"
 	>
 		<!-- Resize handle -->
 		<div
-			v-if="drawerOptions.resizable"
+			v-if="isResizable"
 			class="handle-container d-flex"
-			:class="{ [handleContainerClass]: drawerOptions.handlePosition }"
+			:class="{ [handleContainerClass]: handlePosition }"
 			:style="handleContainerStyle"
 			@dblclick="handleDoubleClick"
 			@mousedown="handleMouseDown"
@@ -22,9 +24,9 @@
 			<!-- Icon -->
 			<div
 				v-if="
-					drawerOptions.handlePosition === 'left' ||
-					drawerOptions.handlePosition === 'right' ||
-					drawerOptions.handlePosition === 'center'
+					handlePosition === 'left' ||
+					handlePosition === 'right' ||
+					handlePosition === 'center'
 				"
 				class="
 					handle-container-icon
@@ -33,44 +35,36 @@
 					justify-content-center
 				"
 				:class="{
-					[`handle-container-${drawerOptions.handlePosition}-icon`]:
-						drawerOptions.handlePosition,
+					[`handle-container-${handlePosition}-icon`]: handlePosition,
 				}"
 			>
 				<slot v-if="$scopedSlots.handle" name="handle"></slot>
-				<div
-					v-else
-					:class="{ 'handle-container-handle-flip': drawerOptions.right }"
-				>
+				<div v-else :class="{ 'handle-container-handle-flip': right }">
 					&raquo;
 				</div>
 			</div>
 
 			<!-- Top Icon -->
-			<template
-				v-if="
-					$scopedSlots.handle && drawerOptions.handlePosition === 'top-icon'
-				"
-			>
+			<template v-if="$scopedSlots.handle && handlePosition === 'top-icon'">
 				<slot
 					v-if="$scopedSlots.handle"
 					name="handle"
 					:class="{
-						'theme--dark': isDark,
-						'theme--light': !isDark,
-						'float-end': drawerOptions.right,
-						'float-start': !drawerOptions.right,
+						'theme--dark': dark,
+						'theme--light': !dark,
+						'float-end': right,
+						'float-start': !right,
 					}"
 				></slot>
 			</template>
 
 			<v-icon
-				v-else-if="drawerOptions.handlePosition === 'top-icon'"
+				v-else-if="handlePosition === 'top-icon'"
 				:class="{
-					'theme--dark': isDark,
-					'theme--light': !isDark,
-					'float-end': drawerOptions.right,
-					'float-start': !drawerOptions.right,
+					'theme--dark': dark,
+					'theme--light': !dark,
+					'float-end': right,
+					'float-start': !right,
 				}"
 			>
 				mdi-resize-bottom-right
@@ -78,7 +72,7 @@
 
 			<!-- Top -->
 			<div
-				v-else-if="drawerOptions.handlePosition === 'top'"
+				v-else-if="handlePosition === 'top'"
 				class="handle-container-lines"
 			></div>
 		</div>
@@ -99,29 +93,41 @@
 </template>
 
 <script>
-import Vue from 'vue';
 import { merge as _merge } from 'lodash';
-import Vuetify, { VNavigationDrawer } from 'vuetify/lib';
-
-Vue.use(Vuetify, {
-	components: { VNavigationDrawer },
-});
+import { VNavigationDrawer } from 'vuetify/lib';
 
 export default {
-	name: 'ResizeDrawer',
+	extends: VNavigationDrawer,
+	name: 'v-resize-drawer',
 	props: {
 		options: {
 			type: Object,
 			required: true,
 		},
-		name: {
-			type: String,
-			required: true,
-		},
 		width: {
 			type: String,
 			required: false,
-			default: '75%',
+			default: '256px',
+		},
+		// Updated //
+		handlePosition: {
+			type: String,
+			default: 'center',
+		},
+		overflow: Boolean,
+		resizable: {
+			type: Boolean,
+			default() {
+				return !this.isMiniVariant;
+			},
+		},
+		saveWidth: {
+			type: Boolean,
+			default: true,
+		},
+		storageName: {
+			type: String,
+			default: 'v-resize-drawer-width',
 		},
 	},
 	data: () => ({
@@ -133,80 +139,103 @@ export default {
 					light: '#ccc',
 				},
 			},
-			handlePosition: 'center',
-			overflow: false,
-			paddingTop: 0,
-			resizable: true,
-			saveWidth: true,
-			storageName: 'v-resize-drawer',
 			width: '256px',
 		},
-		isDark: false,
-		loading: false,
-		offsetWith: '256px',
 		events: {
 			handle: {
 				mouseUp: true,
 				mouseDown: false,
 			},
 		},
+		loading: false,
+		resizedWidth: '256px',
+		unicornLog: {
+			styles: [
+				'background: black',
+				'color: #0f0',
+				'padding: 5px',
+			],
+			prefix: '[VResizeDrawer.vue]',
+		},
 	}),
 	computed: {
-		drawerStyle() {
-			const options = this.drawerOptions;
-			let styles = '';
-			let paddingValue = options.paddingTop;
+		classes() {
+			return {
+				'v-navigation-drawer--absolute': this.absolute,
+				'v-navigation-drawer--bottom': this.bottom,
+				'v-navigation-drawer--clipped': this.clipped,
+				'v-navigation-drawer--close': !this.isActive,
+				'v-navigation-drawer--fixed': !this.absolute && (this.app || this.fixed),
+				'v-navigation-drawer--floating': this.floating,
+				'v-navigation-drawer--is-mobile': this.isMobile,
+				'v-navigation-drawer--is-mouseover': this.isMouseover,
+				'v-navigation-drawer--mini-variant': this.isMiniVariant,
+				'v-navigation-drawer--custom-mini-variant': Number(this.miniVariantWidth) !== 56,
+				'v-navigation-drawer--open-on-hover': this.expandOnHover,
+				'v-navigation-drawer--right': this.right,
+				'v-navigation-drawer--temporary': this.temporary,
+				'v-navigation-drawer--overflow': this.overflow,
+			};
+		},
+		styles() {
+			const translate = this.isBottom ? 'translateY' : 'translateX';
+			let top = this.$vuetify.application.bar;
 
-			if (+options.paddingTop) {
-				paddingValue = `${options.paddingTop}px`;
-			}
+			top += this.clipped ? this.$vuetify.application.top : 0;
 
-			styles += `padding-top: ${paddingValue}`;
+			const styles = {
+				height: this.convertToUnit(this.height),
+				top: !this.isBottom ? this.convertToUnit(top) : 'auto',
+				maxHeight: this.computedMaxHeight != null ?
+					`calc(100% - ${this.convertToUnit(this.computedMaxHeight)})` :
+					undefined,
+				transform: `${translate}(${this.convertToUnit(this.computedTransform, '%')})`,
+				width: this.isMiniVariant ? this.convertToUnit(this.miniVariantWidth) : this.resizedWidth,
+			};
 
 			return styles;
 		},
 		containerClass() {
-			const position = this.drawerOptions.handlePosition;
+			const position = this.handlePosition;
 			let className = '';
 
 			if (position === 'center' || position === 'border' || position === 'left' || position === 'right') {
-				const paddingSide = this.$attrs.right ? 's' : 'e';
+				const paddingSide = this.right ? 's' : 'e';
 				className += ` p${paddingSide}-8`;
 			}
 
 			return className;
 		},
 		handleContainerClass() {
-			const options = this.drawerOptions;
-			let className = `handle-container-${options.handlePosition}`;
+			let className = `handle-container-${this.handlePosition}`;
 
-			if (this.$scopedSlots.handle && options.handlePosition === 'top-icon') {
+			if (this.$scopedSlots.handle && this.handlePosition === 'top-icon') {
 				className += '-slot';
 			}
 
-			if (options.handlePosition === 'border' || options.handlePosition === 'left' || options.handlePosition === 'right' || options.handlePosition === 'center') {
+			if (this.handlePosition === 'border' || this.handlePosition === 'left' || this.handlePosition === 'right' || this.handlePosition === 'center') {
 				className += ' align-center justify-center';
 			}
 
 			// Parent //
-			const parentPosition = this.$attrs.right ? 'right' : 'left';
+			const parentPosition = this.right ? 'right' : 'left';
 			className += ` handle-container-parent-${parentPosition}`;
 
 			return className;
 		},
 		handleContainerStyle() {
 			const options = this.drawerOptions;
-			const color = this.isDark ? options.handle.color.dark : options.handle.color.light;
-			let styles = `border-${options.handlePosition}-color: ${color};`;
+			const color = this.dark ? options.handle.color.dark : options.handle.color.light;
+			let styles = `border-${this.handlePosition}-color: ${color};`;
 
-			if (options.handlePosition === 'left' || options.handlePosition === 'right' || options.handlePosition === 'border') {
+			if (this.handlePosition === 'left' || this.handlePosition === 'right' || this.handlePosition === 'border') {
 				styles = `
 					background-color: ${color};
 					color: ${color};
 				`;
 			}
 
-			if (options.handlePosition === 'center') {
+			if (this.handlePosition === 'center') {
 				styles = `
 					background-color: transparent;
 					color: ${color};
@@ -215,68 +244,97 @@ export default {
 
 			return styles;
 		},
+		isResizable() {
+			return this.resizable && !this.isMiniVariant;
+		},
 	},
 	watch: {
-		darkModeStatus: {
-			handler(newValue) {
-				this.isDark = newValue;
-			},
-			deep: true,
-		},
-		item: {
-			handler() {
-				this.getDailyBreakdown();
-			},
-			deep: true,
-		},
 		options: {
 			handler() {
 				this.setOptions();
 			},
 			deep: true,
 		},
-		'$attrs.value': {
-			handler(val) {
-				this.offsetWith = this.drawerOptions.width;
-
-				if (!val) {
-					this.offsetWith = 0;
-				}
-			},
-			deep: true,
-		},
 	},
-	// mounted() {
-	// 	this.setOptions();
-
-	// 	console.log('$attrs', this.$attrs);
-	// },
+	mounted() {
+		this.setLocalStorage('set');
+	},
 	beforeDestroy() {
-		if (this.drawerOptions.resizable) {
+		if (this.isResizable) {
 			document.removeEventListener('mouseup', this.handleMouseUp, false);
 			document.removeEventListener('mousemove', this.drawerResize, false);
 		}
 	},
 	methods: {
+		computeTop() {
+			if (!this.hasApp) return 0;
+
+			let top = this.$vuetify.application.bar;
+
+			top += this.clipped ?
+				this.$vuetify.application.top :
+				0;
+
+			return top;
+		},
+		convertToUnit(str, unit = 'px') {
+			if (str == null || str === '') {
+				return undefined;
+			}
+			else if (!+str) {
+				return String(str);
+			}
+
+			return `${Number(str)}${unit}`;
+		},
 		emitEvent(name, evt) {
-			console.log('emitEvent', { name, evt });
+			const drawerData = {
+				eventName: name,
+				evt,
+				resizedWidth: this.resizedWidth,
+				width: this.resizedWidth,
+			};
 
-			this.offsetWidth = '0px';
+			if (name !== 'handle:drag') {
+				this.$unicornLog({
+					text: `emitEvent: ${name}`,
+					styles: this.unicornLog.styles,
+					logPrefix: this.unicornLog.prefix,
+					objects: { evt, drawerData },
+				});
+			}
 
-			this.$emit(name, { evt, action: name, offsetWidth: this.offsetWith, width: this.drawerOptions.width });
+			this.$emit(name, drawerData);
+		},
+		genContent() {
+			return this.$createElement('div', {
+				staticClass: 'v-navigation-drawer__content',
+			}, this.$slots.default);
 		},
 
 		// Handle Events //
 		handleClick(evt) {
-			console.log('handleClick', { evt });
+			this.$unicornLog({
+				text: 'handleClick',
+				styles: this.unicornLog.styles,
+				logPrefix: this.unicornLog.prefix,
+				objects: evt,
+			});
+
 			this.emitEvent('handle:click', evt);
 		},
 		handleDoubleClick(evt) {
-			console.log('handleDoubleClick', { evt });
-			this.drawerOptions.width = this.defaultWidth;
-			this.offsetWith = this.defaultWidth;
+			this.$unicornLog({
+				text: 'handleDoubleClick',
+				styles: this.unicornLog.styles,
+				logPrefix: this.unicornLog.prefix,
+				objects: evt,
+			});
+
+			this.resizedWidth = this.defaultWidth;
 			this.setLocalStorage();
 
+			this.updateAppWidth(this.resizedWidth);
 			this.emitEvent('handle:dblclick', evt);
 		},
 		handleMouseDown(evt) {
@@ -290,21 +348,26 @@ export default {
 			}
 
 			if (!this.events.handle.mouseDown) {
-				console.log('handleMouseDown', { evt });
+				this.$unicornLog({
+					text: 'handleMouseDown',
+					styles: this.unicornLog.styles,
+					logPrefix: this.unicornLog.prefix,
+					objects: evt,
+				});
+
 				this.events.handle.mouseDown = true;
 				document.addEventListener('mouseup', this.handleMouseUp, false);
 				this.emitEvent('handle:mousedown', evt);
 			}
 		},
 		handleMouseUp(evt) {
-			console.log('handleMouseUp', { evt });
 			evt.preventDefault();
 			evt.stopPropagation();
 
 			const drawer = this.$refs.resizeDrawer.$el;
 
 			this.events.handle.mouseDown = false;
-			this.drawerOptions.width = drawer.style.width;
+			this.resizedWidth = drawer.style.width;
 
 			document.body.style.cursor = '';
 
@@ -312,6 +375,20 @@ export default {
 
 			if (!this.events.handle.mouseUp) {
 				this.events.handle.mouseUp = true;
+
+				this.updateAppWidth(this.resizedWidth);
+
+				const logStuff = {
+					drawerOptionsWidth: this.resizedWidth,
+					resizedWidth: this.resizedWidth,
+				};
+
+				this.$unicornLog({
+					text: 'handleMouseUp',
+					styles: this.unicornLog.styles,
+					logPrefix: this.unicornLog.prefix,
+					objects: logStuff,
+				});
 				document.removeEventListener('mouseup', this.handleMouseUp, false);
 				document.removeEventListener('mousemove', this.drawerResize, false);
 				this.emitEvent('handle:mouseup', evt);
@@ -333,66 +410,82 @@ export default {
 				document.addEventListener('mousemove', this.drawerResize, false);
 			}
 		},
+		drawerInput(val) {
+			this.emitEvent('input', val);
+		},
 		drawerResize(el) {
 			let width = el.clientX;
 
-			if (this.$attrs.right) {
+			if (this.right) {
 				width = document.body.scrollWidth - width;
 			}
 
-			this.drawerOptions.width = `${width}px`;
+			this.resizedWidth = `${width}px`;
 
 			document.body.style.cursor = 'grabbing';
-			this.offsetWith = this.drawerOptions.width;
+
+			this.updateAppWidth(width);
+
 			this.emitEvent('handle:drag', el);
 		},
 
-		drawerInput(val) {
-			console.log('drawerInput', { val });
-			this.$emit('input', val);
-		},
-
 		// Storage Events //
-		getLocalStorage(name = this.drawerOptions.storageName) {
-			return localStorage.getItem(`vrd-${name}`);
+		getLocalStorage() {
+			return localStorage.getItem(this.storageName);
 		},
-		setLocalStorage(settings = { name: this.drawerOptions.storageName, width: this.drawerOptions.width }) {
-			if (!this.drawerOptions.saveWidth) {
+		setLocalStorage(action = 'update') {
+			if (!this.saveWidth) {
 				return false;
 			}
 
-			const name = `vrd-${settings.name}`;
-			let newValue = settings.width;
-			newValue = newValue ?? undefined;
+			let width = this.resizedWidth;
+			width = width ?? undefined;
 
-			const oldValue = (localStorage.getItem(name) === 'true');
-			newValue = newValue || !oldValue;
+			if (action === 'set') {
+				width = this.getLocalStorage();
+				width = width || this.resizedWidth;
 
-			localStorage.setItem(name, newValue);
-			return newValue;
+				this.updateAppWidth(width);
+			}
+
+			localStorage.setItem(this.storageName, width);
+
+			return width;
 		},
 
 		// Mounted Event //
 		setOptions() {
 			this.drawerOptions = _merge(this.drawerOptions, this.options);
-			const isMiniVariant = this.$attrs['mini-variant'] !== undefined && this.$attrs['mini-variant'] !== false;
 
 			// Disable resize if mini-variant is set //
-			if (isMiniVariant) {
-				this.drawerOptions.resizable = false;
-				this.drawerOptions.width = this.drawerOptions['mini-variant-width'] || undefined;
+			if (this.isMiniVariant) {
+				this.resizedWidth = this.miniVariantWidth || undefined;
+				return false;
+			}
+			const storageWidth = this.getLocalStorage();
+
+			if (this.saveWidth && storageWidth && !this.isMiniVariant) {
+				this.defaultWidth = this.resizedWidth;
+				this.resizedWidth = this.getLocalStorage();
 			}
 
-			// Set storage name if not defined //
-			const defaultStorageName = `drawer-${this.name}`;
-			this.drawerOptions.storageName = this.drawerOptions.storageName || defaultStorageName;
-
-			const storageWidth = this.getLocalStorage(this.drawerOptions.storageName);
-
-			if (this.drawerOptions.saveWidth && storageWidth && !isMiniVariant) {
-				this.defaultWidth = this.drawerOptions.width;
-				this.drawerOptions.width = this.getLocalStorage(this.drawerOptions.storageName);
+			this.updateAppWidth(this.resizedWidth);
+			return false;
+		},
+		updateAppWidth(width) {
+			if (!this.app || this.isMiniVariant) {
+				return false;
 			}
+
+			const intWidth = typeof width === 'number' ? width : width.replace('px', '');
+
+			if (this.right) {
+				this.$vuetify.application.right = intWidth;
+				return false;
+			}
+
+			this.$vuetify.application.left = intWidth;
+			return false;
 		},
 	},
 };
@@ -400,7 +493,9 @@ export default {
 
 <style lang="scss" scoped>
 .v-resize-drawer {
-	&.resize-drawer-overflow-true {
+	&.v-navigation-drawer--overflow {
+		overflow: visible;
+
 		::v-deep .v-navigation-drawer__content {
 			overflow: visible;
 		}

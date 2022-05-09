@@ -14,8 +14,9 @@
 						target="_blank"
 						>Navigation Drawer</a
 					>
-					behind the scenes. Most props that work for the Vuetify Navigation
-					Drawer are supported. For a list of those props, you can find them
+					behind the scenes. Most props that work for the
+					<code>v-navigation-drawer</code> are supported. For a list of those
+					props, you can find them
 					<a
 						href="https://vuetifyjs.com/en/api/v-navigation-drawer/#props"
 						target="_blank"
@@ -24,10 +25,12 @@
 				</v-col>
 			</v-row>
 
-			<v-row>
-				<v-col>
-					Additional props that are supported (or have different defaults) by
-					Vuetify Resize Drawer:
+			<v-row id="additional-props">
+				<v-col cols="12">
+					<h3 :class="classes.h3">
+						<a href="#additional-props" :class="classes.headerA">#</a>
+						Additional props
+					</h3>
 				</v-col>
 			</v-row>
 
@@ -118,12 +121,12 @@
 									</v-col>
 
 									<v-col cols="12" sm="12" md="6">
-										<v-text-field
-											label="paddingTop"
-											type="number"
-											v-model="options.paddingTop"
-										>
-										</v-text-field>
+										<v-switch
+											:label="`overflow: ${options.overflow}`"
+											dense
+											inset
+											v-model="options.overflow"
+										></v-switch>
 									</v-col>
 
 									<v-col cols="12" sm="12" md="6">
@@ -268,13 +271,6 @@ export default {
 					width: '10%',
 				},
 				{
-					text: 'Try',
-					value: 'try',
-					align: 'left',
-					filterable: false,
-					sortable: false,
-				},
-				{
 					text: 'Default',
 					value: 'default',
 					align: 'left',
@@ -303,12 +299,6 @@ export default {
 					desc: 'Specifies the position or the handle. Valid values are <strong>border</strong>, <strong>center</strong>, <strong>top</strong>, <strong>top-icon</strong>.',
 				},
 				{
-					name: 'paddingTop',
-					type: 'number <span class="operators--text">|</span> string',
-					default: '0',
-					desc: 'Applies <strong>padding-top: 0</strong> to the component.',
-				},
-				{
 					name: 'overflow',
 					type: 'boolean',
 					default: 'false',
@@ -321,12 +311,6 @@ export default {
 					desc: 'Enables resize functionality.',
 				},
 				{
-					name: 'right',
-					type: 'boolean',
-					default: 'false',
-					desc: '',
-				},
-				{
 					name: 'saveWidth',
 					type: 'boolean',
 					default: 'true',
@@ -335,7 +319,7 @@ export default {
 				{
 					name: 'storageName',
 					type: 'string',
-					default: 'vuetify-resize-drawer',
+					default: 'v-resize-drawer-width',
 					desc: 'Determines the name of the local storage item.',
 				},
 			],
@@ -367,24 +351,14 @@ export default {
 			],
 			items: [
 				{
-					name: 'app',
-					status: 'buggy',
-					notes: 'When resizing the drawer, other <code>app</code> elements do not responded correctly.',
-				},
-				{
-					name: 'disable-resize-watcher',
-					status: 'pending',
-					notes: 'Needs a successful test to figure out if this work.',
-				},
-				{
 					name: 'disable-route-watcher',
 					status: 'pending',
-					notes: 'An environment that uses routes is need to test.',
+					notes: 'An environment that uses routes is needed to test.',
 				},
 				{
 					name: 'expand-on-hover',
-					status: 'partial support',
-					notes: 'The <code>expand-on-hover</code> prop for use with the <code>mini-variant</code> prop will work, but the resizable functionality is disabled.',
+					status: 'debugging',
+					notes: 'The <code>expand-on-hover</code> prop for use with the <code>mini-variant</code> prop does not currently work, and/but the resizable functionality is disabled.',
 				},
 				{
 					name: 'mini-variant',
@@ -398,23 +372,13 @@ export default {
 				},
 				{
 					name: 'mobile-breakpoint',
-					status: 'pending',
-					notes: 'Needs a successful test to figure out if this works.',
-				},
-				{
-					name: 'stateless',
-					status: 'pending',
-					notes: 'Needs a successful test to figure out if this works.',
+					status: 'needs testing',
+					notes: 'Needs a successful  pass/fail test to figure out if this works.',
 				},
 				{
 					name: 'touchless',
-					status: 'pending',
-					notes: 'Needs a successful test to figure out if this works.',
-				},
-				{
-					name: 'width',
-					status: 'not supported',
-					notes: 'The width prop is not supported as it would interfere with the functionality of resizing the drawer.',
+					status: 'debugging',
+					notes: 'Drawer does not function like it should with <code>touchless</code> enabled.',
 				},
 			],
 		},
@@ -440,7 +404,6 @@ export default {
 	watch: {
 		options(newVal) {
 			const options = newVal;
-			options.paddingTop = parseInt(newVal.paddingTop, 10);
 			this.$bus.$emit('updateOptions', options);
 		},
 	},
