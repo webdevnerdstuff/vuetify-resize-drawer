@@ -357,7 +357,7 @@ export default {
 				{
 					name: 'disable-route-watcher',
 					status: 'pending',
-					notes: 'An environment that uses routes is need to test.',
+					notes: 'An environment that uses routes is needed to test.',
 				},
 				{
 					name: 'expand-on-hover',
@@ -376,18 +376,13 @@ export default {
 				},
 				{
 					name: 'mobile-breakpoint',
-					status: 'pending',
-					notes: 'Needs a successful test to figure out if this works.',
-				},
-				{
-					name: 'stateless',
-					status: 'pending',
-					notes: 'Needs a successful test to figure out if this works.',
+					status: 'needs testing',
+					notes: 'Needs a successful  pass/fail test to figure out if this works.',
 				},
 				{
 					name: 'touchless',
-					status: 'pending',
-					notes: 'Needs a successful test to figure out if this works.',
+					status: 'debugging',
+					notes: 'Drawer does not function like it should with <code>touchless</code> enabled.',
 				},
 				{
 					name: 'width',

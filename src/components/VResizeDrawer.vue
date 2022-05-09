@@ -5,8 +5,9 @@
 		class="v-resize-drawer"
 		:class="classes"
 		:style="styles"
-		:tag="tag"
+		tag="nav"
 		:value="value"
+		:stateless="stateless"
 		:width="drawerOptions.width"
 	>
 		<!-- Resize handle -->
@@ -164,7 +165,6 @@ export default {
 	computed: {
 		classes() {
 			return {
-				'v-navigation-drawer': true,
 				'v-navigation-drawer--absolute': this.absolute,
 				'v-navigation-drawer--bottom': this.bottom,
 				'v-navigation-drawer--clipped': this.clipped,
@@ -175,7 +175,6 @@ export default {
 				'v-navigation-drawer--is-mouseover': this.isMouseover,
 				'v-navigation-drawer--mini-variant': this.isMiniVariant,
 				'v-navigation-drawer--custom-mini-variant': Number(this.miniVariantWidth) !== 56,
-				'v-navigation-drawer--open': this.isActive,
 				'v-navigation-drawer--open-on-hover': this.expandOnHover,
 				'v-navigation-drawer--right': this.right,
 				'v-navigation-drawer--temporary': this.temporary,
@@ -264,7 +263,6 @@ export default {
 		},
 	},
 	mounted() {
-		console.log(this);
 		this.setLocalStorage('set');
 	},
 	beforeDestroy() {
@@ -486,11 +484,8 @@ export default {
 				return false;
 			}
 
-			console.log('blarg');
-
 			const intWidth = typeof width === 'number' ? width : width.replace('px', '');
 
-			console.log({ intWidth });
 			if (this.right) {
 				this.$vuetify.application.right = intWidth;
 				return false;

@@ -40,13 +40,17 @@
 
 		<!-- ====================================================== Navigation Drawer -->
 		<v-navigation-drawer
+			app
 			v-model="drawer"
 			clipped
 			fixed
 			:right="!drawerOptions.right"
 			:color="drawerOptions.color"
 			:mini-variant="drawerOptions.miniVariant"
+			:mini-variant-width="drawerOptions.miniVariantWidth"
 			:expand-on-hover="drawerOptions.expandOnHover"
+			:touchless="drawerOptions.touchless"
+			:stateless="drawerOptions.stateless"
 		>
 			<v-list-item>
 				<v-list-item-content>
@@ -61,11 +65,15 @@
 		</v-navigation-drawer>
 
 		<v-resize-drawer
+			app
 			v-model="drawer"
 			name="ResizeDrawer"
 			clipped
 			fixed
+			:stateless="drawerOptions.stateless"
+			:touchless="drawerOptions.touchless"
 			:mini-variant="drawerOptions.miniVariant"
+			:mini-variant-width="drawerOptions.miniVariantWidth"
 			:expand-on-hover="drawerOptions.expandOnHover"
 			:color="drawerOptions.color"
 			:dark="drawerOptions.dark"
@@ -156,21 +164,30 @@ export default {
 		dark: false,
 		drawer: true,
 		drawerOptions: {
-			width: '256px',
-			// Should be good / Updated //
-			color: undefined,
-			light: false,
-			// Updated //
-			dark: false,
-			handlePosition: 'center',
-			miniVariant: true,
-			expandOnHover: true,
-			overlayColor: '#f00',
-			overlayOpacity: '100%',
+			// color: undefined,
+			// dark: false,
+			// handlePosition: 'center',
+			// light: false,
 			resizable: true,
 			right: false,
+			stateless: false,
+			touchless: false,
+
+			// TODO: Maybe try to get this working with the built in width prop //
+			width: '256px',
+
+			// overlay //
+			overlayColor: '#f00',
+			overlayOpacity: '100%',
+
+			// storage //
 			saveWidth: true,
 			storageName: 'vuetify-resize-drawer',
+
+			// mini-variant //
+			expandOnHover: false,
+			miniVariant: false,
+			miniVariantWidth: 56,
 		},
 		drawerOffset: '256px',
 		links: {
