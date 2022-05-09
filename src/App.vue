@@ -67,10 +67,10 @@
 		<v-resize-drawer
 			app
 			v-model="drawer"
-			name="ResizeDrawer"
 			clipped
 			fixed
 			:stateless="drawerOptions.stateless"
+			:overflow="drawerOptions.overflow"
 			:touchless="drawerOptions.touchless"
 			:mini-variant="drawerOptions.miniVariant"
 			:mini-variant-width="drawerOptions.miniVariantWidth"
@@ -109,6 +109,17 @@
 			</header>
 
 			<Menu :drawerOptions="drawerOptions" />
+
+			<v-card
+				class="overflow-content d-flex justify-center align-center"
+				color="primary"
+				dark
+				elevation="10"
+				min-width="300"
+				width="300"
+			>
+				<v-card-title>Overflow Content</v-card-title>
+			</v-card>
 		</v-resize-drawer>
 
 		<!-- ====================================================== Main Container -->
@@ -164,10 +175,11 @@ export default {
 		dark: false,
 		drawer: true,
 		drawerOptions: {
-			// color: undefined,
-			// dark: false,
-			// handlePosition: 'center',
-			// light: false,
+			color: undefined,
+			dark: false,
+			handlePosition: 'center',
+			light: false,
+			overflow: false,
 			resizable: true,
 			right: false,
 			stateless: false,
@@ -358,6 +370,19 @@ html {
 		&:not(:hover):not(:focus) {
 			opacity: 0;
 		}
+	}
+}
+
+.overflow-content {
+	right: -315px;
+	position: fixed;
+	top: 5px;
+}
+
+.v-navigation-drawer--right {
+	.overflow-content {
+		left: -315px;
+		right: initial;
 	}
 }
 

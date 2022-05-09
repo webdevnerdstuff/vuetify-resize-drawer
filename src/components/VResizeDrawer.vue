@@ -104,14 +104,10 @@ export default {
 			type: Object,
 			required: true,
 		},
-		name: {
-			type: String,
-			required: true,
-		},
 		width: {
 			type: String,
 			required: false,
-			default: '75%',
+			default: '256px',
 		},
 		// Updated //
 		handlePosition: {
@@ -501,6 +497,8 @@ export default {
 <style lang="scss" scoped>
 .v-resize-drawer {
 	&.v-navigation-drawer--overflow {
+		overflow: visible;
+
 		::v-deep .v-navigation-drawer__content {
 			overflow: visible;
 		}

@@ -14,8 +14,9 @@
 						target="_blank"
 						>Navigation Drawer</a
 					>
-					behind the scenes. Most props that work for the Vuetify Navigation
-					Drawer are supported. For a list of those props, you can find them
+					behind the scenes. Most props that work for the
+					<code>v-navigation-drawer</code> are supported. For a list of those
+					props, you can find them
 					<a
 						href="https://vuetifyjs.com/en/api/v-navigation-drawer/#props"
 						target="_blank"
@@ -24,10 +25,12 @@
 				</v-col>
 			</v-row>
 
-			<v-row>
-				<v-col>
-					Additional props that are supported (or have different defaults) by
-					Vuetify Resize Drawer:
+			<v-row id="additional-props">
+				<v-col cols="12">
+					<h3 :class="classes.h3">
+						<a href="#additional-props" :class="classes.headerA">#</a>
+						Additional props
+					</h3>
 				</v-col>
 			</v-row>
 
@@ -118,12 +121,12 @@
 									</v-col>
 
 									<v-col cols="12" sm="12" md="6">
-										<v-text-field
-											label="paddingTop"
-											type="number"
-											v-model="options.paddingTop"
-										>
-										</v-text-field>
+										<v-switch
+											:label="`overflow: ${options.overflow}`"
+											dense
+											inset
+											v-model="options.overflow"
+										></v-switch>
 									</v-col>
 
 									<v-col cols="12" sm="12" md="6">
