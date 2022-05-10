@@ -1,5 +1,11 @@
+<!-- 
+<p align="center">
+  <img alt="Vuetify Logo" width="100" src="https://webdevnerdstuff.github.io/vuetify-resize-drawer/images/vuetify-logo-light-atom.svg">
+</p> -->
 
-# Vuetify Resize Drawer
+<p>
+  <h1 align="center">Vuetify Resize Drawer</h1>
+</p>
 
 
 [![NPM_PACKAGE](https://img.shields.io/badge/NPM%20-Package-%23cb3837)](https://www.npmjs.com/package/vutify-resize-drawer) [![@WebDevNerdStuff](https://img.shields.io/badge/github-webdevnerdstuff-brightgreen.svg)](https://github.com/webdevnerdstuff)
