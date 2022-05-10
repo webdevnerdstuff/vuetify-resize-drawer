@@ -222,7 +222,16 @@
 											></span
 										>
 									</td>
-									<td class="secondary--text" v-html="item.status"></td>
+									<td
+										:class="{
+											'warning--text': item.status === 'pending',
+											'error--text': item.status === 'debugging',
+											'secondary--text':
+												item.status !== 'debugging' &&
+												item.status !== 'pending',
+										}"
+										v-html="item.status"
+									></td>
 									<td v-html="item.notes"></td>
 								</tr>
 							</template>
@@ -372,7 +381,7 @@ export default {
 				},
 				{
 					name: 'mobile-breakpoint',
-					status: 'needs testing',
+					status: 'pending',
 					notes: 'Needs a successful  pass/fail test to figure out if this works.',
 				},
 				{

@@ -67,8 +67,8 @@
 		</v-navigation-drawer>
 
 		<v-resize-drawer
-			app
 			v-model="drawer"
+			app
 			clipped
 			fixed
 			:color="drawerOptions.color"
