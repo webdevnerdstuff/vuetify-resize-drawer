@@ -1,8 +1,21 @@
+<!-- 
+<p align="center">
+  <img alt="Vuetify Logo" width="100" src="https://webdevnerdstuff.github.io/vuetify-resize-drawer/images/vuetify-logo-light-atom.svg">
+</p> -->
 
-# Vuetify Resize Drawer
+<p>
+  <h1 align="center">Vuetify Resize Drawer</h1>
+</p>
 
+<p align="center">
+  <a href="https://www.npmjs.com/package/vutify-resize-drawer">
+    <img src="https://img.shields.io/badge/NPM%20-Package-%23cb3837" alt="NPM Package">
+  </a>
+  <a href="https://github.com/webdevnerdstuff">
+    <img src="https://img.shields.io/badge/github-webdevnerdstuff-brightgreen.svg" alt="@WebDevNerdStuff">
+  </a>
+</p>
 
-[![NPM_PACKAGE](https://img.shields.io/badge/NPM%20-Package-%23cb3837)](https://www.npmjs.com/package/vutify-resize-drawer) [![@WebDevNerdStuff](https://img.shields.io/badge/github-webdevnerdstuff-brightgreen.svg)](https://github.com/webdevnerdstuff)
 
 ## Description
 
