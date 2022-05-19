@@ -28,7 +28,6 @@ specifiers:
   eslint-plugin-vue: ^7.9.0
   eslint-webpack-plugin: ^2.5.4
   html-webpack-plugin: ^5.5.0
-  lodash: ^4.17.21
   postcss: ^8.4.12
   postcss-html: ^1.3.0
   postcss-import: ^14.1.0
@@ -41,7 +40,6 @@ specifiers:
   stylelint: ^14.6.1
   stylelint-config-standard: ^25.0.0
   stylelint-order: ^5.0.0
-  stylelint-processor-html: ^1.0.0
   stylelint-scss: ^4.2.0
   stylelint-webpack-plugin: ^3.2.0
   vue: ^2.6.12
@@ -94,7 +92,6 @@ devDependencies:
   eslint-plugin-vue: 7.20.0_eslint@7.32.0
   eslint-webpack-plugin: 2.6.0_ej5kzqlwxufmlid7qwxwr3ivqm
   html-webpack-plugin: 5.5.0_webpack@5.72.0
-  lodash: 4.17.21
   postcss: 8.4.13
   postcss-html: 1.4.1
   postcss-import: 14.1.0_postcss@8.4.13
@@ -106,11 +103,10 @@ devDependencies:
   stylelint: 14.8.2
   stylelint-config-standard: 25.0.0_stylelint@14.8.2
   stylelint-order: 5.0.0_stylelint@14.8.2
-  stylelint-processor-html: 1.0.0
   stylelint-scss: 4.2.0_stylelint@14.8.2
   stylelint-webpack-plugin: 3.2.0_fnl4liipnyjfyen3k6dr33ram4
   vue-hot-reload-api: 2.3.4
-  vue-loader: 15.9.8_6immplsjqoll532onr4nxotom4
+  vue-loader: 15.9.8_3vxo2lw335poqwxoovjvg3gggu
   vue-style-loader: 4.1.3
   vue-template-compiler: 2.6.14
   webpack: 5.72.0_webpack-cli@4.9.2
@@ -1538,10 +1534,10 @@ packages:
       '@types/node': 17.0.31
     dev: true
 
-  /@vue/component-compiler-utils/3.3.0_lodash@4.17.21:
+  /@vue/component-compiler-utils/3.3.0:
     resolution: {integrity: sha512-97sfH2mYNU+2PzGrmK2haqffDpVASuib9/w2/noxiFi31Z54hW+q3izKQXXQZSNhtiUpAI36uSuYepeBe4wpHQ==}
     dependencies:
-      consolidate: 0.15.1_lodash@4.17.21
+      consolidate: 0.15.1
       hash-sum: 1.0.2
       lru-cache: 4.1.5
       merge-source-map: 1.1.0
@@ -2442,7 +2438,7 @@ packages:
       - supports-color
     dev: true
 
-  /consolidate/0.15.1_lodash@4.17.21:
+  /consolidate/0.15.1:
     resolution: {integrity: sha512-DW46nrsMJgy9kqAbPt5rKaCr7uFtpo4mSUvLHIUbJEjm0vo+aY5QLwBUq3FK4tRnJr/X0Psc0C4jf/h+HtXSMw==}
     engines: {node: '>= 0.10.0'}
     peerDependencies:
@@ -2608,7 +2604,6 @@ packages:
         optional: true
     dependencies:
       bluebird: 3.7.2
-      lodash: 4.17.21
     dev: true
 
   /content-disposition/0.5.4:
@@ -2902,13 +2897,6 @@ packages:
       utila: 0.4.0
     dev: true
 
-  /dom-serializer/0.2.2:
-    resolution: {integrity: sha512-2/xPb3ORsQ42nHYiSunXkDjPLBaEj/xTwUO4B7XCZQTRk7EBtTOPaygh10YAAh2OI1Qrp6NWfpAhzswj0ydt9g==}
-    dependencies:
-      domelementtype: 2.3.0
-      entities: 2.2.0
-    dev: true
-
   /dom-serializer/1.4.1:
     resolution: {integrity: sha512-VHwB3KfrcOOkelEG2ZOfxqLZdfkil8PtJi4P8N2MMXucZq2yLp75ClViUlOVwyoHEDjYU433Aq+5zWP61+RGag==}
     dependencies:
@@ -2917,18 +2905,8 @@ packages:
       entities: 2.2.0
     dev: true
 
-  /domelementtype/1.3.1:
-    resolution: {integrity: sha512-BSKB+TSpMpFI/HOxCNr1O8aMOTZ8hT3pM3GQ0w/mWRmkhEDSFJkkyzz4XQsBV44BChwGkrDfMyjVD0eA2aFV3w==}
-    dev: true
-
   /domelementtype/2.3.0:
     resolution: {integrity: sha512-OLETBj6w0OsagBwdXnPdN0cnMfF9opN69co+7ZrbfPGrdpPVNBUj02spi6B1N7wChLQiPn4CSH/zJvXw56gmHw==}
-    dev: true
-
-  /domhandler/2.4.2:
-    resolution: {integrity: sha512-JiK04h0Ht5u/80fdLMCEmV4zkNh2BcoMFBmZ/91WtYZ8qVXSKjiw7fXMgFPnHcSZgOo3XdinHvmnDUeMf5R4wA==}
-    dependencies:
-      domelementtype: 1.3.1
     dev: true
 
   /domhandler/4.3.1:
@@ -2936,13 +2914,6 @@ packages:
     engines: {node: '>= 4'}
     dependencies:
       domelementtype: 2.3.0
-    dev: true
-
-  /domutils/1.7.0:
-    resolution: {integrity: sha512-Lgd2XcJ/NjEw+7tFvfKxOzCYKZsdct5lczQ2ZaQY8Djz7pfAD3Gbp8ySJWtreII/vDlMVmxwa6pHmdxIYgttDg==}
-    dependencies:
-      dom-serializer: 0.2.2
-      domelementtype: 1.3.1
     dev: true
 
   /domutils/2.8.0:
@@ -3061,10 +3032,6 @@ packages:
     engines: {node: '>=8.6'}
     dependencies:
       ansi-colors: 4.1.1
-    dev: true
-
-  /entities/1.1.2:
-    resolution: {integrity: sha512-f2LZMYl1Fzu7YSBKg+RoROelpOaNrcGmE9AZubeDfrCEia483oW4MI4VyFd5VNHIgQ/7qm1I0wUHK1eJnn2y2w==}
     dev: true
 
   /entities/2.2.0:
@@ -4005,17 +3972,6 @@ packages:
       pretty-error: 4.0.0
       tapable: 2.2.1
       webpack: 5.72.0_webpack-cli@4.9.2
-    dev: true
-
-  /htmlparser2/3.10.1:
-    resolution: {integrity: sha512-IgieNijUMbkDovyoKObU1DUhm1iwNYE/fuifEoEHfd1oZKZDaONBSkal7Y01shxsM49R4XaMdGez3WnF9UfiCQ==}
-    dependencies:
-      domelementtype: 1.3.1
-      domhandler: 2.4.2
-      domutils: 1.7.0
-      entities: 1.1.2
-      inherits: 2.0.4
-      readable-stream: 3.6.0
     dev: true
 
   /htmlparser2/6.1.0:
@@ -6098,13 +6054,6 @@ packages:
       stylelint: 14.8.2
     dev: true
 
-  /stylelint-processor-html/1.0.0:
-    resolution: {integrity: sha1-aJK2soVaRfApHNhFGR1pCBMKKRg=}
-    deprecated: 'Please use stylelint-processor-arbitrary-tags https://github.com/mapbox/stylelint-processor-arbitrary-tags '
-    dependencies:
-      htmlparser2: 3.10.1
-    dev: true
-
   /stylelint-scss/4.2.0_stylelint@14.8.2:
     resolution: {integrity: sha512-HHHMVKJJ5RM9pPIbgJ/XA67h9H0407G68Rm69H4fzFbFkyDMcTV1Byep3qdze5+fJ3c0U7mJrbj6S0Fg072uZA==}
     peerDependencies:
@@ -6493,7 +6442,7 @@ packages:
     resolution: {integrity: sha512-BXq3jwIagosjgNVae6tkHzzIk6a8MHFtzAdwhnV5VlvPTFxDCvIttgSiHWjdGoTJvXtmRu5HacExfdarRcFhog==}
     dev: true
 
-  /vue-loader/15.9.8_6immplsjqoll532onr4nxotom4:
+  /vue-loader/15.9.8_3vxo2lw335poqwxoovjvg3gggu:
     resolution: {integrity: sha512-GwSkxPrihfLR69/dSV3+5CdMQ0D+jXg8Ma1S4nQXKJAznYFX14vHdc/NetQc34Dw+rBbIJyP7JOuVb9Fhprvog==}
     peerDependencies:
       '@vue/compiler-sfc': ^3.0.8
@@ -6509,7 +6458,7 @@ packages:
       vue-template-compiler:
         optional: true
     dependencies:
-      '@vue/component-compiler-utils': 3.3.0_lodash@4.17.21
+      '@vue/component-compiler-utils': 3.3.0
       css-loader: 6.7.1_webpack@5.72.0
       hash-sum: 1.0.2
       loader-utils: 1.4.0

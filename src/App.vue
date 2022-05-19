@@ -181,14 +181,14 @@ export default {
 		drawerOptions: {
 			color: undefined,
 			dark: false,
-			handlePosition: 'center',
+			handlePosition: 'top',
 			light: false,
 			overflow: false,
 			resizable: true,
 			right: false,
 			stateless: false,
 			touchless: false,
-			width: 400,
+			width: undefined,
 
 			// overlay //
 			overlayColor: '#f00',
@@ -199,8 +199,8 @@ export default {
 			storageName: 'v-resize-drawer-width',
 
 			// mini-variant //
-			expandOnHover: true,
-			miniVariant: true,
+			expandOnHover: false,
+			miniVariant: false,
 			miniVariantWidth: 56,
 		},
 		drawerOffset: '256px',

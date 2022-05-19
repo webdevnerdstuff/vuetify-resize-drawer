@@ -296,10 +296,10 @@ export default {
 			],
 			items: [
 				{
-					name: 'handle.color',
+					name: 'handleColor',
 					type: 'object',
 					default: "<pre><code>{ dark: '#555', light: '#ccc' }</code></pre>",
-					desc: 'Determines the color of the handle for dark and light modes. Used when the <code>handlePosition</code> is set to <strong>top</strong>. Alternatively you can use CSS styles to adjust the colors.',
+					desc: 'Determines the background color of the handle for dark and light modes. Used when the <code>handlePosition</code> is set to <strong>top</strong>. Alternatively you can use CSS styles to adjust the colors.',
 				},
 				{
 					name: 'handlePosition',
@@ -366,8 +366,8 @@ export default {
 				},
 				{
 					name: 'expand-on-hover',
-					status: 'debugging',
-					notes: 'The <code>expand-on-hover</code> prop for use with the <code>mini-variant</code> prop does not currently work, and/but the resizable functionality is disabled.',
+					status: 'partial support',
+					notes: 'The <code>expand-on-hover</code> prop will work, but the resizable functionality is disabled.',
 				},
 				{
 					name: 'mini-variant',

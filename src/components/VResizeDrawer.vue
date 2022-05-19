@@ -93,13 +93,22 @@
 </template>
 
 <script>
-import { merge as _merge } from 'lodash';
 import { VNavigationDrawer } from 'vuetify/lib';
 
 export default {
 	extends: VNavigationDrawer,
 	name: 'v-resize-drawer',
 	props: {
+		handleColor: {
+			type: Object,
+			required: false,
+			default() {
+				return {
+					dark: '#555',
+					light: '#ccc',
+				};
+			},
+		},
 		handlePosition: {
 			type: String,
 			default: 'center',
@@ -126,20 +135,11 @@ export default {
 		width: {
 			type: [Number, String],
 			required: false,
-			default: '256px',
+			default: 256,
 		},
 	},
 	data: () => ({
-		defaultWidth: '256px',
-		drawerOptions: {
-			handle: {
-				color: {
-					dark: '#555',
-					light: '#ccc',
-				},
-			},
-			width: '256px',
-		},
+		defaultWidth: 256,
 		events: {
 			handle: {
 				mouseUp: true,
@@ -147,7 +147,7 @@ export default {
 			},
 		},
 		loading: false,
-		resizedWidth: '256px',
+		resizedWidth: 256,
 		unicornLog: {
 			styles: [
 				'background: black',
@@ -208,8 +208,7 @@ export default {
 			return className;
 		},
 		handleContainerStyle() {
-			const options = this.drawerOptions;
-			const color = this.dark ? options.handle.color.dark : options.handle.color.light;
+			const color = this.isDark ? this.handleColor.dark : this.handleColor.light;
 			let styles = `border-${this.handlePosition}-color: ${color};`;
 
 			if (this.handlePosition === 'left' || this.handlePosition === 'right' || this.handlePosition === 'border') {
@@ -251,12 +250,6 @@ export default {
 		},
 	},
 	watch: {
-		// options: {
-		// 	handler() {
-		// 		this.setOptions();
-		// 	},
-		// 	deep: true,
-		// },
 		isMouseover: {
 			handler(val) {
 				if (this.miniVariant || this.expandOnHover) {
@@ -266,7 +259,6 @@ export default {
 			deep: true,
 		},
 	},
-
 	mounted() {
 		this.setOptions();
 		this.genListeners();
@@ -323,11 +315,6 @@ export default {
 			}
 
 			this.$emit(name, drawerData);
-		},
-		genContent() {
-			return this.$createElement('div', {
-				staticClass: 'v-navigation-drawer__content',
-			}, this.$slots.default);
 		},
 		genListeners() {
 			const drawer = this.$refs.resizeDrawer.$el;
@@ -433,7 +420,6 @@ export default {
 				this.updateAppWidth(this.resizedWidth);
 
 				const logStuff = {
-					drawerOptionsWidth: this.resizedWidth,
 					resizedWidth: this.resizedWidth,
 				};
 
@@ -515,7 +501,6 @@ export default {
 
 		// Mounted Event //
 		setOptions() {
-			this.drawerOptions = _merge(this.drawerOptions, this.options);
 			const width = this.convertToUnit(this.width);
 			this.resizedWidth = width;
 
