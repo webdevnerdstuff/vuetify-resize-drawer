@@ -480,13 +480,6 @@ export default {
 			drawer.addEventListener('mouseleave', this.drawerMouseleave, false);
 		},
 		updateApplication() {
-			if (
-				!this.isActive ||
-				this.isMobile ||
-				this.temporary ||
-				!this.$el
-			) return 0;
-
 			let intWidth = typeof this.drawerWidth === 'number' ? this.drawerWidth : this.drawerWidth.replace('px', '');
 
 			if (!this.miniVariant && this.expandOnHover) {
