@@ -42,12 +42,14 @@ specifiers:
   stylelint-order: ^5.0.0
   stylelint-scss: ^4.2.0
   stylelint-webpack-plugin: ^3.2.0
+  vue: ^2.6.12
   vue-code-highlight: ^0.7.8
   vue-hot-reload-api: ^2.0.8
   vue-loader: ^15.9.6
   vue-style-loader: ^4.1.2
   vue-template-compiler: ^2.6.12
   vue-unicorn-log: ^1.0.6
+  vuetify: ^2.5.6
   vuetify-loader: ^1.7.2
   webpack: ^5.35.1
   webpack-cli: ^4.6.0
@@ -56,9 +58,11 @@ specifiers:
 
 dependencies:
   prettier: 2.6.2
+  vue: 2.6.14
   vue-code-highlight: 0.7.8
   vue-unicorn-log: 1.0.6
-  vuetify-loader: 1.7.3_mztj4ii2ledqmod7wvqssdzt3y
+  vuetify: 2.6.6_vue@2.6.14
+  vuetify-loader: 1.7.3_5ch6ibhtlhx3uyvurvuj6hcu6e
 
 devDependencies:
   '@babel/core': 7.17.10
@@ -6547,7 +6551,7 @@ packages:
     resolution: {integrity: sha512-x2284lgYvjOMj3Za7kqzRcUSxBboHqtgRE2zlos1qWaOye5yUmHn42LB1250NJBLRwEcdrB0JRwyPTEPhfQjiQ==}
     dev: false
 
-  /vuetify-loader/1.7.3_mztj4ii2ledqmod7wvqssdzt3y:
+  /vuetify-loader/1.7.3_5ch6ibhtlhx3uyvurvuj6hcu6e:
     resolution: {integrity: sha512-1Kt6Rfvuw3i9BBlxC9WTMnU3WEU7IBWQmDX+fYGAVGpzWCX7oHythUIwPCZGShHSYcPMKSDbXTPP8UvT5RNw8Q==}
     peerDependencies:
       vue-template-compiler: ^2.6.10
@@ -6558,7 +6562,16 @@ packages:
       file-loader: 6.2.0_webpack@5.72.0
       loader-utils: 2.0.2
       vue-template-compiler: 2.6.14
+      vuetify: 2.6.6_vue@2.6.14
       webpack: 5.72.0_webpack-cli@4.9.2
+    dev: false
+
+  /vuetify/2.6.6_vue@2.6.14:
+    resolution: {integrity: sha512-H4KtxDFmDN8QiTRiGfBySyjMhVaHAJTKB0llGGKZT5jKxtnx9gvEtMWXKtVuRP0NJJP0H6xBPJHNOH7nT18qiQ==}
+    peerDependencies:
+      vue: ^2.6.4
+    dependencies:
+      vue: 2.6.14
     dev: false
 
   /watchpack/2.3.1:
