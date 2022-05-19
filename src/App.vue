@@ -75,7 +75,7 @@
 			:color="drawerOptions.color"
 			:dark="drawerOptions.dark"
 			:expand-on-hover="drawerOptions.expandOnHover"
-			:handlePosition="drawerOptions.handlePosition"
+			:handle-position="drawerOptions.handlePosition"
 			:light="drawerOptions.light"
 			:mini-variant-width="drawerOptions.miniVariantWidth"
 			:mini-variant="drawerOptions.miniVariant"
@@ -83,9 +83,9 @@
 			:overflow="drawerOptions.overflow"
 			:resizable="drawerOptions.resizable"
 			:right="drawerOptions.right"
-			:saveWidth="drawerOptions.saveWidth"
+			:save-width="drawerOptions.saveWidth"
 			:stateless="drawerOptions.stateless"
-			:storageName="drawerOptions.storageName"
+			:storage-name="drawerOptions.storageName"
 			:touchless="drawerOptions.touchless"
 			:width="drawerOptions.width"
 			@close="drawerClose"
@@ -181,7 +181,7 @@ export default {
 		drawerOptions: {
 			color: undefined,
 			dark: false,
-			handlePosition: 'top',
+			handlePosition: 'center',
 			light: false,
 			overflow: false,
 			resizable: true,
@@ -189,10 +189,6 @@ export default {
 			stateless: false,
 			touchless: false,
 			width: undefined,
-
-			// overlay //
-			overlayColor: '#f00',
-			overlayOpacity: '100%',
 
 			// storage //
 			saveWidth: true,
