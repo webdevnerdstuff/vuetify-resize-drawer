@@ -4,7 +4,6 @@
 	"description": "The vuetify-resize-drawer component extends the functionality of the v-navigation-drawer so that it is resizable by the user.",
 	"private": false,
 	"main": "dist/vuetify-resize-drawer.js",
-	"types": "types/index.d.ts",
 	"scripts": {
 		"serve": "npm run development",
 		"watch": "npm run development",
