@@ -8,7 +8,7 @@
 		tag="nav"
 		:value="value"
 		:stateless="stateless"
-		:width="resizedWidth"
+		:width="computedWidth"
 	>
 		<!-- Resize handle -->
 		<div
@@ -100,19 +100,13 @@ export default {
 	extends: VNavigationDrawer,
 	name: 'v-resize-drawer',
 	props: {
-		options: {
-			type: Object,
-			required: true,
-		},
-		width: {
-			type: String,
-			required: false,
-			default: '256px',
-		},
-		// Updated //
 		handlePosition: {
 			type: String,
 			default: 'center',
+		},
+		options: {
+			type: Object,
+			required: true,
 		},
 		overflow: Boolean,
 		resizable: {
@@ -128,6 +122,11 @@ export default {
 		storageName: {
 			type: String,
 			default: 'v-resize-drawer-width',
+		},
+		width: {
+			type: [Number, String],
+			required: false,
+			default: '256px',
 		},
 	},
 	data: () => ({
@@ -177,23 +176,8 @@ export default {
 				'v-navigation-drawer--overflow': this.overflow,
 			};
 		},
-		styles() {
-			const translate = this.isBottom ? 'translateY' : 'translateX';
-			let top = this.$vuetify.application.bar;
-
-			top += this.clipped ? this.$vuetify.application.top : 0;
-
-			const styles = {
-				height: this.convertToUnit(this.height),
-				top: !this.isBottom ? this.convertToUnit(top) : 'auto',
-				maxHeight: this.computedMaxHeight != null ?
-					`calc(100% - ${this.convertToUnit(this.computedMaxHeight)})` :
-					undefined,
-				transform: `${translate}(${this.convertToUnit(this.computedTransform, '%')})`,
-				width: this.isMiniVariant ? this.convertToUnit(this.miniVariantWidth) : this.resizedWidth,
-			};
-
-			return styles;
+		computedWidth() {
+			return this.convertToUnit(this.resizedWidth);
 		},
 		containerClass() {
 			const position = this.handlePosition;
@@ -245,21 +229,55 @@ export default {
 			return styles;
 		},
 		isResizable() {
-			return this.resizable && !this.isMiniVariant;
+			return this.resizable && !this.isMiniVariant && !this.expandOnHover;
+		},
+		styles() {
+			const translate = this.isBottom ? 'translateY' : 'translateX';
+			let top = this.$vuetify.application.bar;
+
+			top += this.clipped ? this.$vuetify.application.top : 0;
+
+			const styles = {
+				height: this.convertToUnit(this.height),
+				top: !this.isBottom ? this.convertToUnit(top) : 'auto',
+				maxHeight: this.computedMaxHeight != null ?
+					`calc(100% - ${this.convertToUnit(this.computedMaxHeight)})` :
+					undefined,
+				transform: `${translate}(${this.convertToUnit(this.computedTransform, '%')})`,
+				width: this.convertToUnit(this.isMiniVariant ? this.miniVariantWidth : this.resizedWidth),
+			};
+
+			return styles;
 		},
 	},
 	watch: {
-		options: {
-			handler() {
-				this.setOptions();
+		// options: {
+		// 	handler() {
+		// 		this.setOptions();
+		// 	},
+		// 	deep: true,
+		// },
+		isMouseover: {
+			handler(val) {
+				if (this.miniVariant || this.expandOnHover) {
+					this.resizedWidth = val ? this.width : this.miniVariantWidth;
+				}
 			},
 			deep: true,
 		},
 	},
+
 	mounted() {
+		this.setOptions();
+		this.genListeners();
 		this.setLocalStorage('set');
 	},
 	beforeDestroy() {
+		const drawer = this.$refs.resizeDrawer.$el;
+
+		drawer.removeEventListener('mouseenter', this.drawerMouseenter, false);
+		drawer.removeEventListener('mouseleave', this.drawerMouseleave, false);
+
 		if (this.isResizable) {
 			document.removeEventListener('mouseup', this.handleMouseUp, false);
 			document.removeEventListener('mousemove', this.drawerResize, false);
@@ -310,6 +328,42 @@ export default {
 			return this.$createElement('div', {
 				staticClass: 'v-navigation-drawer__content',
 			}, this.$slots.default);
+		},
+		genListeners() {
+			const drawer = this.$refs.resizeDrawer.$el;
+			drawer.addEventListener('mouseenter', this.drawerMouseenter, false);
+			drawer.addEventListener('mouseleave', this.drawerMouseleave, false);
+		},
+		updateApplication() {
+			if (
+				!this.isActive ||
+				this.isMobile ||
+				this.temporary ||
+				!this.$el
+			) return 0;
+
+			let intWidth = typeof this.computedWidth === 'number' ? this.computedWidth : this.computedWidth.replace('px', '');
+
+			if (!this.miniVariant && this.expandOnHover) {
+				intWidth = typeof this.width === 'number' ? this.width : this.width.replace('px', '');
+			}
+
+			return intWidth;
+		},
+		updateAppWidth(width) {
+			if (!this.app || this.isMiniVariant) {
+				return false;
+			}
+
+			const intWidth = typeof width === 'number' ? width : width.replace('px', '');
+
+			if (this.right) {
+				this.$vuetify.application.right = intWidth;
+				return false;
+			}
+
+			this.$vuetify.application.left = intWidth;
+			return false;
 		},
 
 		// Handle Events //
@@ -413,6 +467,12 @@ export default {
 		drawerInput(val) {
 			this.emitEvent('input', val);
 		},
+		drawerMouseenter() {
+			this.isMouseover = true;
+		},
+		drawerMouseleave() {
+			this.isMouseover = false;
+		},
 		drawerResize(el) {
 			let width = el.clientX;
 
@@ -420,7 +480,7 @@ export default {
 				width = document.body.scrollWidth - width;
 			}
 
-			this.resizedWidth = `${width}px`;
+			this.resizedWidth = this.convertToUnit(width);
 
 			document.body.style.cursor = 'grabbing';
 
@@ -456,37 +516,27 @@ export default {
 		// Mounted Event //
 		setOptions() {
 			this.drawerOptions = _merge(this.drawerOptions, this.options);
+			const width = this.convertToUnit(this.width);
+			this.resizedWidth = width;
 
 			// Disable resize if mini-variant is set //
 			if (this.isMiniVariant) {
 				this.resizedWidth = this.miniVariantWidth || undefined;
 				return false;
 			}
+
 			const storageWidth = this.getLocalStorage();
 
+			this.defaultWidth = this.resizedWidth;
+
 			if (this.saveWidth && storageWidth && !this.isMiniVariant) {
-				this.defaultWidth = this.resizedWidth;
 				this.resizedWidth = this.getLocalStorage();
 			}
 
 			this.updateAppWidth(this.resizedWidth);
 			return false;
 		},
-		updateAppWidth(width) {
-			if (!this.app || this.isMiniVariant) {
-				return false;
-			}
 
-			const intWidth = typeof width === 'number' ? width : width.replace('px', '');
-
-			if (this.right) {
-				this.$vuetify.application.right = intWidth;
-				return false;
-			}
-
-			this.$vuetify.application.left = intWidth;
-			return false;
-		},
 	},
 };
 </script>

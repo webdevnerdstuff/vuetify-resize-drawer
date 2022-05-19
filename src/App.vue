@@ -51,6 +51,7 @@
 			:expand-on-hover="drawerOptions.expandOnHover"
 			:touchless="drawerOptions.touchless"
 			:stateless="drawerOptions.stateless"
+			:width="drawerOptions.width"
 		>
 			<v-list-item>
 				<v-list-item-content>
@@ -187,7 +188,7 @@ export default {
 			right: false,
 			stateless: false,
 			touchless: false,
-			width: '256px',
+			width: 400,
 
 			// overlay //
 			overlayColor: '#f00',
@@ -198,8 +199,8 @@ export default {
 			storageName: 'v-resize-drawer-width',
 
 			// mini-variant //
-			expandOnHover: false,
-			miniVariant: false,
+			expandOnHover: true,
+			miniVariant: true,
 			miniVariantWidth: 56,
 		},
 		drawerOffset: '256px',
