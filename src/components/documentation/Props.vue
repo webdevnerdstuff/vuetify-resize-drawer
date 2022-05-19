@@ -296,13 +296,13 @@ export default {
 			],
 			items: [
 				{
-					name: 'handleColor',
+					name: 'handle-color',
 					type: 'object',
 					default: "<pre><code>{ dark: '#555', light: '#ccc' }</code></pre>",
 					desc: 'Determines the background color of the handle for dark and light modes. Used when the <code>handlePosition</code> is set to <strong>top</strong>. Alternatively you can use CSS styles to adjust the colors.',
 				},
 				{
-					name: 'handlePosition',
+					name: 'handle-position',
 					type: 'string',
 					default: 'center',
 					desc: 'Specifies the position or the handle. Valid values are <strong>border</strong>, <strong>center</strong>, <strong>top</strong>, <strong>top-icon</strong>.',
@@ -320,13 +320,13 @@ export default {
 					desc: 'Enables resize functionality.',
 				},
 				{
-					name: 'saveWidth',
+					name: 'save-width',
 					type: 'boolean',
 					default: 'true',
 					desc: 'Determines if the width of the component is saved in local storage.',
 				},
 				{
-					name: 'storageName',
+					name: 'storage-name',
 					type: 'string',
 					default: 'v-resize-drawer-width',
 					desc: 'Determines the name of the local storage item.',
