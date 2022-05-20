@@ -97,6 +97,7 @@ import Vue from 'vue';
 import Vuetify from 'vuetify';
 import { VNavigationDrawer } from 'vuetify/lib';
 
+// ! This is needed for this.$vuetify to work, but causes the file to be huge. Need to figure a way around this ! //
 const vuetifyOptions = {};
 Vue.use(Vuetify);
 
@@ -172,6 +173,7 @@ export default {
 				'v-navigation-drawer--right': this.right,
 				'v-navigation-drawer--temporary': this.temporary,
 				'v-navigation-drawer--overflow': this.overflow,
+				...this.themeClasses,
 			};
 		},
 		drawerStyles() {
