@@ -93,10 +93,16 @@
 </template>
 
 <script>
+import Vue from 'vue';
+import Vuetify from 'vuetify';
 import { VNavigationDrawer } from 'vuetify/lib';
+
+const vuetifyOptions = {};
+Vue.use(Vuetify);
 
 export default {
 	extends: VNavigationDrawer,
+	vuetify: new Vuetify(vuetifyOptions),
 	name: 'v-resize-drawer',
 	props: {
 		handleColor: {
