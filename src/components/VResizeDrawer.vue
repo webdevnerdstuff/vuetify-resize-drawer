@@ -154,14 +154,6 @@ export default {
 		},
 		loading: false,
 		resizedWidth: 256,
-		unicornLog: {
-			styles: [
-				'background: black',
-				'color: #0f0',
-				'padding: 5px',
-			],
-			prefix: '[VResizeDrawer.vue]',
-		},
 	}),
 	computed: {
 		drawerClasses() {
@@ -335,23 +327,9 @@ export default {
 
 		// Handle Events //
 		handleClick(evt) {
-			this.$unicornLog({
-				text: 'handleClick',
-				styles: this.unicornLog.styles,
-				logPrefix: this.unicornLog.prefix,
-				objects: evt,
-			});
-
 			this.emitEvent('handle:click', evt);
 		},
 		handleDoubleClick(evt) {
-			this.$unicornLog({
-				text: 'handleDoubleClick',
-				styles: this.unicornLog.styles,
-				logPrefix: this.unicornLog.prefix,
-				objects: evt,
-			});
-
 			this.resizedWidth = this.defaultWidth;
 			this.setLocalStorage();
 
@@ -369,13 +347,6 @@ export default {
 			}
 
 			if (!this.events.handle.mouseDown) {
-				this.$unicornLog({
-					text: 'handleMouseDown',
-					styles: this.unicornLog.styles,
-					logPrefix: this.unicornLog.prefix,
-					objects: evt,
-				});
-
 				this.events.handle.mouseDown = true;
 				document.addEventListener('mouseup', this.handleMouseUp, false);
 				this.emitEvent('handle:mousedown', evt);
@@ -399,16 +370,6 @@ export default {
 
 				this.updateAppWidth(this.resizedWidth);
 
-				const logStuff = {
-					resizedWidth: this.resizedWidth,
-				};
-
-				this.$unicornLog({
-					text: 'handleMouseUp',
-					styles: this.unicornLog.styles,
-					logPrefix: this.unicornLog.prefix,
-					objects: logStuff,
-				});
 				document.removeEventListener('mouseup', this.handleMouseUp, false);
 				document.removeEventListener('mousemove', this.drawerResize, false);
 				this.emitEvent('handle:mouseup', evt);
@@ -468,15 +429,6 @@ export default {
 				resizedWidth: this.resizedWidth,
 				width: this.resizedWidth,
 			};
-
-			if (name !== 'handle:drag') {
-				this.$unicornLog({
-					text: `emitEvent: ${name}`,
-					styles: this.unicornLog.styles,
-					logPrefix: this.unicornLog.prefix,
-					objects: { evt, drawerData },
-				});
-			}
 
 			this.$emit(name, drawerData);
 		},
