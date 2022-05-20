@@ -50,8 +50,8 @@
 					v-if="$scopedSlots.handle"
 					name="handle"
 					:class="{
-						'theme--dark': dark,
-						'theme--light': !dark,
+						'theme--dark': isDark,
+						'theme--light': !isDark,
 						'float-end': right,
 						'float-start': !right,
 					}"
@@ -61,8 +61,8 @@
 			<v-icon
 				v-else-if="handlePosition === 'top-icon'"
 				:class="{
-					'theme--dark': dark,
-					'theme--light': !dark,
+					'theme--dark': isDark,
+					'theme--light': !isDark,
 					'float-end': right,
 					'float-start': !right,
 				}"
@@ -93,19 +93,23 @@
 </template>
 
 <script>
-import { VNavigationDrawer } from 'vuetify/lib';
+import Vue from 'vue';
+import Vuetify, { VNavigationDrawer } from 'vuetify/lib';
+import UnicornLog from 'vue-unicorn-log';
+import Applicationable from 'vuetify/lib/mixins/applicationable';
+import mixins from 'vuetify/lib/util/mixins';
 
-// ! `this.$vuetify.application` is supposed to be readonly ! //
+Vue.use(Vuetify);
+Vue.use(UnicornLog);
 
-// ! This is needed for this.$vuetify to work, but causes the file to be huge. Need to figure a way around this ! //
-// import Vue from 'vue';
-// import Vuetify from 'vuetify';
-// const vuetifyOptions = {};
-// Vue.use(Vuetify);
+const baseMixins = mixins(
+	Applicationable('left', [
+		'drawerWidth',
+	]),
+);
 
-export default {
+export default baseMixins.extend({
 	extends: VNavigationDrawer,
-	// vuetify: new Vuetify(vuetifyOptions),
 	name: 'v-resize-drawer',
 	props: {
 		handleColor: {
@@ -188,15 +192,10 @@ export default {
 		},
 		drawerStyles() {
 			const translate = this.isBottom ? 'translateY' : 'translateX';
-			// ! This causes issues when not importing vuetify ! //
-			let top = this.$vuetify.application.bar;
-
-			// ! This causes issues when not importing vuetify ! //
-			top += this.clipped ? this.$vuetify.application.top : 0;
 
 			const styles = {
 				height: this.convertToUnit(this.height),
-				top: !this.isBottom ? this.convertToUnit(top) : 'auto',
+				top: !this.isBottom ? this.convertToUnit(this.computedTop) : 'auto',
 				maxHeight: this.computedMaxHeight != null ?
 					`calc(100% - ${this.convertToUnit(this.computedMaxHeight)})` :
 					undefined,
@@ -260,6 +259,9 @@ export default {
 			deep: true,
 		},
 	},
+	updated() {
+		console.log('UPDATED', this);
+	},
 	mounted() {
 		this.setup();
 		this.genListeners();
@@ -295,7 +297,6 @@ export default {
 				this.resizedWidth = this.getLocalStorage();
 			}
 
-			this.updateAppWidth(this.resizedWidth);
 			return false;
 		},
 
@@ -334,8 +335,6 @@ export default {
 
 			document.body.style.cursor = 'grabbing';
 
-			this.updateAppWidth(width);
-
 			this.emitEvent('handle:drag', el);
 		},
 
@@ -361,7 +360,6 @@ export default {
 			this.resizedWidth = this.defaultWidth;
 			this.setLocalStorage();
 
-			this.updateAppWidth(this.resizedWidth);
 			this.emitEvent('handle:dblclick', evt);
 		},
 		handleMouseDown(evt) {
@@ -403,8 +401,6 @@ export default {
 			if (!this.events.handle.mouseUp) {
 				this.events.handle.mouseUp = true;
 
-				this.updateAppWidth(this.resizedWidth);
-
 				const logStuff = {
 					resizedWidth: this.resizedWidth,
 				};
@@ -436,8 +432,6 @@ export default {
 			if (action === 'set') {
 				width = this.getLocalStorage();
 				width = width || this.resizedWidth;
-
-				this.updateAppWidth(width);
 			}
 
 			localStorage.setItem(this.storageName, width);
@@ -446,19 +440,6 @@ export default {
 		},
 
 		// Misc Events //
-		computeTop() {
-			if (!this.hasApp) return 0;
-
-			// ! This causes issues when not importing vuetify ! //
-			let top = this.$vuetify.application.bar;
-
-			// ! This causes issues when not importing vuetify ! //
-			top += this.clipped ?
-				this.$vuetify.application.top :
-				0;
-
-			return top;
-		},
 		convertToUnit(str, unit = 'px') {
 			if (str == null || str === '') {
 				return undefined;
@@ -509,25 +490,8 @@ export default {
 
 			return intWidth;
 		},
-		updateAppWidth(width) {
-			if (!this.app || this.isMiniVariant) {
-				return false;
-			}
-
-			const intWidth = typeof width === 'number' ? width : width.replace('px', '');
-
-			if (this.right) {
-				// ! `this.$vuetify.application` is supposed to be readonly ! //
-				this.$vuetify.application.right = intWidth;
-				return false;
-			}
-
-			// ! `this.$vuetify.application` is supposed to be readonly ! //
-			this.$vuetify.application.left = intWidth;
-			return false;
-		},
 	},
-};
+});
 </script>
 
 <style lang="scss" scoped>
