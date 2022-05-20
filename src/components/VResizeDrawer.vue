@@ -93,17 +93,19 @@
 </template>
 
 <script>
-import Vue from 'vue';
-import Vuetify from 'vuetify';
 import { VNavigationDrawer } from 'vuetify/lib';
 
+// ! `this.$vuetify.application` is supposed to be readonly ! //
+
 // ! This is needed for this.$vuetify to work, but causes the file to be huge. Need to figure a way around this ! //
-const vuetifyOptions = {};
-Vue.use(Vuetify);
+// import Vue from 'vue';
+// import Vuetify from 'vuetify';
+// const vuetifyOptions = {};
+// Vue.use(Vuetify);
 
 export default {
 	extends: VNavigationDrawer,
-	vuetify: new Vuetify(vuetifyOptions),
+	// vuetify: new Vuetify(vuetifyOptions),
 	name: 'v-resize-drawer',
 	props: {
 		handleColor: {
@@ -155,6 +157,14 @@ export default {
 		},
 		loading: false,
 		resizedWidth: 256,
+		unicornLog: {
+			styles: [
+				'background: black',
+				'color: #0f0',
+				'padding: 5px',
+			],
+			prefix: '[VResizeDrawer.vue]',
+		},
 	}),
 	computed: {
 		drawerClasses() {
@@ -178,8 +188,10 @@ export default {
 		},
 		drawerStyles() {
 			const translate = this.isBottom ? 'translateY' : 'translateX';
+			// ! This causes issues when not importing vuetify ! //
 			let top = this.$vuetify.application.bar;
 
+			// ! This causes issues when not importing vuetify ! //
 			top += this.clipped ? this.$vuetify.application.top : 0;
 
 			const styles = {
@@ -329,9 +341,23 @@ export default {
 
 		// Handle Events //
 		handleClick(evt) {
+			this.$unicornLog({
+				text: 'handleClick',
+				styles: this.unicornLog.styles,
+				logPrefix: this.unicornLog.prefix,
+				objects: evt,
+			});
+
 			this.emitEvent('handle:click', evt);
 		},
 		handleDoubleClick(evt) {
+			this.$unicornLog({
+				text: 'handleDoubleClick',
+				styles: this.unicornLog.styles,
+				logPrefix: this.unicornLog.prefix,
+				objects: evt,
+			});
+
 			this.resizedWidth = this.defaultWidth;
 			this.setLocalStorage();
 
@@ -349,6 +375,13 @@ export default {
 			}
 
 			if (!this.events.handle.mouseDown) {
+				this.$unicornLog({
+					text: 'handleMouseDown',
+					styles: this.unicornLog.styles,
+					logPrefix: this.unicornLog.prefix,
+					objects: evt,
+				});
+
 				this.events.handle.mouseDown = true;
 				document.addEventListener('mouseup', this.handleMouseUp, false);
 				this.emitEvent('handle:mousedown', evt);
@@ -372,6 +405,16 @@ export default {
 
 				this.updateAppWidth(this.resizedWidth);
 
+				const logStuff = {
+					resizedWidth: this.resizedWidth,
+				};
+
+				this.$unicornLog({
+					text: 'handleMouseUp',
+					styles: this.unicornLog.styles,
+					logPrefix: this.unicornLog.prefix,
+					objects: logStuff,
+				});
 				document.removeEventListener('mouseup', this.handleMouseUp, false);
 				document.removeEventListener('mousemove', this.drawerResize, false);
 				this.emitEvent('handle:mouseup', evt);
@@ -406,8 +449,10 @@ export default {
 		computeTop() {
 			if (!this.hasApp) return 0;
 
+			// ! This causes issues when not importing vuetify ! //
 			let top = this.$vuetify.application.bar;
 
+			// ! This causes issues when not importing vuetify ! //
 			top += this.clipped ?
 				this.$vuetify.application.top :
 				0;
@@ -432,6 +477,15 @@ export default {
 				width: this.resizedWidth,
 			};
 
+			if (name !== 'handle:drag') {
+				this.$unicornLog({
+					text: `emitEvent: ${name}`,
+					styles: this.unicornLog.styles,
+					logPrefix: this.unicornLog.prefix,
+					objects: { evt, drawerData },
+				});
+			}
+
 			this.$emit(name, drawerData);
 		},
 		genListeners() {
@@ -440,6 +494,13 @@ export default {
 			drawer.addEventListener('mouseleave', this.drawerMouseleave, false);
 		},
 		updateApplication() {
+			if (
+				!this.isActive ||
+				this.isMobile ||
+				this.temporary ||
+				!this.$el
+			) return 0;
+
 			let intWidth = typeof this.drawerWidth === 'number' ? this.drawerWidth : this.drawerWidth.replace('px', '');
 
 			if (!this.miniVariant && this.expandOnHover) {
@@ -456,10 +517,12 @@ export default {
 			const intWidth = typeof width === 'number' ? width : width.replace('px', '');
 
 			if (this.right) {
+				// ! `this.$vuetify.application` is supposed to be readonly ! //
 				this.$vuetify.application.right = intWidth;
 				return false;
 			}
 
+			// ! `this.$vuetify.application` is supposed to be readonly ! //
 			this.$vuetify.application.left = intWidth;
 			return false;
 		},

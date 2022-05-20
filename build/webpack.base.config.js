@@ -1,6 +1,5 @@
 const path = require('path');
 const { VueLoaderPlugin } = require('vue-loader');
-const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin');
 const sass = require('sass');
 
 /*
@@ -82,7 +81,6 @@ module.exports = {
 	},
 	plugins: [
 		new VueLoaderPlugin(),
-		new VuetifyLoaderPlugin(),
 	],
 	infrastructureLogging: {
 		level: 'none',

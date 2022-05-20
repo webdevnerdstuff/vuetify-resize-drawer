@@ -39,7 +39,7 @@
 		</v-app-bar>
 
 		<!-- ====================================================== Navigation Drawer -->
-		<v-navigation-drawer
+		<!-- <v-navigation-drawer
 			app
 			v-model="drawer"
 			clipped
@@ -65,7 +65,7 @@
 			<v-divider></v-divider>
 
 			<Menu :drawerOptions="drawerOptions" />
-		</v-navigation-drawer>
+		</v-navigation-drawer> -->
 
 		<v-resize-drawer
 			v-model="drawer"
