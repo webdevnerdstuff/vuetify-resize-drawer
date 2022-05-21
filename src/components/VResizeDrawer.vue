@@ -50,8 +50,8 @@
 					v-if="$scopedSlots.handle"
 					name="handle"
 					:class="{
-						'theme--dark': isDark,
-						'theme--light': !isDark,
+						'theme--dark': dark,
+						'theme--light': !dark,
 						'float-end': right,
 						'float-start': !right,
 					}"
@@ -61,8 +61,8 @@
 			<v-icon
 				v-else-if="handlePosition === 'top-icon'"
 				:class="{
-					'theme--dark': isDark,
-					'theme--light': !isDark,
+					'theme--dark': dark,
+					'theme--light': !dark,
 					'float-end': right,
 					'float-start': !right,
 				}"
@@ -187,7 +187,6 @@ export default baseMixins.extend({
 				'v-navigation-drawer--right': this.right,
 				'v-navigation-drawer--temporary': this.temporary,
 				'v-navigation-drawer--overflow': this.overflow,
-				...this.themeClasses,
 			};
 		},
 		drawerStyles() {
