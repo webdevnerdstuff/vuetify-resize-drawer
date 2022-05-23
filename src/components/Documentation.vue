@@ -73,16 +73,16 @@
 </template>
 
 <script>
-import Dependencies from '@components/documentation/Dependencies.vue';
-import Description from '@components/documentation/Description.vue';
-import Events from '@components/documentation/Events.vue';
-import Example from '@components/documentation/Example.vue';
-import Legal from '@components/documentation/Legal.vue';
-import License from '@components/documentation/License.vue';
-import Props from '@components/documentation/Props.vue';
-import SassVariables from '@components/documentation/SassVariables.vue';
-import Slots from '@components/documentation/Slots.vue';
-import Usage from '@components/documentation/Usage.vue';
+import Dependencies from '@documentation/Dependencies.vue';
+import Description from '@documentation/Description.vue';
+import Events from '@documentation/Events.vue';
+import Example from '@documentation/Example.vue';
+import Legal from '@documentation/Legal.vue';
+import License from '@documentation/License.vue';
+import Props from '@documentation/Props.vue';
+import SassVariables from '@documentation/SassVariables.vue';
+import Slots from '@documentation/Slots.vue';
+import Usage from '@documentation/Usage.vue';
 import { component as VueCodeHighlight } from 'vue-code-highlight';
 import packageInfo from '../../package.json';
 
