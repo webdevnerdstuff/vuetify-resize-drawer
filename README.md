@@ -8,7 +8,7 @@
 </p>
 
 <p align="center">
-  <a href="https://www.npmjs.com/package/vutify-resize-drawer">
+  <a href="https://www.npmjs.com/package/vuetify-resize-drawer">
     <img src="https://img.shields.io/badge/NPM%20-Package-%23cb3837" alt="NPM Package">
   </a>
   <a href="https://github.com/webdevnerdstuff">
@@ -30,7 +30,7 @@ npm i vuetify-resize-drawer
 
 ## Documentation
  
-[Documentation & Examples](https://webdevnerdstuff.github.io/vutify-resize-drawer/)
+[Documentation & Examples](https://webdevnerdstuff.github.io/vuetify-resize-drawer/)
 
 ## Dependencies
  
