@@ -12,7 +12,7 @@
 						The <code>vuetify-resize-drawer</code> component usage is mostly the
 						same as the
 						<a
-							href="https://vuetifyjs.com/en/components/navigation-drawers/"
+							:href="`${links.vuetify2}/components/navigation-drawers/`"
 							target="_blank"
 							>v-navigation-drawer</a
 						>. It can also be used as a component in its own right for things
@@ -30,6 +30,10 @@ export default {
 	name: 'Usage',
 	props: {
 		classes: {
+			type: Object,
+			required: true,
+		},
+		links: {
 			type: Object,
 			required: true,
 		},

@@ -126,10 +126,6 @@ export default baseMixins.extend({
 			type: String,
 			default: 'center',
 		},
-		options: {
-			type: Object,
-			required: true,
-		},
 		overflow: Boolean,
 		resizable: {
 			type: Boolean,
@@ -245,21 +241,30 @@ export default baseMixins.extend({
 			return styles;
 		},
 		isResizable() {
-			return this.resizable && !this.isMiniVariant && !this.expandOnHover;
+			return this.resizable && !this.miniVariant && !this.expandOnHover;
 		},
 	},
 	watch: {
 		isMouseover: {
 			handler(val) {
-				if (this.miniVariant || this.expandOnHover) {
+				if (this.miniVariant && this.expandOnHover) {
 					this.resizedWidth = val ? this.width : this.miniVariantWidth;
 				}
 			},
 			deep: true,
 		},
-	},
-	updated() {
-		console.log('UPDATED', this);
+		miniVariant: {
+			handler(val) {
+				let width = this.width;
+
+				if (this.saveWidth) {
+					width = this.getLocalStorage();
+				}
+
+				this.resizedWidth = !val ? width : this.miniVariantWidth;
+			},
+			deep: true,
+		},
 	},
 	mounted() {
 		this.setup();
@@ -421,7 +426,7 @@ export default baseMixins.extend({
 			return localStorage.getItem(this.storageName);
 		},
 		setLocalStorage(action = 'update') {
-			if (!this.saveWidth) {
+			if (!this.saveWidth || this.miniVariant || this.expandOnHover) {
 				return false;
 			}
 
@@ -481,11 +486,17 @@ export default baseMixins.extend({
 				!this.$el
 			) return 0;
 
-			let intWidth = typeof this.drawerWidth === 'number' ? this.drawerWidth : this.drawerWidth.replace('px', '');
+			let newWidth = this.drawerWidth;
 
 			if (!this.miniVariant && this.expandOnHover) {
-				intWidth = typeof this.width === 'number' ? this.width : this.width.replace('px', '');
+				newWidth = this.width;
 			}
+
+			if (this.miniVariant && this.expandOnHover) {
+				newWidth = this.miniVariantWidth;
+			}
+
+			const intWidth = typeof newWidth === 'number' ? newWidth : newWidth.replace('px', '');
 
 			return intWidth;
 		},

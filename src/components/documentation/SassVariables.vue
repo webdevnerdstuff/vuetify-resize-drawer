@@ -10,7 +10,7 @@
 				<v-col cols="12">
 					Vuetify's
 					<a
-						href="https://vuetifyjs.com/en/api/v-navigation-drawer/#sass"
+						:href="`${links.vuetify2}/api/v-navigation-drawer/#sass`"
 						target="_blank"
 						>SASS Variables</a
 					>
@@ -60,6 +60,10 @@ export default {
 	name: 'SassVariables',
 	props: {
 		classes: {
+			type: Object,
+			required: true,
+		},
+		links: {
 			type: Object,
 			required: true,
 		},

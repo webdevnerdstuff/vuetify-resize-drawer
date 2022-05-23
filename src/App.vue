@@ -24,7 +24,7 @@
 
 			<v-spacer></v-spacer>
 
-			<v-btn :href="links.github" class="mr-2" icon small>
+			<v-btn :href="links.repo" class="mr-2" icon small target="_blank">
 				<v-icon>mdi-github</v-icon>
 			</v-btn>
 
@@ -79,7 +79,6 @@
 			:light="drawerOptions.light"
 			:mini-variant-width="drawerOptions.miniVariantWidth"
 			:mini-variant="drawerOptions.miniVariant"
-			:options="drawerOptions"
 			:overflow="drawerOptions.overflow"
 			:resizable="drawerOptions.resizable"
 			:right="drawerOptions.right"
@@ -135,7 +134,7 @@
 			]"
 			:style="mainStyles"
 		>
-			<Documentation :drawerOptions="drawerOptions" />
+			<Documentation :drawerOptions="drawerOptions" :links="links" />
 		</v-main>
 	</v-app>
 </template>
@@ -201,8 +200,11 @@ export default {
 		},
 		drawerOffset: '256px',
 		links: {
-			github: 'https://github.com/webdevnerdstuff/vuetify-resize-drawer',
+			github: 'https://github.com/webdevnerdstuff',
 			npm: 'https://www.npmjs.com/package/vuetify-resize-drawer',
+			repo: 'https://github.com/webdevnerdstuff/vuetify-resize-drawer',
+			vue2: 'https://v2.vuejs.org',
+			vuetify2: 'https://vuetifyjs.com/en',
 		},
 		unicornLog: {
 			styles: [

@@ -8,13 +8,13 @@
 
 			<v-row>
 				<v-col cols="12">
-					Copyright &copy; {{ new Date().getFullYear() }} WebDevNerdStuff
+					Copyright &copy; {{ new Date().getFullYear() }}
+					<a :href="links.github" target="_blank">WebDevNerdStuff</a>
 					<br />
 					Licensed under the
-					<a
-						href="https://github.com/webdevnerdstuff/vuetify-resize-drawer/blob/master/LICENSE.md"
-						>MIT License</a
-					>.
+					<a :href="`${links.repo}/blob/master/LICENSE.md`" target="_blank">
+						MIT License
+					</a>
 				</v-col>
 			</v-row>
 		</v-col>
@@ -27,6 +27,10 @@ export default {
 	name: 'License',
 	props: {
 		classes: {
+			type: Object,
+			required: true,
+		},
+		links: {
 			type: Object,
 			required: true,
 		},
