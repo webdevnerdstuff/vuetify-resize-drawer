@@ -9,7 +9,7 @@
 			<v-row>
 				<v-col cols="12">
 					<p>
-						Vuetify and the Vuetify logo are trademarks of Vuetify. This
+						Vuetify and the Vuetify logo are trademarks of Vuetify LLC. This
 						component was not created or endorsed by Vuetify.
 					</p>
 				</v-col>

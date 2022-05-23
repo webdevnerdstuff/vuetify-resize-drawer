@@ -12,6 +12,9 @@
 
 			<v-col class="mb-4">
 				<h1 class="v-heading text-h3 text-sm-h3 mb-4">Vuetify Resize Drawer</h1>
+				<v-chip color="primary" outlined small>
+					v {{ componentVersion }}
+				</v-chip>
 			</v-col>
 		</v-row>
 
@@ -34,13 +37,17 @@
 		</v-row>
 
 		<!-- Description -->
-		<Description :drawerOptions="drawerOptions" :classes="classes" />
+		<Description
+			:drawerOptions="drawerOptions"
+			:classes="classes"
+			:links="links"
+		/>
 
 		<!-- Usage -->
-		<Usage :drawerOptions="drawerOptions" :classes="classes" />
+		<Usage :drawerOptions="drawerOptions" :classes="classes" :links="links" />
 
 		<!-- Props -->
-		<Props :drawerOptions="drawerOptions" :classes="classes" />
+		<Props :drawerOptions="drawerOptions" :classes="classes" :links="links" />
 
 		<!-- Events -->
 		<Events :classes="classes" />
@@ -49,7 +56,7 @@
 		<Slots :classes="classes" />
 
 		<!-- SASS Variables -->
-		<SassVariables :classes="classes" />
+		<SassVariables :classes="classes" :links="links" />
 
 		<!-- Example -->
 		<Example :classes="classes" />
@@ -58,7 +65,7 @@
 		<Dependencies :classes="classes" :links="links" />
 
 		<!-- License -->
-		<License :classes="classes" />
+		<License :classes="classes" :links="links" />
 
 		<!-- Legal -->
 		<Legal :classes="classes" />
@@ -66,17 +73,18 @@
 </template>
 
 <script>
+import Dependencies from '@documentation/Dependencies.vue';
+import Description from '@documentation/Description.vue';
+import Events from '@documentation/Events.vue';
+import Example from '@documentation/Example.vue';
+import Legal from '@documentation/Legal.vue';
+import License from '@documentation/License.vue';
+import Props from '@documentation/Props.vue';
+import SassVariables from '@documentation/SassVariables.vue';
+import Slots from '@documentation/Slots.vue';
+import Usage from '@documentation/Usage.vue';
 import { component as VueCodeHighlight } from 'vue-code-highlight';
-import Dependencies from '@components/documentation/Dependencies.vue';
-import Description from '@components/documentation/Description.vue';
-import Events from '@components/documentation/Events.vue';
-import Example from '@components/documentation/Example.vue';
-import Legal from '@components/documentation/Legal.vue';
-import License from '@components/documentation/License.vue';
-import Props from '@components/documentation/Props.vue';
-import SassVariables from '@components/documentation/SassVariables.vue';
-import Slots from '@components/documentation/Slots.vue';
-import Usage from '@components/documentation/Usage.vue';
+import packageInfo from '../../package.json';
 
 export default {
 	name: 'Documentation',
@@ -98,15 +106,14 @@ export default {
 			type: Object,
 			required: true,
 		},
+		links: {
+			type: Object,
+			required: true,
+		},
 	},
 	data: () => ({
+		componentVersion: packageInfo.version,
 		drawerOffset: '256px',
-		links: {
-			vue2: 'https://v2.vuejs.org/',
-			vuetify2: 'https://vuetifyjs.com/en/',
-			github: '',
-			npm: '',
-		},
 		classes: {
 			h2: 'v-heading text-h4 text-sm-h4 mb-3',
 			h3: 'v-heading text-h5 text-sm-h5 mb-1',

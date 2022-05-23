@@ -8,10 +8,6 @@ module.exports = {
 		'eslint:recommended',
 		'plugin:vue/essential',
 	],
-	globals: {
-		socket: true,
-		PDFObject: true,
-	},
 	overrides: [
 		{
 			files: [

@@ -3,19 +3,19 @@
 		v-bind="$attrs"
 		ref="resizeDrawer"
 		class="v-resize-drawer"
-		:class="classes"
-		:style="styles"
 		tag="nav"
-		:value="value"
+		:class="drawerClasses"
 		:stateless="stateless"
-		:width="resizedWidth"
+		:style="drawerStyles"
+		:value="value"
+		:width="drawerWidth"
 	>
 		<!-- Resize handle -->
 		<div
 			v-if="isResizable"
 			class="handle-container d-flex"
-			:class="{ [handleContainerClass]: handlePosition }"
-			:style="handleContainerStyle"
+			:class="{ [handleClasses]: handlePosition }"
+			:style="handleStyles"
 			@dblclick="handleDoubleClick"
 			@mousedown="handleMouseDown"
 			@mouseup="handleMouseUp"
@@ -93,23 +93,35 @@
 </template>
 
 <script>
-import { merge as _merge } from 'lodash';
-import { VNavigationDrawer } from 'vuetify/lib';
+import Vue from 'vue';
+import Vuetify, { VNavigationDrawer } from 'vuetify/lib';
+import UnicornLog from 'vue-unicorn-log';
+import Applicationable from 'vuetify/lib/mixins/applicationable';
+import mixins from 'vuetify/lib/util/mixins';
 
-export default {
+Vue.use(Vuetify);
+Vue.use(UnicornLog);
+
+const baseMixins = mixins(
+	Applicationable('left', [
+		'drawerWidth',
+	]),
+);
+
+export default baseMixins.extend({
 	extends: VNavigationDrawer,
 	name: 'v-resize-drawer',
 	props: {
-		options: {
+		handleColor: {
 			type: Object,
-			required: true,
-		},
-		width: {
-			type: String,
 			required: false,
-			default: '256px',
+			default() {
+				return {
+					dark: '#555',
+					light: '#ccc',
+				};
+			},
 		},
-		// Updated //
 		handlePosition: {
 			type: String,
 			default: 'center',
@@ -129,18 +141,14 @@ export default {
 			type: String,
 			default: 'v-resize-drawer-width',
 		},
+		width: {
+			type: [Number, String],
+			required: false,
+			default: 256,
+		},
 	},
 	data: () => ({
-		defaultWidth: '256px',
-		drawerOptions: {
-			handle: {
-				color: {
-					dark: '#555',
-					light: '#ccc',
-				},
-			},
-			width: '256px',
-		},
+		defaultWidth: 256,
 		events: {
 			handle: {
 				mouseUp: true,
@@ -148,7 +156,7 @@ export default {
 			},
 		},
 		loading: false,
-		resizedWidth: '256px',
+		resizedWidth: 256,
 		unicornLog: {
 			styles: [
 				'background: black',
@@ -159,7 +167,7 @@ export default {
 		},
 	}),
 	computed: {
-		classes() {
+		drawerClasses() {
 			return {
 				'v-navigation-drawer--absolute': this.absolute,
 				'v-navigation-drawer--bottom': this.bottom,
@@ -177,36 +185,25 @@ export default {
 				'v-navigation-drawer--overflow': this.overflow,
 			};
 		},
-		styles() {
+		drawerStyles() {
 			const translate = this.isBottom ? 'translateY' : 'translateX';
-			let top = this.$vuetify.application.bar;
-
-			top += this.clipped ? this.$vuetify.application.top : 0;
 
 			const styles = {
 				height: this.convertToUnit(this.height),
-				top: !this.isBottom ? this.convertToUnit(top) : 'auto',
+				top: !this.isBottom ? this.convertToUnit(this.computedTop) : 'auto',
 				maxHeight: this.computedMaxHeight != null ?
 					`calc(100% - ${this.convertToUnit(this.computedMaxHeight)})` :
 					undefined,
 				transform: `${translate}(${this.convertToUnit(this.computedTransform, '%')})`,
-				width: this.isMiniVariant ? this.convertToUnit(this.miniVariantWidth) : this.resizedWidth,
+				width: this.convertToUnit(this.isMiniVariant ? this.miniVariantWidth : this.resizedWidth),
 			};
 
 			return styles;
 		},
-		containerClass() {
-			const position = this.handlePosition;
-			let className = '';
-
-			if (position === 'center' || position === 'border' || position === 'left' || position === 'right') {
-				const paddingSide = this.right ? 's' : 'e';
-				className += ` p${paddingSide}-8`;
-			}
-
-			return className;
+		drawerWidth() {
+			return this.convertToUnit(this.resizedWidth);
 		},
-		handleContainerClass() {
+		handleClasses() {
 			let className = `handle-container-${this.handlePosition}`;
 
 			if (this.$scopedSlots.handle && this.handlePosition === 'top-icon') {
@@ -223,9 +220,8 @@ export default {
 
 			return className;
 		},
-		handleContainerStyle() {
-			const options = this.drawerOptions;
-			const color = this.dark ? options.handle.color.dark : options.handle.color.light;
+		handleStyles() {
+			const color = this.isDark ? this.handleColor.dark : this.handleColor.light;
 			let styles = `border-${this.handlePosition}-color: ${color};`;
 
 			if (this.handlePosition === 'left' || this.handlePosition === 'right' || this.handlePosition === 'border') {
@@ -245,71 +241,105 @@ export default {
 			return styles;
 		},
 		isResizable() {
-			return this.resizable && !this.isMiniVariant;
+			return this.resizable && !this.miniVariant && !this.expandOnHover;
 		},
 	},
 	watch: {
-		options: {
-			handler() {
-				this.setOptions();
+		isMouseover: {
+			handler(val) {
+				if (this.miniVariant && this.expandOnHover) {
+					this.resizedWidth = val ? this.width : this.miniVariantWidth;
+				}
+			},
+			deep: true,
+		},
+		miniVariant: {
+			handler(val) {
+				let width = this.width;
+
+				if (this.saveWidth) {
+					width = this.getLocalStorage();
+				}
+
+				this.resizedWidth = !val ? width : this.miniVariantWidth;
 			},
 			deep: true,
 		},
 	},
 	mounted() {
+		this.setup();
+		this.genListeners();
 		this.setLocalStorage('set');
 	},
 	beforeDestroy() {
+		const drawer = this.$refs.resizeDrawer.$el;
+
+		drawer.removeEventListener('mouseenter', this.drawerMouseenter, false);
+		drawer.removeEventListener('mouseleave', this.drawerMouseleave, false);
+
 		if (this.isResizable) {
 			document.removeEventListener('mouseup', this.handleMouseUp, false);
 			document.removeEventListener('mousemove', this.drawerResize, false);
 		}
 	},
 	methods: {
-		computeTop() {
-			if (!this.hasApp) return 0;
+		setup() {
+			const width = this.convertToUnit(this.width);
+			this.resizedWidth = width;
 
-			let top = this.$vuetify.application.bar;
-
-			top += this.clipped ?
-				this.$vuetify.application.top :
-				0;
-
-			return top;
-		},
-		convertToUnit(str, unit = 'px') {
-			if (str == null || str === '') {
-				return undefined;
-			}
-			else if (!+str) {
-				return String(str);
+			// Disable resize if mini-variant is set //
+			if (this.isMiniVariant) {
+				this.resizedWidth = this.miniVariantWidth || undefined;
+				return false;
 			}
 
-			return `${Number(str)}${unit}`;
-		},
-		emitEvent(name, evt) {
-			const drawerData = {
-				eventName: name,
-				evt,
-				resizedWidth: this.resizedWidth,
-				width: this.resizedWidth,
-			};
+			const storageWidth = this.getLocalStorage();
 
-			if (name !== 'handle:drag') {
-				this.$unicornLog({
-					text: `emitEvent: ${name}`,
-					styles: this.unicornLog.styles,
-					logPrefix: this.unicornLog.prefix,
-					objects: { evt, drawerData },
-				});
+			this.defaultWidth = this.resizedWidth;
+
+			if (this.saveWidth && storageWidth && !this.isMiniVariant) {
+				this.resizedWidth = this.getLocalStorage();
 			}
 
-			this.$emit(name, drawerData);
+			return false;
 		},
-		genContent() {
-			return this.$createElement('div', {
-				staticClass: 'v-navigation-drawer__content',
-			}, this.$slots.default);
+
+		// Drawer Events //
+		drawerClose(evt) {
+			this.emitEvent('close', evt);
+		},
+		drawerDrag(e) {
+			e.preventDefault();
+			e.stopPropagation();
+
+			const el = this.$refs.resizeDrawer.$el;
+
+			if (e.offsetX < 25) {
+				el.style.transition = 'initial';
+				document.addEventListener('mousemove', this.drawerResize, false);
+			}
+		},
+		drawerInput(val) {
+			this.emitEvent('input', val);
+		},
+		drawerMouseenter() {
+			this.isMouseover = true;
+		},
+		drawerMouseleave() {
+			this.isMouseover = false;
+		},
+		drawerResize(el) {
+			let width = el.clientX;
+
+			if (this.right) {
+				width = document.body.scrollWidth - width;
+			}
+
+			this.resizedWidth = this.convertToUnit(width);
+
+			document.body.style.cursor = 'grabbing';
+
+			this.emitEvent('handle:drag', el);
 		},
 
 		// Handle Events //
@@ -334,7 +364,6 @@ export default {
 			this.resizedWidth = this.defaultWidth;
 			this.setLocalStorage();
 
-			this.updateAppWidth(this.resizedWidth);
 			this.emitEvent('handle:dblclick', evt);
 		},
 		handleMouseDown(evt) {
@@ -376,10 +405,7 @@ export default {
 			if (!this.events.handle.mouseUp) {
 				this.events.handle.mouseUp = true;
 
-				this.updateAppWidth(this.resizedWidth);
-
 				const logStuff = {
-					drawerOptionsWidth: this.resizedWidth,
 					resizedWidth: this.resizedWidth,
 				};
 
@@ -395,46 +421,12 @@ export default {
 			}
 		},
 
-		// Drawer Events //
-		drawerClose(evt) {
-			this.emitEvent('close', evt);
-		},
-		drawerDrag(e) {
-			e.preventDefault();
-			e.stopPropagation();
-
-			const el = this.$refs.resizeDrawer.$el;
-
-			if (e.offsetX < 25) {
-				el.style.transition = 'initial';
-				document.addEventListener('mousemove', this.drawerResize, false);
-			}
-		},
-		drawerInput(val) {
-			this.emitEvent('input', val);
-		},
-		drawerResize(el) {
-			let width = el.clientX;
-
-			if (this.right) {
-				width = document.body.scrollWidth - width;
-			}
-
-			this.resizedWidth = `${width}px`;
-
-			document.body.style.cursor = 'grabbing';
-
-			this.updateAppWidth(width);
-
-			this.emitEvent('handle:drag', el);
-		},
-
 		// Storage Events //
 		getLocalStorage() {
 			return localStorage.getItem(this.storageName);
 		},
 		setLocalStorage(action = 'update') {
-			if (!this.saveWidth) {
+			if (!this.saveWidth || this.miniVariant || this.expandOnHover) {
 				return false;
 			}
 
@@ -444,8 +436,6 @@ export default {
 			if (action === 'set') {
 				width = this.getLocalStorage();
 				width = width || this.resizedWidth;
-
-				this.updateAppWidth(width);
 			}
 
 			localStorage.setItem(this.storageName, width);
@@ -453,42 +443,65 @@ export default {
 			return width;
 		},
 
-		// Mounted Event //
-		setOptions() {
-			this.drawerOptions = _merge(this.drawerOptions, this.options);
-
-			// Disable resize if mini-variant is set //
-			if (this.isMiniVariant) {
-				this.resizedWidth = this.miniVariantWidth || undefined;
-				return false;
+		// Misc Events //
+		convertToUnit(str, unit = 'px') {
+			if (str == null || str === '') {
+				return undefined;
 			}
-			const storageWidth = this.getLocalStorage();
-
-			if (this.saveWidth && storageWidth && !this.isMiniVariant) {
-				this.defaultWidth = this.resizedWidth;
-				this.resizedWidth = this.getLocalStorage();
+			else if (!+str) {
+				return String(str);
 			}
 
-			this.updateAppWidth(this.resizedWidth);
-			return false;
+			return `${Number(str)}${unit}`;
 		},
-		updateAppWidth(width) {
-			if (!this.app || this.isMiniVariant) {
-				return false;
+		emitEvent(name, evt) {
+			const drawerData = {
+				eventName: name,
+				evt,
+				resizedWidth: this.resizedWidth,
+				width: this.resizedWidth,
+			};
+
+			if (name !== 'handle:drag') {
+				this.$unicornLog({
+					text: `emitEvent: ${name}`,
+					styles: this.unicornLog.styles,
+					logPrefix: this.unicornLog.prefix,
+					objects: { evt, drawerData },
+				});
 			}
 
-			const intWidth = typeof width === 'number' ? width : width.replace('px', '');
+			this.$emit(name, drawerData);
+		},
+		genListeners() {
+			const drawer = this.$refs.resizeDrawer.$el;
+			drawer.addEventListener('mouseenter', this.drawerMouseenter, false);
+			drawer.addEventListener('mouseleave', this.drawerMouseleave, false);
+		},
+		updateApplication() {
+			if (
+				!this.isActive ||
+				this.isMobile ||
+				this.temporary ||
+				!this.$el
+			) return 0;
 
-			if (this.right) {
-				this.$vuetify.application.right = intWidth;
-				return false;
+			let newWidth = this.drawerWidth;
+
+			if (!this.miniVariant && this.expandOnHover) {
+				newWidth = this.width;
 			}
 
-			this.$vuetify.application.left = intWidth;
-			return false;
+			if (this.miniVariant && this.expandOnHover) {
+				newWidth = this.miniVariantWidth;
+			}
+
+			const intWidth = typeof newWidth === 'number' ? newWidth : newWidth.replace('px', '');
+
+			return intWidth;
 		},
 	},
-};
+});
 </script>
 
 <style lang="scss" scoped>

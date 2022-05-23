@@ -22,12 +22,15 @@
 &lt;template>
 	&lt;v-app id="home">
 		&lt;v-resize-drawer
-			name="ResizeDrawer"
+			v-model="drawer"
+			app
+			clipped
 			fixed
-			:color="drawerOptions.color"
-			:options="drawerOptions"
-			:right="drawerOptions.right"
-			:value="drawer"
+			handlePosition="center"
+			storageName="my-storage-name"
+			width="256px"
+			:overflow="true"
+			:saveWidth="true"
 			@close="drawerClose"
 			@handle:click="handleClick"
 			@handle:dblclick="handleDoubleClick"
@@ -42,13 +45,15 @@
 			&lt;/template>
 
 			&lt;template #prepend>
-				&lt;header>
+				&lt;div>
 					Prepend Slot
-				&lt;/header>
+				&lt;/div>
 			&lt;/template>
 
 			&lt;template #append>
-				&lt;v-footer>Footer Slot&lt;/v-footer>
+				&lt;div>
+					Append Slot
+				&lt;/div>
 			&lt;/template>
 		&lt;/v-resize-drawer>
 	&lt;/v-app>
@@ -69,15 +74,6 @@
 		},
 		data: () => ({
 			drawer: true,
-			drawerOptions: {
-				handlePosition: 'center',
-				overlayColor: '#f00',
-				overlayOpacity: '100%',
-				right: false,
-				saveWidth: true,
-				storageName: 'vuetify-resize-drawer',
-				width: '256px',
-			},
 		}),
 		methods: {
 			drawerClose(val) {

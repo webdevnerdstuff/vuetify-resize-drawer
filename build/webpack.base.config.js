@@ -1,25 +1,6 @@
 const path = require('path');
 const { VueLoaderPlugin } = require('vue-loader');
 const sass = require('sass');
-const webpack = require('webpack');
-const packageJson = require('../package.json');
-
-/*
- |--------------------------------------------------------------------------
- | Banner
- |--------------------------------------------------------------------------
- */
-const banner = `Vuetify Resize Drawer
-
-@name ${packageJson.name}
-@version ${packageJson.version}
-@description ${packageJson.description}
-@author ${packageJson.author}
-@copyright Copyright ${new Date().getFullYear()}, WebDevNerdStuff
-@homepage ${packageJson.homepage}
-@repository ${packageJson.repository}
-@license https://github.com/webdevnerdstuff/vuetify-resize-drawer/blob/main/LICENSE.md
-`;
 
 /*
  |--------------------------------------------------------------------------
@@ -84,11 +65,8 @@ module.exports = {
 	resolve: {
 		extensions: ['.js', '.vue'],
 		alias: {
-			'@': path.join(__dirname, '/src'),
-			'@assets': path.join(__dirname, '/src/assets'),
 			'@components': path.join(__dirname, '/src/components'),
-			'@docs': path.join(__dirname, '/src/docs'),
-			'@plugins': path.join(__dirname, '/src/plugins'),
+			'@documentation': path.join(__dirname, '/src/components/documentation'),
 		},
 	},
 	module: {
@@ -99,9 +77,6 @@ module.exports = {
 		],
 	},
 	plugins: [
-		new webpack.BannerPlugin({
-			banner,
-		}),
 		new VueLoaderPlugin(),
 	],
 	infrastructureLogging: {

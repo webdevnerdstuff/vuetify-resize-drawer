@@ -10,7 +10,7 @@
 				<v-col cols="12">
 					Vuetify Resize Drawer uses Vuetify's
 					<a
-						href="https://vuetifyjs.com/en/api/v-navigation-drawer/"
+						:href="`${links.vuetify2}/api/v-navigation-drawer/`"
 						target="_blank"
 						>Navigation Drawer</a
 					>
@@ -18,7 +18,7 @@
 					<code>v-navigation-drawer</code> are supported. For a list of those
 					props, you can find them
 					<a
-						href="https://vuetifyjs.com/en/api/v-navigation-drawer/#props"
+						:href="`${links.vuetify2}/api/v-navigation-drawer/#props`"
 						target="_blank"
 						>here</a
 					>.
@@ -95,22 +95,49 @@
 							<v-card-text class="py-2">
 								<v-row>
 									<v-col cols="12" sm="12" md="6">
+										<v-switch dense inset v-model="options.resizable">
+											<template #label>
+												<span>
+													resizable:
+													<span class="boolean-color primary--text">
+														{{ options.resizable }}
+													</span>
+												</span>
+											</template>
+										</v-switch>
+									</v-col>
+
+									<v-col cols="12" sm="12" md="6">
+										<v-switch dense inset v-model="options.right">
+											<template #label>
+												<span>
+													right:
+													<span class="boolean-color primary--text">
+														{{ options.right }}
+													</span>
+												</span>
+											</template>
+										</v-switch>
+									</v-col>
+
+									<!-- For testing only -->
+									<!-- <v-col cols="12" sm="12" md="6">
 										<v-switch
-											:label="`resizable: ${options.resizable}`"
+											:label="`mini-variant: ${options.miniVariant}`"
 											dense
 											inset
-											v-model="options.resizable"
+											v-model="options.miniVariant"
 										></v-switch>
 									</v-col>
 
 									<v-col cols="12" sm="12" md="6">
 										<v-switch
-											:label="`right: ${options.right}`"
+											:label="`expand-on-hover: ${options.expandOnHover}`"
 											dense
 											inset
-											v-model="options.right"
+											v-model="options.expandOnHover"
 										></v-switch>
-									</v-col>
+									</v-col> -->
 
 									<v-col cols="12" sm="12" md="6">
 										<v-select
@@ -121,30 +148,42 @@
 									</v-col>
 
 									<v-col cols="12" sm="12" md="6">
-										<v-switch
-											:label="`overflow: ${options.overflow}`"
-											dense
-											inset
-											v-model="options.overflow"
-										></v-switch>
+										<v-switch dense inset v-model="options.overflow">
+											<template #label>
+												<span>
+													overflow:
+													<span class="boolean-color primary--text">
+														{{ options.overflow }}
+													</span>
+												</span>
+											</template>
+										</v-switch>
 									</v-col>
 
 									<v-col cols="12" sm="12" md="6">
-										<v-switch
-											:label="`dark: ${options.dark || 'undefined'}`"
-											dense
-											inset
-											v-model="options.dark"
-										></v-switch>
+										<v-switch dense inset v-model="options.dark">
+											<template #label>
+												<span>
+													dark:
+													<span class="boolean-color primary--text">
+														{{ options.dark || 'undefined' }}
+													</span>
+												</span>
+											</template>
+										</v-switch>
 									</v-col>
 
 									<v-col cols="12" sm="12" md="6">
-										<v-switch
-											:label="`light: ${options.light || 'undefined'}`"
-											dense
-											inset
-											v-model="options.light"
-										></v-switch>
+										<v-switch dense inset v-model="options.light">
+											<template #label>
+												<span>
+													light:
+													<span class="boolean-color primary--text">
+														{{ options.light || 'undefined' }}
+													</span>
+												</span>
+											</template>
+										</v-switch>
 									</v-col>
 
 									<v-col cols="12">
@@ -156,12 +195,16 @@
 									</v-col>
 
 									<v-col cols="12" sm="12" md="6">
-										<v-switch
-											:label="`saveWidth: ${options.saveWidth}`"
-											dense
-											inset
-											v-model="options.saveWidth"
-										></v-switch>
+										<v-switch dense inset v-model="options.saveWidth">
+											<template #label>
+												<span>
+													saveWidth:
+													<span class="boolean-color primary--text">
+														{{ options.saveWidth }}
+													</span>
+												</span>
+											</template>
+										</v-switch>
 									</v-col>
 
 									<v-col cols="12" sm="12" md="6">
@@ -222,7 +265,16 @@
 											></span
 										>
 									</td>
-									<td class="secondary--text" v-html="item.status"></td>
+									<td
+										:class="{
+											'warning--text': item.status === 'pending',
+											'error--text': item.status === 'debugging',
+											'secondary--text':
+												item.status !== 'debugging' &&
+												item.status !== 'pending',
+										}"
+										v-html="item.status"
+									></td>
 									<td v-html="item.notes"></td>
 								</tr>
 							</template>
@@ -244,6 +296,10 @@ export default {
 			required: true,
 		},
 		drawerOptions: {
+			type: Object,
+			required: true,
+		},
+		links: {
 			type: Object,
 			required: true,
 		},
@@ -287,13 +343,13 @@ export default {
 			],
 			items: [
 				{
-					name: 'handle.color',
+					name: 'handle-color',
 					type: 'object',
 					default: "<pre><code>{ dark: '#555', light: '#ccc' }</code></pre>",
-					desc: 'Determines the color of the handle for dark and light modes. Used when the <code>handlePosition</code> is set to <strong>top</strong>. Alternatively you can use CSS styles to adjust the colors.',
+					desc: 'Determines the background color of the handle for dark and light modes. Used when the <code>handlePosition</code> is set to <strong>top</strong>. Alternatively you can use CSS styles to adjust the colors.',
 				},
 				{
-					name: 'handlePosition',
+					name: 'handle-position',
 					type: 'string',
 					default: 'center',
 					desc: 'Specifies the position or the handle. Valid values are <strong>border</strong>, <strong>center</strong>, <strong>top</strong>, <strong>top-icon</strong>.',
@@ -311,13 +367,13 @@ export default {
 					desc: 'Enables resize functionality.',
 				},
 				{
-					name: 'saveWidth',
+					name: 'save-width',
 					type: 'boolean',
 					default: 'true',
 					desc: 'Determines if the width of the component is saved in local storage.',
 				},
 				{
-					name: 'storageName',
+					name: 'storage-name',
 					type: 'string',
 					default: 'v-resize-drawer-width',
 					desc: 'Determines the name of the local storage item.',
@@ -357,8 +413,8 @@ export default {
 				},
 				{
 					name: 'expand-on-hover',
-					status: 'debugging',
-					notes: 'The <code>expand-on-hover</code> prop for use with the <code>mini-variant</code> prop does not currently work, and/but the resizable functionality is disabled.',
+					status: 'partial support',
+					notes: 'The <code>expand-on-hover</code> prop will work, but the resizable functionality is disabled.',
 				},
 				{
 					name: 'mini-variant',
@@ -372,7 +428,7 @@ export default {
 				},
 				{
 					name: 'mobile-breakpoint',
-					status: 'needs testing',
+					status: 'pending',
 					notes: 'Needs a successful  pass/fail test to figure out if this works.',
 				},
 				{
@@ -429,5 +485,9 @@ export default {
 			color: #905;
 		}
 	}
+}
+
+.boolean-color {
+	font-weight: 500;
 }
 </style>

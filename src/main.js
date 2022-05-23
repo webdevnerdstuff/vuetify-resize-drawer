@@ -1,9 +1,6 @@
 import Vue from 'vue';
-import vuetify from '@plugins/vuetify';
-import UnicornLog from 'vue-unicorn-log';
+import vuetify from './plugins/vuetify';
 import App from './App.vue';
-
-Vue.use(UnicornLog);
 
 Vue.config.productionTip = false;
 

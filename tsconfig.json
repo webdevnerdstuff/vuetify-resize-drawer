@@ -1,0 +1,17 @@
+{
+	"include": [
+		"./src/index.js",
+	],
+	"compilerOptions": {
+		"target": "es5",
+		"module": "commonjs",
+		"allowJs": true,
+		"declaration": true,
+		"emitDeclarationOnly": true,
+		"outDir": "./types",
+		"strict": true,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"forceConsistentCasingInFileNames": true
+	}
+}
