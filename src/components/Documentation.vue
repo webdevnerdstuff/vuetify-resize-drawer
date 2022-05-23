@@ -13,7 +13,7 @@
 			<v-col class="mb-4">
 				<h1 class="v-heading text-h3 text-sm-h3 mb-4">Vuetify Resize Drawer</h1>
 				<v-chip color="primary" outlined small>
-					v {{ componentVersion }}
+					v{{ componentVersion }}
 				</v-chip>
 			</v-col>
 		</v-row>
