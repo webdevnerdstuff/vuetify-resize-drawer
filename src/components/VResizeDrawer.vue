@@ -95,12 +95,10 @@
 <script>
 import Vue from 'vue';
 import Vuetify, { VNavigationDrawer } from 'vuetify/lib';
-import UnicornLog from 'vue-unicorn-log';
 import Applicationable from 'vuetify/lib/mixins/applicationable';
 import mixins from 'vuetify/lib/util/mixins';
 
 Vue.use(Vuetify);
-Vue.use(UnicornLog);
 
 const baseMixins = mixins(
 	Applicationable('left', [
@@ -157,14 +155,6 @@ export default baseMixins.extend({
 		},
 		loading: false,
 		resizedWidth: 256,
-		unicornLog: {
-			styles: [
-				'background: black',
-				'color: #0f0',
-				'padding: 5px',
-			],
-			prefix: '[VResizeDrawer.vue]',
-		},
 	}),
 	computed: {
 		drawerClasses() {
@@ -344,23 +334,9 @@ export default baseMixins.extend({
 
 		// Handle Events //
 		handleClick(evt) {
-			this.$unicornLog({
-				text: 'handleClick',
-				styles: this.unicornLog.styles,
-				logPrefix: this.unicornLog.prefix,
-				objects: evt,
-			});
-
 			this.emitEvent('handle:click', evt);
 		},
 		handleDoubleClick(evt) {
-			this.$unicornLog({
-				text: 'handleDoubleClick',
-				styles: this.unicornLog.styles,
-				logPrefix: this.unicornLog.prefix,
-				objects: evt,
-			});
-
 			this.resizedWidth = this.defaultWidth;
 			this.setLocalStorage();
 
@@ -377,13 +353,6 @@ export default baseMixins.extend({
 			}
 
 			if (!this.events.handle.mouseDown) {
-				this.$unicornLog({
-					text: 'handleMouseDown',
-					styles: this.unicornLog.styles,
-					logPrefix: this.unicornLog.prefix,
-					objects: evt,
-				});
-
 				this.events.handle.mouseDown = true;
 				document.addEventListener('mouseup', this.handleMouseUp, false);
 				this.emitEvent('handle:mousedown', evt);
@@ -405,16 +374,6 @@ export default baseMixins.extend({
 			if (!this.events.handle.mouseUp) {
 				this.events.handle.mouseUp = true;
 
-				const logStuff = {
-					resizedWidth: this.resizedWidth,
-				};
-
-				this.$unicornLog({
-					text: 'handleMouseUp',
-					styles: this.unicornLog.styles,
-					logPrefix: this.unicornLog.prefix,
-					objects: logStuff,
-				});
 				document.removeEventListener('mouseup', this.handleMouseUp, false);
 				document.removeEventListener('mousemove', this.drawerResize, false);
 				this.emitEvent('handle:mouseup', evt);
@@ -461,15 +420,6 @@ export default baseMixins.extend({
 				resizedWidth: this.resizedWidth,
 				width: this.resizedWidth,
 			};
-
-			if (name !== 'handle:drag') {
-				this.$unicornLog({
-					text: `emitEvent: ${name}`,
-					styles: this.unicornLog.styles,
-					logPrefix: this.unicornLog.prefix,
-					objects: { evt, drawerData },
-				});
-			}
 
 			this.$emit(name, drawerData);
 		},
