@@ -1,7 +1,7 @@
-<!-- 
+
 <p align="center">
   <img alt="Vuetify Logo" width="100" src="https://webdevnerdstuff.github.io/vuetify-resize-drawer/images/vuetify-logo-light-atom.svg">
-</p> -->
+</p>
 
 <p>
   <h1 align="center">Vuetify Resize Drawer</h1>
@@ -9,10 +9,11 @@
 
 <p align="center">
   <a href="https://www.npmjs.com/package/vuetify-resize-drawer">
-    <img src="https://img.shields.io/badge/NPM%20-Package-%23cb3837" alt="NPM Package">
+    <img src="https://img.shields.io/npm/v/vuetify-resize-drawer?color=1867c0&logo=npm" alt="NPM Package">
   </a>
+  &nbsp;
   <a href="https://github.com/webdevnerdstuff">
-    <img src="https://img.shields.io/badge/github-webdevnerdstuff-brightgreen.svg" alt="@WebDevNerdStuff">
+    <img src="https://img.shields.io/badge/GitHub-WebDevNerdStuff-brightgreen.svg?logo=github" alt="@WebDevNerdStuff">
   </a>
 </p>
 
@@ -24,13 +25,19 @@ The `vuetify-resize-drawer` component extends the functionality of the [v-naviga
 
 ## Installation
  
+Using npm:
 ```
 npm i vuetify-resize-drawer
+```
+ 
+Using [pnpm](https://pnpm.io/):
+```
+pnpm add vuetify-resize-drawer
 ```
 
 ## Documentation
  
-[Documentation & Examples](https://webdevnerdstuff.github.io/vuetify-resize-drawer/)
+[Documentation & Demo](https://webdevnerdstuff.github.io/vuetify-resize-drawer/)
 
 ## Dependencies
  

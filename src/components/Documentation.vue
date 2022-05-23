@@ -13,7 +13,7 @@
 			<v-col class="mb-4">
 				<h1 class="v-heading text-h3 text-sm-h3 mb-4">Vuetify Resize Drawer</h1>
 				<v-chip color="primary" outlined small>
-					v {{ componentVersion }}
+					v{{ componentVersion }}
 				</v-chip>
 			</v-col>
 		</v-row>
@@ -28,8 +28,15 @@
 
 				<v-row>
 					<v-col cols="12">
+						Using npm:
 						<vue-code-highlight language="bash">
 							<pre>npm i vuetify-resize-drawer</pre>
+						</vue-code-highlight>
+					</v-col>
+					<v-col cols="12">
+						Using <a :href="links.pnpm" target="_blank">pnpm</a>:
+						<vue-code-highlight language="bash">
+							<pre>pnpm add vuetify-resize-drawer</pre>
 						</vue-code-highlight>
 					</v-col>
 				</v-row>
