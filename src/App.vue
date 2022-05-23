@@ -141,9 +141,12 @@
 
 <script>
 import Vue from 'vue';
+import UnicornLog from 'vue-unicorn-log';
 import Documentation from './components/Documentation.vue';
 import Menu from './components/Menu.vue';
 import VResizeDrawer from './components/VResizeDrawer.vue';
+
+Vue.use(UnicornLog, { disabled: true });
 
 const EventBus = new Vue();
 
