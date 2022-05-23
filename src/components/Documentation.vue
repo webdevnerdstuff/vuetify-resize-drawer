@@ -28,8 +28,15 @@
 
 				<v-row>
 					<v-col cols="12">
+						Using npm:
 						<vue-code-highlight language="bash">
 							<pre>npm i vuetify-resize-drawer</pre>
+						</vue-code-highlight>
+					</v-col>
+					<v-col cols="12">
+						Using <a :href="links.pnpm" target="_blank">pnpm</a>:
+						<vue-code-highlight language="bash">
+							<pre>pnpm add vuetify-resize-drawer</pre>
 						</vue-code-highlight>
 					</v-col>
 				</v-row>

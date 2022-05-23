@@ -202,6 +202,7 @@ export default {
 		links: {
 			github: 'https://github.com/webdevnerdstuff',
 			npm: 'https://www.npmjs.com/package/vuetify-resize-drawer',
+			pnpm: 'https://pnpm.io/',
 			repo: 'https://github.com/webdevnerdstuff/vuetify-resize-drawer',
 			vue2: 'https://v2.vuejs.org',
 			vuetify2: 'https://vuetifyjs.com/en',
