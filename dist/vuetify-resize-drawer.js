@@ -2,7 +2,7 @@
  * Vuetify Resize Drawer
  *
  *  @name vuetify-resize-drawer
- *  @version 0.0.1-alpha.0
+ *  @version 0.0.1-alpha.2
  *  @description The vuetify-resize-drawer component extends the functionality of the v-navigation-drawer so that it is resizable by the user.
  *  @author WebDevNerdStuff & Bunnies... lots and lots of bunnies! <webdevnerdstuff@gmail.com> (https://webdevnerdstuff.com)
  *  @copyright Copyright 2022, WebDevNerdStuff
