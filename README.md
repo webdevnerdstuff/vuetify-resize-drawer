@@ -12,7 +12,7 @@
     <img src="https://img.shields.io/npm/v/vuetify-resize-drawer?color=1867c0&logo=npm" alt="NPM Package">
   </a>
   &nbsp;
-  <a href="https://github.com/webdevnerdstuff">
+  <a href="https://github.com/webdevnerdstuff/vuetify-resize-drawer">
     <img src="https://img.shields.io/badge/GitHub-WebDevNerdStuff-brightgreen.svg?logo=github" alt="@WebDevNerdStuff">
   </a>
 </p>
