@@ -20,7 +20,7 @@
 
 ## Description
 
-The `vuetify-resize-drawer` component extends the functionality of the [v-navigation-drawer](https://vuetifyjs.com/en/components/navigation-drawers/) so that it is resizable by the user. Component is for Vuetify v2.
+The `vuetify-resize-drawer` component extends the functionality of the [v-navigation-drawer](https://vuetifyjs.com/en/components/navigation-drawers/) so that it is resizable by the user. Component is for Vuetify v2. Component for Vuetify v3 version can be found [here](https://github.com/webdevnerdstuff/vuetify3-resize-drawer).
 
 
 ## Installation
