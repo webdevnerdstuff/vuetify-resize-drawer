@@ -93,16 +93,6 @@ const browserSyncOptions = {
 	proxy: `localhost:${devServerPort}`,
 	ui: false,
 	watch: true,
-	snippetOptions: {
-		rule: {
-			match: /<\/head>/u,
-			fn(snippet, match) {
-				const { groups: { src } } = /src='(?<src>[^']+)'/u.exec(snippet);
-
-				return `<script src="${src}" async></script>${match}`;
-			},
-		},
-	},
 };
 
 /*
