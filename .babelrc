@@ -1,13 +1,20 @@
 {
-	"presets": [["@babel/preset-env"]],
-	"ignore": ["node_modules/", "public/"],
+	"presets": [
+		[
+			"@babel/preset-env"
+		]
+	],
+	"ignore": [
+		"node_modules/",
+		"public/"
+	],
 	"plugins": [
-		"@babel/plugin-proposal-object-rest-spread",
-		"@babel/plugin-proposal-optional-chaining",
 		[
 			"module-resolver",
 			{
-				"root": ["./"],
+				"root": [
+					"./"
+				],
 				"alias": {
 					"@components": "./src/components",
 					"@documentation": "./src/components/documentation"
