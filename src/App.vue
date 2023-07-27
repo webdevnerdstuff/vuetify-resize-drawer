@@ -394,6 +394,7 @@ html {
 }
 
 code {
+	&.language-bash,
 	&.language-html,
 	&.language-javascript,
 	&.language-js {
