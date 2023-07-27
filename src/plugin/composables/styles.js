@@ -21,6 +21,7 @@ export const useDrawerStyles = (options) => {
 		miniVariantWidth,
 		resizedWidth,
 		top,
+		transform,
 		widthSnapBack,
 		windowHeight,
 	} = options;
@@ -51,6 +52,7 @@ export const useDrawerStyles = (options) => {
 		height: drawerHeight,
 		transitionDuration: isMouseDown ? '0s' : '.2s',
 		top: useConvertToUnit({ str: top }),
+		transform,
 		width: useConvertToUnit({ str: widthValue }),
 	};
 };

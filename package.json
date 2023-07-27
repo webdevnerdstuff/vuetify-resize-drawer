@@ -1,6 +1,6 @@
 {
 	"name": "vuetify-resize-drawer",
-	"version": "1.1.1",
+	"version": "1.1.2",
 	"description": "The vuetify-resize-drawer component extends the functionality of the v-navigation-drawer so that it is resizable by the user.",
 	"private": false,
 	"main": "dist/vuetify-resize-drawer.js",
@@ -124,6 +124,6 @@
 	},
 	"peerDependencies": {
 		"vue": "^2.7.0",
-		"vuetify": "^2.6.6"
+		"vuetify": "^2.7.0"
 	}
 }

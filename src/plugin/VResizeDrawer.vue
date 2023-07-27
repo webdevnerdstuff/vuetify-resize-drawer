@@ -199,6 +199,7 @@ export default baseMixins.extend({
 				resizedWidth: this.resizedWidth,
 				// ? computedTop comes from VNavigationDrawer component //
 				top: this.computedTop,
+				transform: `translateX(${useConvertToUnit({ str: this.computedTransform, unit: '%' })})`,
 				widthSnapBack: this.widthSnapBack,
 				windowHeight,
 			});
