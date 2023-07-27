@@ -171,8 +171,8 @@ devDependencies:
     specifier: ^2.7.0
     version: 2.7.0(vue@2.7.14)
   vuetify-loader:
-    specifier: vuetifyjs/vuetify-loader#legacy
-    version: github.com/vuetifyjs/vuetify-loader/6c4809cb527b0d0b7c2136fa8076c3dc46aa1946(vue@2.7.14)(vuetify@2.7.0)(webpack@5.88.2)
+    specifier: ^1.9.2
+    version: 1.9.2(vue@2.7.14)(vuetify@2.7.0)(webpack@5.88.2)
   webpack:
     specifier: ^5.88.2
     version: 5.88.2(webpack-cli@4.10.0)
@@ -6939,6 +6939,33 @@ packages:
       csstype: 3.1.2
     dev: true
 
+  /vuetify-loader@1.9.2(vue@2.7.14)(vuetify@2.7.0)(webpack@5.88.2):
+    resolution: {integrity: sha512-8PP2w7aAs/rjA+Izec6qY7sHVb75MNrGQrDOTZJ5IEnvl+NiFhVpU2iWdRDZ3eMS842cWxSWStvkr+KJJKy+Iw==}
+    peerDependencies:
+      gm: ^1.23.0
+      pug: ^2.0.0 || ^3.0.0
+      sharp: '*'
+      vue: ^2.7.2
+      vuetify: ^1.3.0 || ^2.0.0
+      webpack: ^4.0.0 || ^5.0.0
+    peerDependenciesMeta:
+      gm:
+        optional: true
+      pug:
+        optional: true
+      sharp:
+        optional: true
+    dependencies:
+      acorn: 8.10.0
+      acorn-walk: 8.2.0
+      decache: 4.6.2
+      file-loader: 6.2.0(webpack@5.88.2)
+      loader-utils: 2.0.4
+      vue: 2.7.14
+      vuetify: 2.7.0(vue@2.7.14)
+      webpack: 5.88.2(webpack-cli@4.10.0)
+    dev: true
+
   /vuetify@2.7.0(vue@2.7.14):
     resolution: {integrity: sha512-eDb+lbtB9e+FRbOPIIyXwgwgc2M6gvhHkhSgggzM0hmKh1XM34YStZbM865viH0AfpxGZIOsRcs0S+OtdyOB+Q==}
     peerDependencies:
@@ -7319,34 +7346,4 @@ packages:
     resolution: {tarball: https://codeload.github.com/PrismJS/prism-themes/tar.gz/447479fc7b2be2051fe27e561aceed7cc87a589f}
     name: prism-themes
     version: 1.9.0
-    dev: true
-
-  github.com/vuetifyjs/vuetify-loader/6c4809cb527b0d0b7c2136fa8076c3dc46aa1946(vue@2.7.14)(vuetify@2.7.0)(webpack@5.88.2):
-    resolution: {tarball: https://codeload.github.com/vuetifyjs/vuetify-loader/tar.gz/6c4809cb527b0d0b7c2136fa8076c3dc46aa1946}
-    id: github.com/vuetifyjs/vuetify-loader/6c4809cb527b0d0b7c2136fa8076c3dc46aa1946
-    name: vuetify-loader
-    version: 1.9.2
-    peerDependencies:
-      gm: ^1.23.0
-      pug: ^2.0.0 || ^3.0.0
-      sharp: '*'
-      vue: ^2.7.2
-      vuetify: ^1.3.0 || ^2.0.0
-      webpack: ^4.0.0 || ^5.0.0
-    peerDependenciesMeta:
-      gm:
-        optional: true
-      pug:
-        optional: true
-      sharp:
-        optional: true
-    dependencies:
-      acorn: 8.10.0
-      acorn-walk: 8.2.0
-      decache: 4.6.2
-      file-loader: 6.2.0(webpack@5.88.2)
-      loader-utils: 2.0.4
-      vue: 2.7.14
-      vuetify: 2.7.0(vue@2.7.14)
-      webpack: 5.88.2(webpack-cli@4.10.0)
     dev: true

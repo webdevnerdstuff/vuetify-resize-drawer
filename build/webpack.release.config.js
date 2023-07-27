@@ -28,7 +28,7 @@ module.exports = merge(base, {
 		new webpack.BannerPlugin({
 			banner,
 		}),
-		new VuetifyLoaderPlugin({ autoImport: true }),
+		new VuetifyLoaderPlugin(),
 	],
 	optimization: {
 		minimize: true,
