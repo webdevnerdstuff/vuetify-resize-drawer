@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to the "vuetify-resize-drawer" plugin will be documented in this file.
 
+## v1.1.1
+July 26, 2023  
+[main] Initial release (WebDevNerdStuff)
+* Fix build missing vuetify imports
+
 ## v1.1.0
 July 26, 2023  
 [main] Initial release (WebDevNerdStuff)
