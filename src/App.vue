@@ -4,12 +4,12 @@
 		<v-app-bar
 			app
 			class="top-app-bar"
+			clipped-left
+			clipped-right
 			color="primary"
 			dark
 			dense
 			fixed
-			clipped-left
-			clipped-right
 		>
 			<v-app-bar-nav-icon
 				class="nav-drawer-btn mr-2"
@@ -24,15 +24,32 @@
 
 			<v-spacer></v-spacer>
 
-			<v-btn :href="links.repo" class="mr-2" icon small target="_blank">
+			<v-btn
+				class="mr-2"
+				:href="links.repo"
+				icon
+				small
+				target="_blank"
+			>
 				<v-icon>mdi-github</v-icon>
 			</v-btn>
 
-			<v-btn :href="links.npm" class="mr-2" icon small target="_blank">
+			<v-btn
+				class="mr-2"
+				:href="links.npm"
+				icon
+				small
+				target="_blank"
+			>
 				<v-icon>mdi-npm</v-icon>
 			</v-btn>
 
-			<v-btn class="mr-1" icon small @click="toggleDark">
+			<v-btn
+				class="mr-1"
+				icon
+				small
+				@click="toggleDark"
+			>
 				<v-icon v-if="!dark">mdi-weather-sunny</v-icon>
 				<v-icon v-else>mdi-weather-night</v-icon>
 			</v-btn>
@@ -40,17 +57,17 @@
 
 		<!-- ====================================================== Navigation Drawer -->
 		<v-navigation-drawer
-			app
 			v-model="drawer"
+			app
 			clipped
-			fixed
-			:right="!drawerOptions.right"
 			:color="drawerOptions.color"
+			:expand-on-hover="drawerOptions.expandOnHover"
+			fixed
 			:mini-variant="drawerOptions.miniVariant"
 			:mini-variant-width="drawerOptions.miniVariantWidth"
-			:expand-on-hover="drawerOptions.expandOnHover"
-			:touchless="drawerOptions.touchless"
+			:right="!drawerOptions.right"
 			:stateless="drawerOptions.stateless"
+			:touchless="drawerOptions.touchless"
 			:width="drawerOptions.width"
 		>
 			<v-list-item>
@@ -67,18 +84,21 @@
 			<Menu :drawerOptions="drawerOptions" />
 		</v-navigation-drawer>
 
-		<v-resize-drawer
+		<VResizeDrawer
 			v-model="drawer"
 			app
 			clipped
-			fixed
 			:color="drawerOptions.color"
 			:dark="drawerOptions.dark"
 			:expand-on-hover="drawerOptions.expandOnHover"
+			fixed
+			:handle-color="drawerOptions.handleColor"
 			:handle-position="drawerOptions.handlePosition"
 			:light="drawerOptions.light"
-			:mini-variant-width="drawerOptions.miniVariantWidth"
+			max-width="50%"
+			min-width="256"
 			:mini-variant="drawerOptions.miniVariant"
+			:mini-variant-width="drawerOptions.miniVariantWidth"
 			:overflow="drawerOptions.overflow"
 			:resizable="drawerOptions.resizable"
 			:right="drawerOptions.right"
@@ -123,7 +143,7 @@
 			>
 				<v-card-title>Overflow Content</v-card-title>
 			</v-card>
-		</v-resize-drawer>
+		</VResizeDrawer>
 
 		<!-- ====================================================== Main Container -->
 		<v-main
@@ -134,7 +154,10 @@
 			]"
 			:style="mainStyles"
 		>
-			<Documentation :drawerOptions="drawerOptions" :links="links" />
+			<Documentation
+				:drawerOptions="drawerOptions"
+				:links="links"
+			/>
 		</v-main>
 	</v-app>
 </template>
@@ -144,7 +167,6 @@ import Vue from 'vue';
 import UnicornLog from 'vue-unicorn-log';
 import Documentation from './components/Documentation.vue';
 import Menu from './components/Menu.vue';
-import VResizeDrawer from './components/VResizeDrawer.vue';
 
 Vue.use(UnicornLog, { disabled: true });
 
@@ -163,7 +185,6 @@ export default {
 	components: {
 		Documentation,
 		Menu,
-		VResizeDrawer,
 	},
 	computed: {
 		mainStyles() {
@@ -180,53 +201,50 @@ export default {
 	data: () => ({
 		dark: false,
 		drawer: true,
+		drawerOffset: '256px',
 		drawerOptions: {
 			color: undefined,
 			dark: false,
+			expandOnHover: false,
+			handleColor: 'primary',
 			handlePosition: 'center',
 			light: false,
+			miniVariant: false,
+			miniVariantWidth: 56,
 			overflow: false,
 			resizable: true,
 			right: false,
+			saveWidth: true,
 			stateless: false,
+			storageName: 'v-resize-drawer-width',
 			touchless: false,
 			width: undefined,
-
-			// storage //
-			saveWidth: true,
-			storageName: 'v-resize-drawer-width',
-
-			// mini-variant //
-			expandOnHover: false,
-			miniVariant: false,
-			miniVariantWidth: 56,
 		},
-		drawerOffset: '256px',
 		links: {
 			github: 'https://github.com/webdevnerdstuff',
 			npm: 'https://www.npmjs.com/package/vuetify-resize-drawer',
 			pnpm: 'https://pnpm.io/',
 			repo: 'https://github.com/webdevnerdstuff/vuetify-resize-drawer',
 			vue2: 'https://v2.vuejs.org',
-			vuetify2: 'https://vuetifyjs.com/en',
+			vuetify2: 'https://v2.vuetifyjs.com/en',
 		},
+		mainContainerEl: null,
 		unicornLog: {
+			prefix: '[App.vue]',
 			styles: [
 				'background: black',
 				'color: magenta',
 				'padding: 5px',
 			],
-			prefix: '[App.vue]',
 		},
-		mainContainerEl: null,
 	}),
 	created() {
 		this.$bus.$on('updateOptions', (options) => {
 			this.$unicornLog({
-				text: 'updateOptions',
-				styles: this.unicornLog.styles,
 				logPrefix: this.unicornLog.prefix,
 				objects: options,
+				styles: this.unicornLog.styles,
+				text: 'updateOptions',
 			});
 
 			this.drawerOptions = options;
@@ -237,26 +255,20 @@ export default {
 		this.getDarkLocalStorage();
 	},
 	methods: {
-		toggleDark() {
-			this.dark = !this.dark;
-			this.$vuetify.theme.dark = this.dark;
-			this.setDarkLocalStorage(this.dark);
-		},
-
 		drawerClose(val) {
 			this.$unicornLog({
-				text: `drawerClose: ${val}`,
-				styles: this.unicornLog.styles,
 				logPrefix: this.unicornLog.prefix,
+				styles: this.unicornLog.styles,
+				text: `drawerClose: ${val}`,
 			});
 
 			this.drawer = false;
 		},
 		drawerInput(val) {
 			this.$unicornLog({
-				text: `drawerInput: ${val}`,
-				styles: this.unicornLog.styles,
 				logPrefix: this.unicornLog.prefix,
+				styles: this.unicornLog.styles,
+				text: `drawerInput: ${val}`,
 			});
 
 			if (val) {
@@ -269,53 +281,11 @@ export default {
 		},
 		drawerTransitionend(evt) {
 			this.$unicornLog({
+				logPrefix: this.unicornLog.prefix,
+				object: evt,
+				styles: this.unicornLog.styles,
 				text: 'drawerTransitionend',
-				styles: this.unicornLog.styles,
-				logPrefix: this.unicornLog.prefix,
-				object: evt,
 			});
-		},
-		handleClick(evt) {
-			this.$unicornLog({
-				text: 'handleClick',
-				styles: this.unicornLog.styles,
-				logPrefix: this.unicornLog.prefix,
-				object: evt,
-			});
-		},
-		handleDoubleClick(evt) {
-			this.$unicornLog({
-				text: 'handleDoubleClick',
-				styles: this.unicornLog.styles,
-				logPrefix: this.unicornLog.prefix,
-				object: evt,
-			});
-
-			this.updateDrawerOffset(evt.offsetWidth);
-		},
-		handleMousedown(evt) {
-			this.$unicornLog({
-				text: 'handleMousedown',
-				styles: this.unicornLog.styles,
-				logPrefix: this.unicornLog.prefix,
-				object: evt,
-			});
-		},
-		handleMouseup(evt) {
-			this.$unicornLog({
-				text: 'handleMouseup',
-				styles: this.unicornLog.styles,
-				logPrefix: this.unicornLog.prefix,
-				object: evt,
-			});
-
-			this.updateDrawerOffset(evt.offsetWidth);
-		},
-		handleDrag(evt) {
-			this.updateDrawerOffset(evt.offsetWidth);
-		},
-		getLocalStorage() {
-			this.updateDrawerOffset(localStorage.getItem(this.drawerOptions.storageName) || this.drawerOffset);
 		},
 		getDarkLocalStorage() {
 			const isDark = localStorage.getItem('vuetify-resize-drawer-dark');
@@ -323,8 +293,55 @@ export default {
 			this.dark = isDark === 'true';
 			this.$vuetify.theme.dark = this.dark;
 		},
+		getLocalStorage() {
+			this.updateDrawerOffset(localStorage.getItem(this.drawerOptions.storageName) || this.drawerOffset);
+		},
+		handleClick(evt) {
+			this.$unicornLog({
+				logPrefix: this.unicornLog.prefix,
+				object: evt,
+				styles: this.unicornLog.styles,
+				text: 'handleClick',
+			});
+		},
+		handleDoubleClick(evt) {
+			this.$unicornLog({
+				logPrefix: this.unicornLog.prefix,
+				object: evt,
+				styles: this.unicornLog.styles,
+				text: 'handleDoubleClick',
+			});
+
+			this.updateDrawerOffset(evt.offsetWidth);
+		},
+		handleDrag(evt) {
+			this.updateDrawerOffset(evt.offsetWidth);
+		},
+		handleMousedown(evt) {
+			this.$unicornLog({
+				logPrefix: this.unicornLog.prefix,
+				object: evt,
+				styles: this.unicornLog.styles,
+				text: 'handleMousedown',
+			});
+		},
+		handleMouseup(evt) {
+			this.$unicornLog({
+				logPrefix: this.unicornLog.prefix,
+				object: evt,
+				styles: this.unicornLog.styles,
+				text: 'handleMouseup',
+			});
+
+			this.updateDrawerOffset(evt.offsetWidth);
+		},
 		setDarkLocalStorage(val) {
 			localStorage.setItem('vuetify-resize-drawer-dark', val);
+		},
+		toggleDark() {
+			this.dark = !this.dark;
+			this.$vuetify.theme.dark = this.dark;
+			this.setDarkLocalStorage(this.dark);
 		},
 		updateDrawerOffset(val) {
 			this.drawerOffset = val;
@@ -334,8 +351,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import 'prism-themes/themes/prism-night-owl.css';
-@import 'vue-code-highlight/themes/window.css';
+@import 'vue-code-highlight/themes/prism-tomorrow.css';
 
 html {
 	scroll-behavior: smooth;
@@ -374,6 +390,14 @@ html {
 		&:not(:hover):not(:focus) {
 			opacity: 0;
 		}
+	}
+}
+
+code {
+	&.language-html,
+	&.language-javascript,
+	&.language-js {
+		background-color: transparent !important;
 	}
 }
 

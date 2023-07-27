@@ -1,5 +1,5 @@
 // Import vue component
-import VResizeDrawer from './components/VResizeDrawer.vue';
+import VResizeDrawer from './plugin/VResizeDrawer.vue';
 
 // Declare install function executed by Vue.use()
 export function install(Vue) {

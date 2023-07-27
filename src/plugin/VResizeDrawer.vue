@@ -2,79 +2,42 @@
 	<v-navigation-drawer
 		v-bind="$attrs"
 		ref="resizeDrawer"
-		class="v-resize-drawer"
-		tag="nav"
 		:class="drawerClasses"
 		:stateless="stateless"
 		:style="drawerStyles"
+		:tag="tag"
 		:value="value"
 		:width="drawerWidth"
 	>
 		<!-- Resize handle -->
 		<div
 			v-if="isResizable"
-			class="handle-container d-flex"
-			:class="{ [handleClasses]: handlePosition }"
-			:style="handleStyles"
+			:class="handleContainerClasses"
+			:style="handleContainerStyles"
+			@click="handleClick"
 			@dblclick="handleDoubleClick"
 			@mousedown="handleMouseDown"
 			@mouseup="handleMouseUp"
-			@click="handleClick"
 		>
-			<!-- Icon -->
-			<div
-				v-if="
-					handlePosition === 'left' ||
-					handlePosition === 'right' ||
-					handlePosition === 'center'
-				"
-				class="
-					handle-container-icon
-					d-flex
-					align-items-center
-					justify-content-center
-				"
-				:class="{
-					[`handle-container-${handlePosition}-icon`]: handlePosition,
-				}"
-			>
-				<slot v-if="$scopedSlots.handle" name="handle"></slot>
-				<div v-else :class="{ 'handle-container-handle-flip': right }">
-					&raquo;
+			<template v-if="$scopedSlots.handle">
+				<div class="v-resize-drawer--handle-slot">
+					<slot name="handle"></slot>
 				</div>
-			</div>
-
-			<!-- Top Icon -->
-			<template v-if="$scopedSlots.handle && handlePosition === 'top-icon'">
-				<slot
-					v-if="$scopedSlots.handle"
-					name="handle"
-					:class="{
-						'theme--dark': dark,
-						'theme--light': !dark,
-						'float-end': right,
-						'float-start': !right,
-					}"
-				></slot>
 			</template>
 
 			<v-icon
-				v-else-if="handlePosition === 'top-icon'"
-				:class="{
-					'theme--dark': dark,
-					'theme--light': !dark,
-					'float-end': right,
-					'float-start': !right,
-				}"
+				v-else-if="handlePosition !== 'border'"
+				class="v-resize-drawer--handle-icon"
+				:class="handleIconClasses"
+				:large="handleIconSize === 'large'"
+				:medium="handleIconSize === 'medium'"
+				:small="handleIconSize === 'small'"
+				:style="handleIconStyles"
+				:x-large="handleIconSize === 'x-large'"
+				:x-small="handleIconSize === 'x-small'"
 			>
-				mdi-resize-bottom-right
+				{{ theHandleIcon }}
 			</v-icon>
-
-			<!-- Top -->
-			<div
-				v-else-if="handlePosition === 'top'"
-				class="handle-container-lines"
-			></div>
 		</div>
 
 		<!-- Prepend Slot -->
@@ -97,6 +60,25 @@ import Vue from 'vue';
 import Vuetify, { VNavigationDrawer } from 'vuetify/lib';
 import Applicationable from 'vuetify/lib/mixins/applicationable';
 import mixins from 'vuetify/lib/util/mixins';
+import {
+	useGetStorage,
+	useSetStorage,
+} from './composables/storage';
+import {
+	useHandleContainerClasses,
+	useHandleIconClasses,
+	useDrawerClasses,
+} from './composables/classes';
+import {
+	useDrawerStyles,
+	useHandleContainerStyles,
+	useHandleIconStyles,
+} from './composables/styles';
+import {
+	useConvertToNumber,
+	useConvertToUnit,
+} from './composables/helpers';
+import { useGetIcon } from './composables/icons';
 
 Vue.use(Vuetify);
 
@@ -110,140 +92,184 @@ export default baseMixins.extend({
 	extends: VNavigationDrawer,
 	name: 'v-resize-drawer',
 	props: {
-		handleColor: {
-			type: Object,
+		handleBorderWidth: {
+			default: 8,
 			required: false,
-			default() {
-				return {
-					dark: '#555',
-					light: '#ccc',
-				};
-			},
+			type: [Number, String],
+		},
+		handleColor: {
+			default: 'primary',
+			type: String,
+		},
+		handleIcon: {
+			default: undefined,
+			type: String,
+		},
+		handleIconSize: {
+			default: 'x-small',
+			type: String,
 		},
 		handlePosition: {
-			type: String,
 			default: 'center',
+			type: String,
 		},
-		overflow: Boolean,
+		minWidth: {
+			default: 56,
+			required: false,
+			type: [Number, String],
+		},
+		maxWidth: {
+			default: '100%',
+			required: false,
+			type: [Number, String],
+		},
 		resizable: {
-			type: Boolean,
 			default() {
 				return !this.isMiniVariant;
 			},
+			type: Boolean,
 		},
 		saveWidth: {
-			type: Boolean,
 			default: true,
+			type: Boolean,
 		},
 		storageName: {
-			type: String,
 			default: 'v-resize-drawer-width',
+			type: String,
+		},
+		storageType: {
+			default: 'local',
+			type: String,
+		},
+		tag: {
+			default: 'nav',
+			type: String,
 		},
 		width: {
-			type: [Number, String],
-			required: false,
 			default: 256,
+			required: false,
+			type: [Number, String],
+		},
+		widthSnapBack: {
+			default: true,
+			type: Boolean,
 		},
 	},
 	data: () => ({
+		componentName: 'v-resize-drawer',
 		defaultWidth: 256,
-		events: {
-			handle: {
-				mouseUp: true,
-				mouseDown: false,
-			},
+		handleEvents: {
+			mouseDown: false,
+			mouseUp: true,
 		},
 		loading: false,
 		resizedWidth: 256,
 	}),
 	computed: {
 		drawerClasses() {
-			return {
-				'v-navigation-drawer--absolute': this.absolute,
-				'v-navigation-drawer--bottom': this.bottom,
-				'v-navigation-drawer--clipped': this.clipped,
-				'v-navigation-drawer--close': !this.isActive,
-				'v-navigation-drawer--fixed': !this.absolute && (this.app || this.fixed),
-				'v-navigation-drawer--floating': this.floating,
-				'v-navigation-drawer--is-mobile': this.isMobile,
-				'v-navigation-drawer--is-mouseover': this.isMouseover,
-				'v-navigation-drawer--mini-variant': this.isMiniVariant,
-				'v-navigation-drawer--custom-mini-variant': Number(this.miniVariantWidth) !== 56,
-				'v-navigation-drawer--open-on-hover': this.expandOnHover,
-				'v-navigation-drawer--right': this.right,
-				'v-navigation-drawer--temporary': this.temporary,
-				'v-navigation-drawer--overflow': this.overflow,
-			};
+			const classes = useDrawerClasses({
+				absolute: this.absolute,
+				app: this.app,
+				bottom: this.bottom,
+				clipped: this.clipped,
+				expandOnHover: this.expandOnHover,
+				fixed: this.fixed,
+				floating: this.floating,
+				isActive: this.isActive,
+				isMiniVariant: this.isMiniVariant,
+				isMobile: this.isMobile,
+				isMouseOver: this.isMouseover,
+				miniVariantWidth: this.miniVariantWidth,
+				right: this.right,
+				temporary: this.temporary,
+			});
+
+			return classes;
 		},
 		drawerStyles() {
-			const translate = this.isBottom ? 'translateY' : 'translateX';
+			const windowHeight = window.innerHeight;
 
-			const styles = {
-				height: this.convertToUnit(this.height),
-				top: !this.isBottom ? this.convertToUnit(this.computedTop) : 'auto',
-				maxHeight: this.computedMaxHeight != null ?
-					`calc(100% - ${this.convertToUnit(this.computedMaxHeight)})` :
-					undefined,
-				transform: `${translate}(${this.convertToUnit(this.computedTransform, '%')})`,
-				width: this.convertToUnit(this.isMiniVariant ? this.miniVariantWidth : this.resizedWidth),
-			};
+			const styles = useDrawerStyles({
+				height: this.height,
+				isMiniVariant: this.isMiniVariant,
+				isMouseDown: this.isMouseDown,
+				maxWidth: this.maxWidth,
+				minWidth: this.minWidth,
+				miniVariantWidth: this.miniVariantWidth,
+				resizedWidth: this.resizedWidth,
+				// ? computedTop comes from VNavigationDrawer component //
+				top: this.computedTop,
+				widthSnapBack: this.widthSnapBack,
+				windowHeight,
+			});
 
 			return styles;
 		},
 		drawerWidth() {
-			return this.convertToUnit(this.resizedWidth);
+			return useConvertToUnit({ str: this.resizedWidth });
 		},
-		handleClasses() {
-			let className = `handle-container-${this.handlePosition}`;
-
-			if (this.$scopedSlots.handle && this.handlePosition === 'top-icon') {
-				className += '-slot';
-			}
-
-			if (this.handlePosition === 'border' || this.handlePosition === 'left' || this.handlePosition === 'right' || this.handlePosition === 'center') {
-				className += ' align-center justify-center';
-			}
-
-			// Parent //
+		handleContainerClasses() {
 			const parentPosition = this.right ? 'right' : 'left';
-			className += ` handle-container-parent-${parentPosition}`;
 
-			return className;
+			return useHandleContainerClasses({
+				handlePosition: this.handlePosition,
+				isHandleSlot: this.$scopedSlots.handle,
+				parentPosition,
+			});
 		},
-		handleStyles() {
-			const color = this.isDark ? this.handleColor.dark : this.handleColor.light;
-			let styles = `border-${this.handlePosition}-color: ${color};`;
+		handleIconClasses() {
+			const parentPosition = this.right ? 'right' : 'left';
 
-			if (this.handlePosition === 'left' || this.handlePosition === 'right' || this.handlePosition === 'border') {
-				styles = `
-					background-color: ${color};
-					color: ${color};
-				`;
-			}
+			return useHandleIconClasses({
+				handlePosition: this.handlePosition,
+				iconfont: this.$vuetify.theme.framework.icons.iconfont,
+				isUserIcon: typeof this.handleIcon !== 'undefined' && this.handleIcon !== null,
+				parentPosition,
+			});
+		},
+		handleIconStyles() {
+			const styles = useHandleIconStyles({
+				color: this.handleColor,
+				theme: this.$vuetify.theme,
+			});
 
-			if (this.handlePosition === 'center') {
-				styles = `
-					background-color: transparent;
-					color: ${color};
-				`;
-			}
+			return styles;
+		},
+		handleContainerStyles() {
+			const styles = useHandleContainerStyles({
+				borderWidth: this.handleBorderWidth,
+				handleColor: this.handleColor,
+				iconSize: this.handleIconSize,
+				position: this.handlePosition,
+				theme: this.$vuetify.theme,
+			});
 
 			return styles;
 		},
 		isResizable() {
 			return this.resizable && !this.miniVariant && !this.expandOnHover;
 		},
+		theHandleIcon() {
+			const icon = useGetIcon({
+				icon: this.handleIcon,
+				iconfont: this.$vuetify.theme.framework.icons.iconfont,
+				position: this.handlePosition,
+			});
+
+			return icon;
+		},
 	},
 	watch: {
 		isMouseover: {
+			deep: true,
 			handler(val) {
 				if (this.miniVariant && this.expandOnHover) {
 					this.resizedWidth = val ? this.width : this.miniVariantWidth;
 				}
 			},
-			deep: true,
 		},
 		miniVariant: {
+			deep: true,
 			handler(val) {
 				let width = this.width;
 
@@ -253,7 +279,6 @@ export default baseMixins.extend({
 
 				this.resizedWidth = !val ? width : this.miniVariantWidth;
 			},
-			deep: true,
 		},
 	},
 	mounted() {
@@ -273,28 +298,21 @@ export default baseMixins.extend({
 		}
 	},
 	methods: {
-		setup() {
-			const width = this.convertToUnit(this.width);
-			this.resizedWidth = width;
+		checkMaxMinWidth(width) {
+			let returnWidth = useConvertToNumber(width);
+			const maxWidth = useConvertToNumber(this.maxWidth);
+			const minWidth = useConvertToNumber(this.minWidth);
 
-			// Disable resize if mini-variant is set //
-			if (this.isMiniVariant) {
-				this.resizedWidth = this.miniVariantWidth || undefined;
-				return false;
+			if (returnWidth >= maxWidth) {
+				returnWidth = maxWidth;
 			}
 
-			const storageWidth = this.getLocalStorage();
-
-			this.defaultWidth = this.resizedWidth;
-
-			if (this.saveWidth && storageWidth && !this.isMiniVariant) {
-				this.resizedWidth = this.getLocalStorage();
+			if (minWidth >= returnWidth) {
+				returnWidth = minWidth;
 			}
 
-			return false;
+			return returnWidth;
 		},
-
-		// Drawer Events //
 		drawerClose(evt) {
 			this.emitEvent('close', evt);
 		},
@@ -325,14 +343,37 @@ export default baseMixins.extend({
 				width = document.body.scrollWidth - width;
 			}
 
-			this.resizedWidth = this.convertToUnit(width);
+			this.resizedWidth = useConvertToUnit({ str: width });
+
+			if (!this.widthSnapBack) {
+				this.resizedWidth = this.checkMaxMinWidth(this.resizedWidth);
+			}
 
 			document.body.style.cursor = 'grabbing';
 
 			this.emitEvent('handle:drag', el);
 		},
+		emitEvent(name, evt) {
+			const drawerData = {
+				eventName: name,
+				evt,
+				resizedWidth: this.resizedWidth,
+				width: this.resizedWidth,
+			};
 
-		// Handle Events //
+			this.$emit(name, drawerData);
+		},
+		genListeners() {
+			const drawer = this.$refs?.resizeDrawer?.$el;
+
+			if (drawer) {
+				drawer.addEventListener('mouseenter', this.drawerMouseenter, false);
+				drawer.addEventListener('mouseleave', this.drawerMouseleave, false);
+			}
+		},
+		getLocalStorage() {
+			return localStorage.getItem(this.storageName);
+		},
 		handleClick(evt) {
 			this.emitEvent('handle:click', evt);
 		},
@@ -342,47 +383,59 @@ export default baseMixins.extend({
 
 			this.emitEvent('handle:dblclick', evt);
 		},
-		handleMouseDown(evt) {
-			evt.preventDefault();
-			evt.stopPropagation();
+		handleMouseDown(e) {
+			e.preventDefault();
+			e.stopPropagation();
+			let offsetX = 25;
 
-			this.events.handle.mouseUp = false;
+			this.isMouseDown = true;
 
-			if (evt.offsetX < 25) {
+			if (this.handlePosition === 'border') {
+				offsetX = this.handleBorderWidth;
+			}
+
+			this.handleEvents.mouseUp = false;
+
+			if (e.offsetX < offsetX) {
 				document.addEventListener('mousemove', this.drawerResize, false);
 			}
 
-			if (!this.events.handle.mouseDown) {
-				this.events.handle.mouseDown = true;
+			if (!this.handleEvents.mouseDown) {
+				this.handleEvents.mouseDown = true;
 				document.addEventListener('mouseup', this.handleMouseUp, false);
-				this.emitEvent('handle:mousedown', evt);
+				this.emitEvent('handle:mouseup', e);
 			}
 		},
-		handleMouseUp(evt) {
-			evt.preventDefault();
-			evt.stopPropagation();
+		handleMouseUp(e) {
+			e.preventDefault();
+			e.stopPropagation();
 
 			const drawer = this.$refs.resizeDrawer.$el;
 
-			this.events.handle.mouseDown = false;
-			this.resizedWidth = drawer.style.width;
+			this.isMouseDown = false;
+			this.handleEvents.mouseDown = false;
+			this.resizedWidth = drawer?.offsetWidth ?? this.defaultWidth;
 
 			document.body.style.cursor = '';
 
-			this.setLocalStorage();
+			this.resizedWidth = this.checkMaxMinWidth(this.resizedWidth);
+			this.resizedWidth = useConvertToUnit({ str: this.resizedWidth }) || undefined;
 
-			if (!this.events.handle.mouseUp) {
-				this.events.handle.mouseUp = true;
+			useSetStorage({
+				miniVariant: this.miniVariant,
+				resizedWidth: this.resizedWidth,
+				saveWidth: this.saveWidth,
+				storageName: this.storageName,
+				storageType: this.storageType,
+			});
+
+			if (!this.handleEvents.mouseUp) {
+				this.handleEvents.mouseUp = true;
 
 				document.removeEventListener('mouseup', this.handleMouseUp, false);
 				document.removeEventListener('mousemove', this.drawerResize, false);
-				this.emitEvent('handle:mouseup', evt);
+				this.emitEvent('handle:mouseup', e);
 			}
-		},
-
-		// Storage Events //
-		getLocalStorage() {
-			return localStorage.getItem(this.storageName);
 		},
 		setLocalStorage(action = 'update') {
 			if (!this.saveWidth || this.miniVariant || this.expandOnHover) {
@@ -401,32 +454,34 @@ export default baseMixins.extend({
 
 			return width;
 		},
-
-		// Misc Events //
-		convertToUnit(str, unit = 'px') {
-			if (str == null || str === '') {
-				return undefined;
-			}
-			else if (!+str) {
-				return String(str);
+		setup() {
+			// Disable resize if mini-variant is set //
+			if (this.isMiniVariant) {
+				this.resizedWidth = this.miniVariantWidth || undefined;
+				return false;
 			}
 
-			return `${Number(str)}${unit}`;
-		},
-		emitEvent(name, evt) {
-			const drawerData = {
-				eventName: name,
-				evt,
+			const storageWidth = useGetStorage(this.storageType, this.storageName);
+			const width = useConvertToUnit({ str: this.width });
+			this.resizedWidth = width;
+			this.defaultWidth = this.resizedWidth;
+
+			if (this.saveWidth && storageWidth && !this.isMiniVariant) {
+				this.resizedWidth = useGetStorage(this.storageType, this.storageName);
+			}
+
+			this.genListeners();
+
+			useSetStorage({
+				action: 'update',
+				miniVariant: this.miniVariant,
 				resizedWidth: this.resizedWidth,
-				width: this.resizedWidth,
-			};
+				saveWidth: this.saveWidth,
+				storageName: this.storageName,
+				storageType: this.storageType,
+			});
 
-			this.$emit(name, drawerData);
-		},
-		genListeners() {
-			const drawer = this.$refs.resizeDrawer.$el;
-			drawer.addEventListener('mouseenter', this.drawerMouseenter, false);
-			drawer.addEventListener('mouseleave', this.drawerMouseleave, false);
+			return false;
 		},
 		updateApplication() {
 			if (
@@ -456,170 +511,73 @@ export default baseMixins.extend({
 
 <style lang="scss" scoped>
 .v-resize-drawer {
-	&.v-navigation-drawer--overflow {
-		overflow: visible;
-
-		::v-deep .v-navigation-drawer__content {
-			overflow: visible;
-		}
-	}
-
-	.close-drawer {
-		cursor: pointer;
-	}
-
-	::v-deep .v-navigation-drawer__content {
-		position: relative;
-
-		.handle-container {
+	&--handle {
+		&-container {
 			cursor: grab;
+			align-items: center;
+			display: flex;
+			justify-content: center;
 			position: absolute;
-			width: 24px;
 			z-index: 1;
 
-			&:active {
-				cursor: grabbing;
+			&-icon {
+				&-parent {
+					&-end,
+					&-right {
+						left: initial;
+						right: 0;
+					}
+				}
+
+				&-center {
+					&-end,
+					&-right {
+						transform: rotate(180deg);
+					}
+				}
+
+				&-user-icon {
+					transform: none;
+				}
+
+				&-fa {
+					font-size: .7rem !important;
+				}
 			}
 
 			&-parent {
-				&-left {
-					left: initial;
+				&-left,
+				&-start,
+				&-undefined {
 					right: 0;
 				}
-			}
 
-			&-top {
-				border-right: 24px solid transparent;
-				border-top-style: solid;
-				border-top-width: 24px;
-				height: 24px;
-				left: 0;
-				top: 0;
-				width: 24px;
-
-				&.handle-container-parent {
-					&-left {
-						border-left: 24px solid transparent;
-						border-right: transparent;
-						left: initial;
-						right: 0;
-
-						.handle-container-lines {
-							left: initial;
-							right: -5px;
-							top: -19px;
-							transform: rotate(45deg);
-						}
-					}
-				}
-
-				.handle-container-lines {
-					top: -19px;
-					transform: rotate(-45deg);
+				&-end,
+				&-right {
+					left: 0;
 				}
 			}
 
-			&-top-icon {
-				height: 24px;
-				opacity: 0.5;
-				left: initial;
-				right: 0;
-				top: 0;
-				transition: opacity 0.3s ease;
-				transform: rotate(-90deg);
-				width: 24px;
-
-				&:hover {
-					opacity: 1;
+			&-position {
+				&-top {
+					top: 0;
 				}
 
-				&.handle-container-parent {
-					&-right {
-						left: 0;
-						right: initial;
-						transform: rotate(-180deg);
-					}
-				}
-			}
-
-			&-top-icon-slot {
-				align-items: center;
-				height: 24px;
-				right: 0;
-				opacity: 0.5;
-				padding: 2px;
-				top: 0;
-				transition: opacity 0.3s ease;
-				width: auto;
-
-				&:hover {
-					opacity: 1;
+				&-center {
+					top: 50%;
+					transform: translateY(-50%);
 				}
 
-				&.handle-container-parent {
-					&-right {
-						left: 0;
-					}
-				}
-			}
-
-			&-border {
-				background-color: transparent !important;
-				cursor: col-resize;
-				height: 100%;
-				top: 0;
-				width: 8px;
-			}
-
-			&-left,
-			&-right {
-				height: 100%;
-				top: 0;
-				width: 12px;
-			}
-
-			&-center {
-				height: 24px;
-				top: 50%;
-				transform: translateY(-50%);
-			}
-
-			&-lines {
-				align-items: center;
-				display: flex;
-				flex-direction: column;
-				height: auto;
-				justify-content: center;
-				left: -5px;
-				position: absolute;
-				width: 24px;
-
-				&::before,
-				&::after {
-					border-radius: 4px;
-					border-top: 2px inset #ccc;
-					content: '';
-					display: block;
-					height: 1px;
+				&-bottom {
+					bottom: 0;
 				}
 
-				&::before {
-					margin-bottom: 3px;
-					width: 30%;
+				&-border {
+					cursor: col-resize;
+					height: 100%;
+					top: 0;
+					width: 8px;
 				}
-
-				&::after {
-					width: 60%;
-				}
-			}
-
-			&-icon {
-				height: auto;
-				width: 7px;
-			}
-
-			&-handle-flip {
-				transform: scaleX(-1);
 			}
 		}
 	}
