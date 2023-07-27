@@ -124,6 +124,6 @@
 	},
 	"peerDependencies": {
 		"vue": "^2.7.0",
-		"vuetify": "^2.6.6"
+		"vuetify": "^2.7.0"
 	}
 }
