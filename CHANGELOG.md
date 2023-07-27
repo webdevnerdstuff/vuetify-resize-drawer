@@ -1,8 +1,13 @@
 # Change Log
 All notable changes to the "vuetify-resize-drawer" plugin will be documented in this file.
 
+## v1.1.2
+July 27, 2023  
+[main] Initial release (WebDevNerdStuff)
+* Fix: Add missing transform to fix drawer right direction
+
 ## v1.1.1
-July 26, 2023  
+July 27, 2023  
 [main] Initial release (WebDevNerdStuff)
 * Fix build missing vuetify imports
 
