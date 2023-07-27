@@ -1,8 +1,15 @@
 <template>
 	<v-row>
-		<v-col class="mb-5" cols="12" id="legal">
+		<v-col
+			id="legal"
+			class="mb-5"
+			cols="12"
+		>
 			<h2 :class="classes.h2">
-				<a href="#license" :class="classes.headerA">#</a>
+				<a
+					:class="classes.headerA"
+					href="#license"
+				>#</a>
 				Legal
 			</h2>
 
@@ -35,4 +42,5 @@ export default {
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+</style>

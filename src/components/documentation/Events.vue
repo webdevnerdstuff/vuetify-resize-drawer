@@ -1,8 +1,15 @@
 <template>
 	<v-row>
-		<v-col class="mb-5" cols="12" id="events">
+		<v-col
+			id="events"
+			class="mb-5"
+			cols="12"
+		>
 			<h2 :class="classes.h2">
-				<a href="#events" :class="classes.headerA">#</a>
+				<a
+					:class="classes.headerA"
+					href="#events"
+				>#</a>
 				Events
 			</h2>
 
@@ -13,17 +20,17 @@
 							<v-text-field
 								v-model="search"
 								append-icon="mdi-magnify"
+								hide-details
 								label="Search"
 								single-line
-								hide-details
 							></v-text-field>
 						</v-card-title>
 
 						<v-data-table
 							:headers="headers"
+							hide-default-footer
 							:items="items"
 							:search="search"
-							hide-default-footer
 						>
 							<template #item="{ item }">
 								<tr>
@@ -31,13 +38,10 @@
 										<span
 											:id="`events-${item.name}`"
 											class="name-item text-mono ml-n2"
-											><span class="primary--text">#</span
-											><a
-												:href="`#events-${item.name}`"
+										><span class="primary--text">#</span><a
 												:class="classes.appLink"
-												>{{ item.name }}</a
-											></span
-										>
+												:href="`#events-${item.name}`"
+											>{{ item.name }}</a></span>
 									</td>
 
 									<td>{{ item.desc }}</td>
@@ -62,56 +66,56 @@ export default {
 		},
 	},
 	data: () => ({
+		headers: [
+			{
+				align: 'start',
+				filterable: true,
+				sortable: false,
+				text: 'Name',
+				value: 'name',
+			},
+			{
+				filterable: false,
+				sortable: false,
+				text: 'Description',
+				value: 'desc',
+			},
+		],
 		items: [
 			// Drawer Events //
 			{
-				name: 'transitionend',
 				desc: 'Emits event object when transition is complete.',
+				name: 'transitionend',
 			},
 			{
-				name: 'input',
 				desc: 'The updated bound model',
+				name: 'input',
 			},
 			{
-				name: 'close',
 				desc: 'Emits event object when the drawer is closed.',
+				name: 'close',
 			},
 
 			// Handle Events //
 			{
-				name: 'handle:click',
 				desc: 'Emits event object when handle is clicked.',
+				name: 'handle:click',
 			},
 			{
-				name: 'handle:dblclick',
 				desc: 'Emits event object when handle is double clicked.',
+				name: 'handle:dblclick',
 			},
 			{
-				name: 'handle:drag',
 				desc: 'Emits event object when handle is dragged.',
+				name: 'handle:drag',
 			},
 			{
-				name: 'handle:mousedown',
 				desc: 'Emits event object when mouse down on handle.',
+				name: 'handle:mousedown',
 			},
 			{
-				name: 'handle:mouseup',
 				desc: 'Emits event object when mouse up on handle.',
-			},
-		],
-		headers: [
-			{
-				text: 'Name',
-				value: 'name',
-				align: 'start',
-				filterable: true,
-				sortable: false,
-			},
-			{
-				text: 'Description',
-				value: 'desc',
-				filterable: false,
-				sortable: false,
+				name: 'handle:mouseup',
 			},
 		],
 		search: '',
@@ -122,4 +126,5 @@ export default {
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+</style>

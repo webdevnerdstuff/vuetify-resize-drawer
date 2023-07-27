@@ -1,27 +1,49 @@
 <template>
 	<v-row>
-		<v-col class="mb-5" cols="12" id="example">
+		<v-col
+			id="example"
+			class="mb-5"
+			cols="12"
+		>
 			<h2 :class="classes.h2">
-				<a href="#example" :class="classes.headerA">#</a>
+				<a
+					:class="classes.headerA"
+					href="#example"
+				>#</a>
 				Example
 			</h2>
 
-			<v-tabs v-model="tab" centered>
-				<v-tab v-for="item in items" :key="item.tab">
+			<v-tabs
+				v-model="tab"
+				centered
+			>
+				<v-tab
+					v-for="item in items"
+					:key="item.tab"
+				>
 					{{ item.tab }}
 				</v-tab>
 			</v-tabs>
 
-			<v-tabs-items v-model="tab" class="pt-5">
-				<v-tab-item v-for="item in items" :key="item.tab">
+			<v-tabs-items
+				v-model="tab"
+				class="pt-5"
+			>
+				<v-tab-item
+					v-for="item in items"
+					:key="item.tab"
+				>
 					<v-row>
-						<v-col cols="10" offset="1">
+						<v-col
+							cols="10"
+							offset="1"
+						>
 							<template v-if="item.tab === 'Template'">
 								<vue-code-highlight language="html">
 									<pre>
 &lt;template>
 	&lt;v-app id="home">
-		&lt;v-resize-drawer
+		&lt;VResizeDrawer
 			v-model="drawer"
 			app
 			clipped
@@ -55,23 +77,17 @@
 					Append Slot
 				&lt;/div>
 			&lt;/template>
-		&lt;/v-resize-drawer>
+		&lt;/VResizeDrawer>
 	&lt;/v-app>
-&lt;/template></pre
-									>
+&lt;/template></pre>
 								</vue-code-highlight>
 							</template>
 							<template v-else>
 								<vue-code-highlight language="js">
 									<pre>
 &lt;script>
-	import VResizeDrawer from 'vuetify-resize-drawer';
-
 	export default {
 		name: 'App',
-		components: {
-			VResizeDrawer,
-		},
 		data: () => ({
 			drawer: true,
 		}),
@@ -102,8 +118,7 @@
 			},
 		},
 	};
-&lt;/script></pre
-									>
+&lt;/script></pre>
 								</vue-code-highlight>
 							</template>
 							<br />
@@ -130,11 +145,17 @@ export default {
 		},
 	},
 	data: () => ({
-		tab: null,
 		items: [
-			{ tab: 'Template', content: 'Tab 1 Content' },
-			{ tab: 'Script', content: 'Tab 2 Content' },
+			{
+				content: 'Tab 1 Content',
+				tab: 'Template',
+			},
+			{
+				content: 'Tab 2 Content',
+				tab: 'Script',
+			},
 		],
+		tab: null,
 	}),
 	methods: {
 	},

@@ -1,23 +1,34 @@
 <template>
 	<v-row>
-		<v-col class="mb-5" cols="12" id="usage">
+		<v-col
+			id="usage"
+			class="mb-5"
+			cols="12"
+		>
 			<h2 :class="classes.h2">
-				<a href="#usage" :class="classes.headerA">#</a>
+				<a
+					:class="classes.headerA"
+					href="#usage"
+				>#</a>
 				Usage
 			</h2>
 
 			<v-row>
 				<v-col cols="12">
-					<p>
-						The <code>vuetify-resize-drawer</code> component usage is mostly the
-						same as the
-						<a
-							:href="`${links.vuetify2}/components/navigation-drawers/`"
-							target="_blank"
-							>v-navigation-drawer</a
-						>. It can also be used as a component in its own right for things
-						such as a settings panel or to display data.
-					</p>
+					<vue-code-highlight language="javascript">
+						<pre>// main.js
+import Vue from 'vue';
+import vuetify from './plugins/vuetify';
+import App from './App.vue';
+import VResizeDrawer from 'vuetify-resize-drawer';
+
+Vue.component('VResizeDrawer', VResizeDrawer);
+
+new Vue({
+  vuetify,
+  render: (h) => h(App),
+}).$mount('#app');</pre>
+					</vue-code-highlight>
 				</v-col>
 			</v-row>
 		</v-col>
@@ -25,9 +36,13 @@
 </template>
 
 <script>
+import { component as VueCodeHighlight } from 'vue-code-highlight';
 
 export default {
 	name: 'Usage',
+	components: {
+		VueCodeHighlight,
+	},
 	props: {
 		classes: {
 			type: Object,
@@ -46,4 +61,5 @@ export default {
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+</style>

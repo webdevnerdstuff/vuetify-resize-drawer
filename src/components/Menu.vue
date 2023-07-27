@@ -1,16 +1,19 @@
 <template>
 	<div>
-		<v-list dense nav>
+		<v-list
+			dense
+			nav
+		>
 			<v-list-item-group :color="drawerOptions.color ? 'white' : 'primary'">
 				<v-list-item
 					v-for="item in items"
 					:key="item.title"
-					link
-					:color="drawerOptions.color ? 'white' : 'primary'"
-					:href="item.href"
 					:class="{
 						'v-list-item--active': active === item.href,
 					}"
+					:color="drawerOptions.color ? 'white' : 'primary'"
+					:href="item.href"
+					link
 				>
 					<v-list-item-icon>
 						<v-icon>{{ item.icon }}</v-icon>
@@ -37,17 +40,66 @@ export default {
 	data: () => ({
 		active: '#home',
 		items: [
-			{ title: 'Home', icon: 'mdi-home', href: '#home' },
-			{ title: 'Installation', icon: 'mdi-plus-thick', href: '#installation' },
-			{ title: 'Description', icon: 'mdi-information-outline', href: '#description' },
-			{ title: 'Props', icon: 'mdi-cog', href: '#props' },
-			{ title: 'Events', icon: 'mdi-calendar-star', href: '#events' },
-			{ title: 'Slots', icon: 'mdi-slot-machine', href: '#slots' },
-			{ title: 'SASS Variables', icon: 'mdi-sass', href: '#sass-variables' },
-			{ title: 'Example', icon: 'mdi-code-json', href: '#example' },
-			{ title: 'Dependencies', icon: 'mdi-asterisk-circle-outline', href: '#dependencies' },
-			{ title: 'License', icon: 'mdi-card-account-details-outline', href: '#license' },
-			{ title: 'Legal', icon: 'mdi-scale-balance', href: '#legal' },
+			{
+				href: '#home',
+				icon: 'mdi-home',
+				title: 'Home',
+			},
+			{
+				href: '#installation',
+				icon: 'mdi-plus-thick',
+				title: 'Installation',
+			},
+			{
+				href: '#description',
+				icon: 'mdi-information-outline',
+				title: 'Description',
+			},
+			{
+				href: '#usage',
+				icon: 'mdi-power-plug-outline',
+				title: 'Usage',
+			},
+			{
+				href: '#props',
+				icon: 'mdi-cog',
+				title: 'Props',
+			},
+			{
+				href: '#events',
+				icon: 'mdi-calendar-star',
+				title: 'Events',
+			},
+			{
+				href: '#slots',
+				icon: 'mdi-slot-machine',
+				title: 'Slots',
+			},
+			{
+				href: '#sass-variables',
+				icon: 'mdi-sass',
+				title: 'SASS Variables',
+			},
+			{
+				href: '#example',
+				icon: 'mdi-code-json',
+				title: 'Example',
+			},
+			{
+				href: '#dependencies',
+				icon: 'mdi-asterisk-circle-outline',
+				title: 'Dependencies',
+			},
+			{
+				href: '#license',
+				icon: 'mdi-card-account-details-outline',
+				title: 'License',
+			},
+			{
+				href: '#legal',
+				icon: 'mdi-scale-balance',
+				title: 'Legal',
+			},
 		],
 	}),
 	mounted() {
@@ -70,7 +122,10 @@ export default {
 					this.active = hash;
 
 					window.location.hash = hash;
-					window.scrollTo({ top: y, behavior: 'smooth' });
+					window.scrollTo({
+						behavior: 'smooth',
+						top: y,
+					});
 				});
 			});
 		},

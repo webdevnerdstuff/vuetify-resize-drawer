@@ -1,31 +1,40 @@
 import Vue from 'vue';
 import Vuetify from 'vuetify/lib';
 import colors from 'vuetify/lib/util/colors';
+// import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+// import fa from '../libraries/fontawesome';
 
+// Vue.component('FontAwesomeIcon', FontAwesomeIcon);
 Vue.use(Vuetify);
 
 const opts = {
+	// fa,
+	// icons: {
+	// 	iconfont: 'faSvg',
+	// },
 	theme: {
 		themes: {
-			light: {
-				primary: '#1867c0',
-				secondary: colors.cyan.darken4,
-				accent: '#905',
-				error: '#ff5252',
-				info: '#2196f3',
-				success: '#690',
-				warning: '#fb8c00',
-				operators: '#9a6e3a',
-			},
 			dark: {
-				primary: '#099FFF',
-				secondary: colors.cyan.darken1,
-				accent: '#cd0373',
-				error: '#ff5252',
-				info: '#fe019a',
-				success: '#8cd302',
-				warning: '#ffff00',
+				accent: '#d00274',
+				danger: colors.red.base,
+				error: colors.red.base,
+				info: colors.teal.base,
 				operators: '#9a6e3a',
+				primary: colors.blue.darken2,
+				secondary: colors.purple.base,
+				success: colors.green.base,
+				warning: colors.orange.darken3,
+			},
+			light: {
+				accent: '#905',
+				danger: colors.red.base,
+				error: colors.red.base,
+				info: colors.teal.darken1,
+				operators: '#9a6e3a',
+				primary: colors.blue.base,
+				secondary: colors.purple.lighten1,
+				success: colors.green.base,
+				warning: colors.orange.base,
 			},
 		},
 	},
