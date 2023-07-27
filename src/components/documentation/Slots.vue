@@ -1,28 +1,36 @@
 <template>
 	<v-row>
-		<v-col class="mb-5" cols="12" id="slots">
+		<v-col
+			id="slots"
+			class="mb-5"
+			cols="12"
+		>
 			<h2 :class="classes.h2">
-				<a href="#slots" :class="classes.headerA">#</a>
+				<a
+					:class="classes.headerA"
+					href="#slots"
+				>#</a>
 				Slots
 			</h2>
 
 			<v-row>
 				<v-col cols="12">
 					<v-card>
-						<v-data-table :headers="headers" :items="items" hide-default-footer>
+						<v-data-table
+							:headers="headers"
+							hide-default-footer
+							:items="items"
+						>
 							<template #item="{ item }">
 								<tr>
 									<td>
 										<span
 											:id="`slots-${item.name}`"
 											class="name-item text-mono ml-n2"
-											><span class="primary--text">#</span
-											><a
-												:href="`#slots-${item.name}`"
+										><span class="primary--text">#</span><a
 												:class="classes.appLink"
-												>{{ item.name }}</a
-											></span
-										>
+												:href="`#slots-${item.name}`"
+											>{{ item.name }}</a></span>
 									</td>
 
 									<td>{{ item.desc }}</td>
@@ -47,36 +55,36 @@ export default {
 		},
 	},
 	data: () => ({
-		items: [
-			{
-				name: 'handle',
-				desc: 'A slot for the resize handle.',
-			},
-			{
-				name: 'prepend',
-				desc: 'A slot at the top of the drawer',
-			},
-			{
-				name: 'default',
-				desc: 'The default Vue slot.',
-			},
-			{
-				name: 'append',
-				desc: 'A slot at the bottom of the drawer',
-			},
-		],
 		headers: [
 			{
-				text: 'Name',
-				value: 'name',
 				align: 'start',
 				sortable: false,
+				text: 'Name',
+				value: 'name',
 				width: '273px',
 			},
 			{
+				sortable: false,
 				text: 'Description',
 				value: 'desc',
-				sortable: false,
+			},
+		],
+		items: [
+			{
+				desc: 'A slot for the resize handle.',
+				name: 'handle',
+			},
+			{
+				desc: 'A slot at the top of the drawer',
+				name: 'prepend',
+			},
+			{
+				desc: 'The default Vue slot.',
+				name: 'default',
+			},
+			{
+				desc: 'A slot at the bottom of the drawer',
+				name: 'append',
 			},
 		],
 	}),
@@ -86,4 +94,5 @@ export default {
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+</style>

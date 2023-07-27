@@ -1,8 +1,15 @@
 <template>
 	<v-row>
-		<v-col class="mb-5" cols="12" id="description">
+		<v-col
+			id="description"
+			class="mb-5"
+			cols="12"
+		>
 			<h2 :class="classes.h2">
-				<a href="#description" :class="classes.headerA">#</a>
+				<a
+					:class="classes.headerA"
+					href="#description"
+				>#</a>
 				Description
 			</h2>
 
@@ -14,8 +21,7 @@
 						<a
 							:href="`${links.vuetify2}/components/navigation-drawers/`"
 							target="_blank"
-							>v-navigation-drawer</a
-						>
+						>v-navigation-drawer</a>
 						so that it is resizable by the user.
 					</p>
 				</v-col>
@@ -46,4 +52,5 @@ export default {
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+</style>

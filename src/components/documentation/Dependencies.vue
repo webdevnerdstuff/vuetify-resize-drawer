@@ -1,16 +1,29 @@
 <template>
 	<v-row>
-		<v-col class="mb-5" cols="12" id="dependencies">
+		<v-col
+			id="dependencies"
+			class="mb-5"
+			cols="12"
+		>
 			<h2 :class="classes.h2">
-				<a href="#dependencies" :class="classes.headerA">#</a>
+				<a
+					:class="classes.headerA"
+					href="#dependencies"
+				>#</a>
 				Dependencies
 			</h2>
 
 			<v-row>
 				<v-col cols="12">
-					<a :href="links.vuetify2" target="_blank">Vuetify v2</a>
+					<a
+						:href="links.vuetify2"
+						target="_blank"
+					>Vuetify v2</a>
 					<br />
-					<a :href="links.vue2" target="_blank">Vue 2</a>
+					<a
+						:href="links.vue2"
+						target="_blank"
+					>Vue 2</a>
 				</v-col>
 			</v-row>
 		</v-col>
@@ -38,4 +51,5 @@ export default {
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+</style>

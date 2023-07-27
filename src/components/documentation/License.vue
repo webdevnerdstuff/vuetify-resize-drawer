@@ -1,18 +1,31 @@
 <template>
 	<v-row>
-		<v-col class="mb-5" cols="12" id="license">
+		<v-col
+			id="license"
+			class="mb-5"
+			cols="12"
+		>
 			<h2 :class="classes.h2">
-				<a href="#license" :class="classes.headerA">#</a>
+				<a
+					:class="classes.headerA"
+					href="#license"
+				>#</a>
 				License
 			</h2>
 
 			<v-row>
 				<v-col cols="12">
 					Copyright &copy; {{ new Date().getFullYear() }}
-					<a :href="links.github" target="_blank">WebDevNerdStuff</a>
+					<a
+						:href="links.github"
+						target="_blank"
+					>WebDevNerdStuff</a>
 					<br />
 					Licensed under the
-					<a :href="`${links.repo}/blob/master/LICENSE.md`" target="_blank">
+					<a
+						:href="`${links.repo}/blob/master/LICENSE.md`"
+						target="_blank"
+					>
 						MIT License
 					</a>
 				</v-col>
@@ -42,4 +55,5 @@ export default {
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+</style>

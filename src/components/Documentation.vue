@@ -3,16 +3,20 @@
 		<v-row class="text-center">
 			<v-col cols="12">
 				<v-img
-					src="images/vuetify-logo-light-atom.svg"
 					class="my-3"
 					contain
 					height="200"
+					src="images/vuetify-logo-light-atom.svg"
 				/>
 			</v-col>
 
 			<v-col class="mb-4">
 				<h1 class="v-heading text-h3 text-sm-h3 mb-4">Vuetify Resize Drawer</h1>
-				<v-chip color="primary" outlined small>
+				<v-chip
+					color="primary"
+					outlined
+					small
+				>
 					v{{ componentVersion }}
 				</v-chip>
 			</v-col>
@@ -20,23 +24,32 @@
 
 		<!-- Installation -->
 		<v-row id="installation">
-			<v-col class="mb-5" cols="12">
+			<v-col
+				class="mb-5"
+				cols="12"
+			>
 				<h2 :class="classes.h2">
-					<a href="#installation" :class="classes.headerA">#</a>
+					<a
+						:class="classes.headerA"
+						href="#installation"
+					>#</a>
 					Installation
 				</h2>
 
 				<v-row>
 					<v-col cols="12">
-						Using npm:
+						Using <a
+							:href="links.pnpm"
+							target="_blank"
+						>pnpm</a>:
 						<vue-code-highlight language="bash">
-							<pre>npm i vuetify-resize-drawer</pre>
+							<pre>pnpm add vuetify-resize-drawer</pre>
 						</vue-code-highlight>
 					</v-col>
 					<v-col cols="12">
-						Using <a :href="links.pnpm" target="_blank">pnpm</a>:
+						Using npm:
 						<vue-code-highlight language="bash">
-							<pre>pnpm add vuetify-resize-drawer</pre>
+							<pre>npm i vuetify-resize-drawer</pre>
 						</vue-code-highlight>
 					</v-col>
 				</v-row>
@@ -45,16 +58,24 @@
 
 		<!-- Description -->
 		<Description
-			:drawerOptions="drawerOptions"
 			:classes="classes"
+			:drawerOptions="drawerOptions"
 			:links="links"
 		/>
 
 		<!-- Usage -->
-		<Usage :drawerOptions="drawerOptions" :classes="classes" :links="links" />
+		<Usage
+			:classes="classes"
+			:drawerOptions="drawerOptions"
+			:links="links"
+		/>
 
 		<!-- Props -->
-		<Props :drawerOptions="drawerOptions" :classes="classes" :links="links" />
+		<Props
+			:classes="classes"
+			:drawerOptions="drawerOptions"
+			:links="links"
+		/>
 
 		<!-- Events -->
 		<Events :classes="classes" />
@@ -63,16 +84,25 @@
 		<Slots :classes="classes" />
 
 		<!-- SASS Variables -->
-		<SassVariables :classes="classes" :links="links" />
+		<SassVariables
+			:classes="classes"
+			:links="links"
+		/>
 
 		<!-- Example -->
 		<Example :classes="classes" />
 
 		<!-- Dependencies -->
-		<Dependencies :classes="classes" :links="links" />
+		<Dependencies
+			:classes="classes"
+			:links="links"
+		/>
 
 		<!-- License -->
-		<License :classes="classes" :links="links" />
+		<License
+			:classes="classes"
+			:links="links"
+		/>
 
 		<!-- Legal -->
 		<Legal :classes="classes" />
@@ -119,14 +149,14 @@ export default {
 		},
 	},
 	data: () => ({
-		componentVersion: packageInfo.version,
-		drawerOffset: '256px',
 		classes: {
+			appLink: 'app-link text-decoration-none primary--text font-weight-medium d-inline-block font-weight-bold',
 			h2: 'v-heading text-h4 text-sm-h4 mb-3',
 			h3: 'v-heading text-h5 text-sm-h5 mb-1',
 			headerA: 'text-decoration-none text-right text-md-left',
-			appLink: 'app-link text-decoration-none primary--text font-weight-medium d-inline-block font-weight-bold',
 		},
+		componentVersion: packageInfo.version,
+		drawerOffset: '256px',
 	}),
 };
 </script>

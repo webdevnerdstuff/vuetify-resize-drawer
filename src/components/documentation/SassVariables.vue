@@ -1,8 +1,15 @@
 <template>
 	<v-row>
-		<v-col class="mb-5" cols="12" id="sass-variables">
+		<v-col
+			id="sass-variables"
+			class="mb-5"
+			cols="12"
+		>
 			<h2 :class="classes.h2">
-				<a href="#sass-variables" :class="classes.headerA">#</a>
+				<a
+					:class="classes.headerA"
+					href="#sass-variables"
+				>#</a>
 				SASS Variables
 			</h2>
 
@@ -12,8 +19,7 @@
 					<a
 						:href="`${links.vuetify2}/api/v-navigation-drawer/#sass`"
 						target="_blank"
-						>SASS Variables</a
-					>
+					>SASS Variables</a>
 					are supported.
 				</v-col>
 			</v-row>
@@ -23,9 +29,9 @@
 					<v-card>
 						<v-data-table
 							:headers="headers"
+							hide-default-footer
 							:items="items"
 							:search="search"
-							hide-default-footer
 						>
 							<template #item="{ item }">
 								<tr>
@@ -33,13 +39,10 @@
 										<span
 											:id="`events-${item.name}`"
 											class="name-item text-mono ml-n2"
-											><span class="primary--text">#</span
-											><a
-												:href="`#events-${item.name}`"
+										><span class="primary--text">#</span><a
 												:class="classes.appLink"
-												>{{ item.name }}</a
-											></span
-										>
+												:href="`#events-${item.name}`"
+											>{{ item.name }}</a></span>
 									</td>
 
 									<td class="accent--text">{{ item.default }}</td>
@@ -69,38 +72,38 @@ export default {
 		},
 	},
 	data: () => ({
-		items: [
-			{
-				name: '$navigation-drawer-border-width',
-				default: '1px !default;',
-				desc: '',
-			},
-			{
-				name: '$navigation-drawer-mobile-temporary-elevation',
-				default: '16 !default;',
-				desc: '',
-			},
-		],
 		headers: [
 			{
-				text: 'Name',
-				value: 'name',
 				align: 'left',
 				sortable: false,
+				text: 'Name',
+				value: 'name',
 				width: '30%',
 			},
 			{
-				text: 'Default',
-				value: 'default',
 				align: 'left',
 				sortable: false,
+				text: 'Default',
+				value: 'default',
 				width: '15%',
 			},
 			{
-				text: 'Description',
-				value: 'desc',
 				align: 'start',
 				sortable: false,
+				text: 'Description',
+				value: 'desc',
+			},
+		],
+		items: [
+			{
+				default: '1px !default;',
+				desc: '',
+				name: '$navigation-drawer-border-width',
+			},
+			{
+				default: '16 !default;',
+				desc: '',
+				name: '$navigation-drawer-mobile-temporary-elevation',
 			},
 		],
 		search: '',
@@ -111,4 +114,5 @@ export default {
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+</style>
