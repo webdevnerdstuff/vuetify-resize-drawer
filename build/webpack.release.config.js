@@ -1,6 +1,7 @@
 const { merge } = require('webpack-merge');
 const TerserPlugin = require('terser-webpack-plugin');
 const webpack = require('webpack');
+const { VuetifyLoaderPlugin } = require('vuetify-loader');
 const base = require('./webpack.base.config');
 const packageJson = require('../package.json');
 
@@ -27,6 +28,7 @@ module.exports = merge(base, {
 		new webpack.BannerPlugin({
 			banner,
 		}),
+		new VuetifyLoaderPlugin(),
 	],
 	optimization: {
 		minimize: true,
