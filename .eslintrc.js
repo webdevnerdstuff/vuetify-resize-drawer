@@ -4,9 +4,18 @@ module.exports = {
 		node: true,
 	},
 	extends: [
-		'airbnb-base',
 		'eslint:recommended',
 		'plugin:vue/essential',
+		'plugin:@typescript-eslint/recommended',
+		'@vue/typescript/recommended',
+		'prettier',
+		'./.eslintrc-auto-import.json',
+	],
+	ignorePatterns: [
+		'.eslintrc.js',
+		'vite.build.config.ts',
+		'vite.config.ts',
+		'*.bk.vue',
 	],
 	overrides: [
 		{
@@ -18,24 +27,36 @@ module.exports = {
 			},
 		},
 	],
-	parser: 'vue-eslint-parser',
+	globals: {
+		Entry: true,
+	},
 	parserOptions: {
-		ecmaVersion: 12,
-		parser: '@babel/eslint-parser',
-		requireConfigFile: false,
-		sourceType: 'module',
+		parser: '@typescript-eslint/parser',
 	},
 	plugins: [
+		'@typescript-eslint',
 		'import',
+		'prettier',
 		'vue',
-		'@babel',
 	],
+	root: true,
 	settings: {
 		'import/resolver': {
 			'babel-module': {},
 		},
 	},
 	rules: {
+		'@typescript-eslint/ban-ts-comment': 0,
+		'@typescript-eslint/ban-types': [
+			'error',
+			{
+				'extendDefaults': true,
+				'types': {
+					'{}': false,
+				}
+			},
+		],
+		'@typescript-eslint/no-empty-function': 0,
 		'brace-style': ['error', 'stroustrup'],
 		'default-case': [
 			'error', {
@@ -44,39 +65,39 @@ module.exports = {
 		],
 		'func-names': ['error', 'never'],
 		'function-paren-newline': 0,
-		'implicit-arrow-linebreak': ['warn', 'beside'],
-		'import/no-extraneous-dependencies': 0,
 		'import/no-self-import': 0,
+		'import/no-extraneous-dependencies': 0,
+		'implicit-arrow-linebreak': ['warn', 'beside'],
 		indent: [2, 'tab', { SwitchCase: 1 }],
+		'no-tabs': [0, { allowIndentationTabs: true }],
 		'linebreak-style': 0,
 		'max-len': 0,
+		'no-else-return': ['error', { allowElseIf: true }],
 		'no-console': ['warn', { allow: ['warn', 'error', 'info', 'trace'] }],
 		'no-const-assign': 'error',
 		'no-debugger': 0,
-		'no-else-return': ['error', { allowElseIf: true }],
 		'no-new': 0,
+		'no-undef': 0,
+		'no-unused-vars': 1,
+		'no-use-before-define': 0,
+		'no-useless-escape': 0,
 		'no-param-reassign': [
 			'error', {
-				ignorePropertyModificationsFor: ['field', 'model', 'el', 'item', 'state', 'Vue', 'vue'],
 				props: true,
+				ignorePropertyModificationsFor: ['field', 'model', 'el', 'item', 'state', 'Vue', 'vue'],
 			},
 		],
-		'no-plusplus': [
-			'error', { allowForLoopAfterthoughts: true },
-		],
-		'no-tabs': [0, { allowIndentationTabs: true }],
-		'no-undef': 0,
 		'no-underscore-dangle': [
 			'error', {
 				allow: ['_data'],
 				allowAfterThis: true,
 			},
 		],
-		'no-unused-vars': 1,
-		'no-use-before-define': 0,
-		'no-useless-escape': 0,
+		'no-plusplus': [
+			'error', { allowForLoopAfterthoughts: true },
+		],
 		'object-curly-newline': ['error', {
-			ObjectPattern: { multiline: true },
+			ObjectPattern: { multiline: false },
 		}],
 		'operator-linebreak': ['error', 'after'],
 		'prefer-destructuring': [
@@ -90,12 +111,12 @@ module.exports = {
 		],
 		'space-before-function-paren': ['error', {
 			anonymous: 'never',
-			asyncArrow: 'always',
 			named: 'never',
+			asyncArrow: 'always',
 		}],
 		'vue/attributes-order': ['error', {
-			alphabetical: true,
-			order: [
+			'alphabetical': true,
+			'order': [
 				'DEFINITION',
 				'LIST_RENDERING',
 				'CONDITIONALS',
@@ -118,13 +139,13 @@ module.exports = {
 		'vue/no-v-for-template-key': 0,
 		'vue/no-v-html': 0,
 		'vue/singleline-html-element-content-newline': 0,
-		// 'vue/sort-keys': ['error', 'asc', {
-		// 	caseSensitive: true,
-		// 	ignoreChildrenOf: ['extend', 'model', 'defineProps'],
-		// 	ignoreGrandchildrenOf: ['computed', 'directives', 'inject', 'props', 'watch', 'defineProps'],
-		// 	minKeys: 2,
-		// 	natural: true,
-		// }],
+		'vue/sort-keys': ['error', 'asc', {
+			caseSensitive: true,
+			ignoreChildrenOf: ['model', 'defineProps'],
+			ignoreGrandchildrenOf: ['computed', 'directives', 'inject', 'props', 'watch', 'defineProps'],
+			minKeys: 2,
+			natural: true,
+		}],
 		'vue/valid-template-root': 0,
 	},
 };

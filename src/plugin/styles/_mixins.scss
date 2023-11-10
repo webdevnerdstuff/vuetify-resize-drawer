@@ -1,0 +1,71 @@
+@use 'sass:map';
+@use 'sass:math';
+@use 'vuetify/tools';
+@use 'vuetify/settings';
+
+/*
+ * @source vuetify/packages/vuetify/src/styles/tools/_functions.sass
+ */
+@function breakpoint-min($name, $breakpoints) {
+  $min: map-get($breakpoints, $name);
+  @return if($min !=0, $min, null);
+}
+
+/*
+   * @source vuetify/packages/vuetify/src/styles/tools/_display.sass
+   */
+@mixin media-breakpoint-up($name, $breakpoints: settings.$grid-breakpoints) {
+  $min: breakpoint-min($name, $breakpoints);
+
+  @if $min {
+    @container v-resize-drawer (min-width: #{$min}) {
+      @content;
+    }
+  }
+}
+
+/*
+ * @source vuetify/packages/vuetify/src/components/VGrid/_mixins.sass
+ */
+@mixin make-col($size, $columns: settings.$grid-columns) {
+  flex: 0 0 math.percentage(math.div($size, $columns));
+  max-width: math.percentage(math.div($size, $columns));
+}
+
+@mixin make-grid-columns($columns: settings.$grid-columns, $gutter: settings.$grid-gutter, $breakpoints: settings.$grid-breakpoints) {
+  @each $breakpoint in map-keys($breakpoints) {
+    $infix: tools.breakpoint-infix($breakpoint, $breakpoints);
+
+    @include media-breakpoint-up($breakpoint, $breakpoints) {
+      @for $i from 1 through $columns {
+        .v-col#{$infix}-#{$i} {
+          @include make-col($i, $columns);
+        }
+      }
+    }
+  }
+}
+
+/*
+* @source vuetify/packages/vuetify/src/styles/utilities/_display.sass
+*/
+@mixin make-grid-columns-hidden() {
+  $display: map.get(settings.$utilities, 'display');
+
+  @each $size,
+  $media_query in settings.$display-breakpoints {
+    @container v-resize-drawer #{$media_query} {
+      .hidden-#{$size} {
+        display: none !important;
+      }
+    }
+
+    @container v-resize-drawer #{$media_query} {
+      @each $val in map.get($display, 'values') {
+        .#{map.get($display, 'class')}-#{$size}-#{$val} {
+          display: $val !important;
+        }
+      }
+    }
+  }
+}
