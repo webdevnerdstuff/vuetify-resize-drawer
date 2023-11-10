@@ -1,17 +1,75 @@
 {
-	"include": [
-		"./src/index.js",
-	],
 	"compilerOptions": {
-		"target": "es5",
-		"module": "commonjs",
-		"allowJs": true,
+		"allowSyntheticDefaultImports": true,
+		"baseUrl": "./",
 		"declaration": true,
-		"emitDeclarationOnly": true,
-		"outDir": "./types",
-		"strict": true,
+		"declarationDir": "./dist",
 		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true,
+		"importHelpers": true,
+		"jsx": "preserve",
+		"lib": [
+			"ESNext",
+			"ES2017",
+			"DOM"
+		],
+		"module": "ESNext",
+		"moduleResolution": "Node",
+		"noEmit": true,
+		"noFallthroughCasesInSwitch": true,
+		"noImplicitAny": false,
+		"noUncheckedIndexedAccess": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"outDir": "./dist",
+		"paths": {
+			"@/*": [
+				"./src/*"
+			]
+		},
+		"plugins": [
+			{
+				"transform": "transformer-module"
+			}
+		],
+		"resolveJsonModule": true,
+		"rootDir": "src",
 		"skipLibCheck": true,
-		"forceConsistentCasingInFileNames": true
-	}
+		"strict": true,
+		"target": "ESNext",
+		"typeRoots": [
+			"./src/types",
+			"./node_modules/@types",
+			"./node_modules/vuetify"
+		],
+		"types": [
+			"node",
+		],
+		"useDefineForClassFields": true
+	},
+	"exclude": [
+		"playground",
+		"src/App.vue",
+		"src/main.ts",
+		"src/layout/**/*.ts",
+		"src/layout/**/*.vue",
+		"src/components/**/*.ts",
+		"src/components/**/*.vue",
+		"src/playground/**/*.vue",
+		"src/playground/**/*.ts",
+		"src/stores/**/*.ts",
+		"src/plugins/**/*.ts",
+		"node_modules"
+	],
+	"include": [
+		"src/types/**/*.ts",
+		"src/types/**/*.d.ts",
+		"src/plugin/**/*.ts",
+		"src/plugin/**/*.vue"
+	],
+	"references": [
+		{
+			"path": "./tsconfig.node.json"
+		}
+	]
 }

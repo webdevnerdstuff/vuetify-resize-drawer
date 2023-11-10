@@ -1,24 +1,30 @@
-.DS_Store
-node_modules
-.history
-.vscode
-
-# local env files
-.env.local
-.env.*.local
-
-# Log files
+# Logs
+logs
+*.log
 npm-debug.log*
-.pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+/docs
+dist-ssr
+*.local
 
 # Editor directories and files
+.vscode/*
+.history/*
+!.vscode/extensions.json
 .idea
-.vscode
+.DS_Store
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
-*.map
+.stylelintcache
 
-assets
+src/components-v2/*
+
+vite.config.docs.ts
