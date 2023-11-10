@@ -21,17 +21,19 @@ const banner = `/**
  * @homepage ${pkg.homepage}
  * @repository ${pkg.repository}
  * @license ${pkg.license} License
- */
+*/
 `;
+
+const pkgName = 'vuetify-resize-drawer';
 
 export default defineConfig({
 	publicDir: false,
 	build: {
 		lib: {
 			entry: './src/plugin/index.ts',
-			name: pkg.name,
+			name: pkgName,
 			formats: ['es', 'cjs'],
-			fileName: format => `${pkg.name}.${format}.js`,
+			fileName: format => `${pkgName}.${format}.js`,
 		},
 		rollupOptions: {
 			input: {
@@ -58,9 +60,6 @@ export default defineConfig({
 			vueTemplate: true,
 		}),
 		vue({
-			script: {
-				defineModel: true,
-			},
 			template: { transformAssetUrls },
 		}),
 		dts({
