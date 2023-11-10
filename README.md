@@ -1,6 +1,5 @@
-
 <p align="center">
-  <img alt="Vuetify Logo" width="100" src="https://webdevnerdstuff.github.io/vuetify-resize-drawer/images/vuetify-logo-light-atom.svg">
+  <img alt="Vuetify Logo" width="100" src="https://raw.githubusercontent.com/webdevnerdstuff/vuetify-resize-drawer/main/src/assets/vuetify-logo.svg">
 </p>
 
 <p>
@@ -8,8 +7,8 @@
 </p>
 
 <p align="center">
-  <a href="https://www.npmjs.com/package/vuetify-resize-drawer">
-    <img src="https://img.shields.io/npm/v/vuetify-resize-drawer?color=1867c0&logo=npm" alt="NPM Package">
+  <a href="https://www.npmjs.com/package/@wdns/vuetify-resize-drawer">
+    <img src="https://img.shields.io/npm/v/@wdns/vuetify-resize-drawer?color=1867c0&logo=npm" alt="NPM Package">
   </a>
   &nbsp;
   <a href="https://github.com/webdevnerdstuff/vuetify-resize-drawer">
