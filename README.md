@@ -31,7 +31,20 @@ You can find the new NPM package here:
 
 ## Description
 
-The version 1 (vue/vuetify 2 version) can be found in the `v2` branch of this repository.
+The version 1 (vue/vuetify 2 version) can be found in the `v2` branch of this repository. You can install the old version using the following command:
+
+```
+
+## Installation
+ 
+Using [pnpm](https://pnpm.io/):
+```
+pnpm add @wdns/vuetify-resize-drawer@1.1.2
+```
+
+Using npm:
+```
+npm i @wdns/vuetify-resize-drawer@1.1.2
 
 
 ## Change Log
