@@ -25,14 +25,14 @@ The `vuetify-resize-drawer` component extends the functionality of the [v-naviga
 
 ## Installation
  
-Using npm:
-```
-npm i vuetify-resize-drawer
-```
- 
 Using [pnpm](https://pnpm.io/):
 ```
-pnpm add vuetify-resize-drawer
+pnpm add @wdns/vuetify-resize-drawer
+```
+ 
+Using npm:
+```
+npm i @wdns/vuetify-resize-drawer
 ```
 
 ## Documentation
@@ -41,8 +41,8 @@ pnpm add vuetify-resize-drawer
 
 ## Dependencies
  
-[Vuetify v2](https://vuetifyjs.com/)  
-[Vue 2](https://v2.vuejs.org/)
+[Vuetify v3](https://vuetifyjs.com/)  
+[Vue 3](https://vuejs.org/)
 
 
 ## Change Log
@@ -52,7 +52,7 @@ pnpm add vuetify-resize-drawer
 
 ## License
 
-Copyright (c) 2022 WebDevNerdStuff  
+Copyright (c) 2023 WebDevNerdStuff  
 Licensed under the [MIT license](https://github.com/webdevnerdstuff/vuetify-resize-drawer/blob/master/LICENSE.md).
 
 

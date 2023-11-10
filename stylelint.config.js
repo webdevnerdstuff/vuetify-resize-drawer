@@ -7,6 +7,12 @@ module.exports =
 		'stylelint-scss',
 	],
 	customSyntax: "postcss-scss",
+	overrides: [
+		{
+			"files": ["**/*.vue"],
+			"customSyntax": "postcss-html"
+		},
+	],
 	rules: {
 		// ------------------------------------------------------ CSS
 
@@ -314,7 +320,7 @@ module.exports =
 		// At-rule
 		'at-rule-empty-line-before': null,
 		'at-rule-name-case': 'lower',
-		'at-rule-name-newline-after': 'always-multi-line',
+		'at-rule-name-newline-after': null,
 		'at-rule-name-space-after': 'always',
 		'at-rule-semicolon-newline-after': 'always',
 		'at-rule-semicolon-space-before': 'never',
@@ -376,7 +382,12 @@ module.exports =
 
 		// @-rule
 		'scss/at-rule-conditional-no-parentheses': null,
-		'scss/at-rule-no-unknown': true,
+		'scss/at-rule-no-unknown': [
+			true,
+			{
+				'ignoreAtRules': ['tailwind']
+			}
+		],
 
 		// $-variable
 		'scss/dollar-variable-colon-newline-after': null,
@@ -398,7 +409,6 @@ module.exports =
 		// %-placeholder
 		'scss/percent-placeholder-pattern': namePattern,
 
-		// //-comment
 		'scss/double-slash-comment-empty-line-before': [
 			'always',
 			{
