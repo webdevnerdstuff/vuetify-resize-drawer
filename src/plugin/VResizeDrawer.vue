@@ -1,25 +1,31 @@
 <template>
 	<v-navigation-drawer
-		v-bind="$attrs"
+		v-bind="bindingSettings"
 		ref="resizeDrawer"
 		:class="drawerClasses"
-		:stateless="stateless"
+		:location="props.location"
+		:model-value="modelValue"
+		:name="props.name"
 		:style="drawerStyles"
-		:tag="tag"
-		:value="value"
+		:tag="props.tag"
+		:theme="props.theme"
 		:width="drawerWidth"
+		@mouseenter="drawerMouseenter"
+		@mouseleave="drawerMouseleave"
 	>
-		<!-- Resize handle -->
+		<!-- ============================== Resize handle -->
 		<div
-			v-if="isResizable"
+			v-if="showHandle"
 			:class="handleContainerClasses"
 			:style="handleContainerStyles"
 			@click="handleClick"
 			@dblclick="handleDoubleClick"
 			@mousedown="handleMouseDown"
 			@mouseup="handleMouseUp"
+			@touchend="handleTouchend"
+			@touchstart="handleTouchstart"
 		>
-			<template v-if="$scopedSlots.handle">
+			<template v-if="slots.handle">
 				<div class="v-resize-drawer--handle-slot">
 					<slot name="handle"></slot>
 				</div>
@@ -29,19 +35,15 @@
 				v-else-if="handlePosition !== 'border'"
 				class="v-resize-drawer--handle-icon"
 				:class="handleIconClasses"
-				:large="handleIconSize === 'large'"
-				:medium="handleIconSize === 'medium'"
-				:small="handleIconSize === 'small'"
+				:icon="theHandleIcon"
+				:size="handleIconSize"
 				:style="handleIconStyles"
-				:x-large="handleIconSize === 'x-large'"
-				:x-small="handleIconSize === 'x-small'"
-			>
-				{{ theHandleIcon }}
-			</v-icon>
+			></v-icon>
 		</div>
 
+		<!-- ============================== Slots  -->
 		<!-- Prepend Slot -->
-		<template v-if="$scopedSlots.prepend">
+		<template v-if="slots.prepend">
 			<slot name="prepend"></slot>
 		</template>
 
@@ -49,538 +51,466 @@
 		<slot name="default"></slot>
 
 		<!-- Append Slot -->
-		<template v-if="$scopedSlots.append">
+		<template v-if="slots.append">
 			<slot name="append"></slot>
 		</template>
 	</v-navigation-drawer>
 </template>
 
-<script>
-import Vue from 'vue';
-import Vuetify, { VNavigationDrawer } from 'vuetify/lib';
-import Applicationable from 'vuetify/lib/mixins/applicationable';
-import mixins from 'vuetify/lib/util/mixins';
+<script setup lang="ts">
+import { IconOptions, useDisplay, useTheme } from 'vuetify';
+import { VNavigationDrawer } from 'vuetify/components';
+import {
+	EmitEventNames,
+	Props,
+} from '@/types';
+import { AllProps } from './utils/props';
 import {
 	useGetStorage,
 	useSetStorage,
-} from './composables/storage';
+} from '@/plugin/composables/storage';
 import {
-	useHandleContainerClasses,
-	useHandleIconClasses,
 	useDrawerClasses,
-} from './composables/classes';
+	useHandleIconClasses,
+	useHandleContainerClasses,
+} from '@/plugin/composables/classes';
 import {
 	useDrawerStyles,
 	useHandleContainerStyles,
 	useHandleIconStyles,
-} from './composables/styles';
+} from '@/plugin/composables/styles';
 import {
 	useConvertToNumber,
 	useConvertToUnit,
-} from './composables/helpers';
-import { useGetIcon } from './composables/icons';
+} from '@/plugin/composables/helpers';
+import { useGetIcon } from '@/plugin/composables/icons';
 
-Vue.use(Vuetify);
 
-const baseMixins = mixins(
-	Applicationable('left', [
-		'drawerWidth',
-	]),
-);
+// -------------------------------------------------- Emits & Slots & Injects //
+const emit = defineEmits([
+	'close',
+	'drawer:mouseenter',
+	'drawer:mouseleave',
+	'handle:click',
+	'handle:dblclick',
+	'handle:drag',
+	'handle:mousedown',
+	'handle:mouseup',
+	'handle:touchend',
+	'handle:touchmove',
+	'handle:touchstart',
+	'update:modelValue',
+]);
 
-export default baseMixins.extend({
-	extends: VNavigationDrawer,
-	name: 'v-resize-drawer',
-	props: {
-		handleBorderWidth: {
-			default: 8,
-			required: false,
-			type: [Number, String],
-		},
-		handleColor: {
-			default: 'primary',
-			type: String,
-		},
-		handleIcon: {
-			default: undefined,
-			type: String,
-		},
-		handleIconSize: {
-			default: 'x-small',
-			type: String,
-		},
-		handlePosition: {
-			default: 'center',
-			type: String,
-		},
-		minWidth: {
-			default: 56,
-			required: false,
-			type: [Number, String],
-		},
-		maxWidth: {
-			default: '100%',
-			required: false,
-			type: [Number, String],
-		},
-		resizable: {
-			default() {
-				return !this.isMiniVariant;
-			},
-			type: Boolean,
-		},
-		saveWidth: {
-			default: true,
-			type: Boolean,
-		},
-		storageName: {
-			default: 'v-resize-drawer-width',
-			type: String,
-		},
-		storageType: {
-			default: 'local',
-			type: String,
-		},
-		tag: {
-			default: 'nav',
-			type: String,
-		},
-		width: {
-			default: 256,
-			required: false,
-			type: [Number, String],
-		},
-		widthSnapBack: {
-			default: true,
-			type: Boolean,
-		},
-	},
-	data: () => ({
-		componentName: 'v-resize-drawer',
-		defaultWidth: 256,
-		handleEvents: {
-			mouseDown: false,
-			mouseUp: true,
-		},
-		loading: false,
-		resizedWidth: 256,
-	}),
-	computed: {
-		drawerClasses() {
-			const classes = useDrawerClasses({
-				absolute: this.absolute,
-				app: this.app,
-				bottom: this.bottom,
-				clipped: this.clipped,
-				expandOnHover: this.expandOnHover,
-				fixed: this.fixed,
-				floating: this.floating,
-				isActive: this.isActive,
-				isMiniVariant: this.isMiniVariant,
-				isMobile: this.isMobile,
-				isMouseOver: this.isMouseover,
-				miniVariantWidth: this.miniVariantWidth,
-				right: this.right,
-				temporary: this.temporary,
-			});
 
-			return classes;
-		},
-		drawerStyles() {
-			const windowHeight = window.innerHeight;
+// -------------------------------------------------- Props //
+const props = withDefaults(defineProps<Props>(), { ...AllProps });
+const bindingSettings = computed(() => props);
 
-			const styles = useDrawerStyles({
-				height: this.height,
-				isMiniVariant: this.isMiniVariant,
-				isMouseDown: this.isMouseDown,
-				maxWidth: this.maxWidth,
-				minWidth: this.minWidth,
-				miniVariantWidth: this.miniVariantWidth,
-				resizedWidth: this.resizedWidth,
-				// ? computedTop comes from VNavigationDrawer component //
-				top: this.computedTop,
-				transform: `translateX(${useConvertToUnit({ str: this.computedTransform, unit: '%' })})`,
-				widthSnapBack: this.widthSnapBack,
-				windowHeight,
-			});
+const iconOptions = inject<IconOptions>(Symbol.for('vuetify:icons'));
+const defaultWidth = ref<Props['width']>(256);
+const handleEvents: { mouseUp: boolean, mouseDown: boolean; } = {
+	mouseDown: false,
+	mouseUp: true,
+};
+const isMouseover = ref<boolean>(false);
+const isMouseDown = ref<boolean>(false);
+const resizeDrawer = ref<VNavigationDrawer>();
+const resizedWidth = ref<string | number | undefined>(256);
+const slots = useSlots();
+const theme = useTheme();
+const display = useDisplay();
 
-			return styles;
-		},
-		drawerWidth() {
-			return useConvertToUnit({ str: this.resizedWidth });
-		},
-		handleContainerClasses() {
-			const parentPosition = this.right ? 'right' : 'left';
 
-			return useHandleContainerClasses({
-				handlePosition: this.handlePosition,
-				isHandleSlot: this.$scopedSlots.handle,
-				parentPosition,
-			});
-		},
-		handleIconClasses() {
-			const parentPosition = this.right ? 'right' : 'left';
+// -------------------------------------------------- Life Cycle Hooks //
+onMounted(() => {
+	if (props.location !== 'start' && props.location !== 'end' && props.location !== 'left' && props.location !== 'right') {
+		throw new Error("VResizeDrawer: 'top' and 'bottom' locations are not supported.");
+	}
 
-			return useHandleIconClasses({
-				handlePosition: this.handlePosition,
-				iconfont: this.$vuetify.theme.framework.icons.iconfont,
-				isUserIcon: typeof this.handleIcon !== 'undefined' && this.handleIcon !== null,
-				parentPosition,
-			});
-		},
-		handleIconStyles() {
-			const styles = useHandleIconStyles({
-				color: this.handleColor,
-				theme: this.$vuetify.theme,
-			});
-
-			return styles;
-		},
-		handleContainerStyles() {
-			const styles = useHandleContainerStyles({
-				borderWidth: this.handleBorderWidth,
-				handleColor: this.handleColor,
-				iconSize: this.handleIconSize,
-				position: this.handlePosition,
-				theme: this.$vuetify.theme,
-			});
-
-			return styles;
-		},
-		isResizable() {
-			return this.resizable && !this.miniVariant && !this.expandOnHover;
-		},
-		theHandleIcon() {
-			const icon = useGetIcon({
-				icon: this.handleIcon,
-				iconfont: this.$vuetify.theme.framework.icons.iconfont,
-				position: this.handlePosition,
-			});
-
-			return icon;
-		},
-	},
-	watch: {
-		isMouseover: {
-			deep: true,
-			handler(val) {
-				if (this.miniVariant && this.expandOnHover) {
-					this.resizedWidth = val ? this.width : this.miniVariantWidth;
-				}
-			},
-		},
-		miniVariant: {
-			deep: true,
-			handler(val) {
-				let width = this.width;
-
-				if (this.saveWidth) {
-					width = this.getLocalStorage();
-				}
-
-				this.resizedWidth = !val ? width : this.miniVariantWidth;
-			},
-		},
-	},
-	mounted() {
-		this.setup();
-		this.genListeners();
-		this.setLocalStorage('set');
-	},
-	beforeDestroy() {
-		const drawer = this.$refs.resizeDrawer.$el;
-
-		drawer.removeEventListener('mouseenter', this.drawerMouseenter, false);
-		drawer.removeEventListener('mouseleave', this.drawerMouseleave, false);
-
-		if (this.isResizable) {
-			document.removeEventListener('mouseup', this.handleMouseUp, false);
-			document.removeEventListener('mousemove', this.drawerResize, false);
-		}
-	},
-	methods: {
-		checkMaxMinWidth(width) {
-			let returnWidth = useConvertToNumber(width);
-			const maxWidth = useConvertToNumber(this.maxWidth);
-			const minWidth = useConvertToNumber(this.minWidth);
-
-			if (returnWidth >= maxWidth) {
-				returnWidth = maxWidth;
-			}
-
-			if (minWidth >= returnWidth) {
-				returnWidth = minWidth;
-			}
-
-			return returnWidth;
-		},
-		drawerClose(evt) {
-			this.emitEvent('close', evt);
-		},
-		drawerDrag(e) {
-			e.preventDefault();
-			e.stopPropagation();
-
-			const el = this.$refs.resizeDrawer.$el;
-
-			if (e.offsetX < 25) {
-				el.style.transition = 'initial';
-				document.addEventListener('mousemove', this.drawerResize, false);
-			}
-		},
-		drawerInput(val) {
-			this.emitEvent('input', val);
-		},
-		drawerMouseenter() {
-			this.isMouseover = true;
-		},
-		drawerMouseleave() {
-			this.isMouseover = false;
-		},
-		drawerResize(el) {
-			let width = el.clientX;
-
-			if (this.right) {
-				width = document.body.scrollWidth - width;
-			}
-
-			this.resizedWidth = useConvertToUnit({ str: width });
-
-			if (!this.widthSnapBack) {
-				this.resizedWidth = this.checkMaxMinWidth(this.resizedWidth);
-			}
-
-			document.body.style.cursor = 'grabbing';
-
-			this.emitEvent('handle:drag', el);
-		},
-		emitEvent(name, evt) {
-			const drawerData = {
-				eventName: name,
-				evt,
-				resizedWidth: this.resizedWidth,
-				width: this.resizedWidth,
-			};
-
-			this.$emit(name, drawerData);
-		},
-		genListeners() {
-			const drawer = this.$refs?.resizeDrawer?.$el;
-
-			if (drawer) {
-				drawer.addEventListener('mouseenter', this.drawerMouseenter, false);
-				drawer.addEventListener('mouseleave', this.drawerMouseleave, false);
-			}
-		},
-		getLocalStorage() {
-			return localStorage.getItem(this.storageName);
-		},
-		handleClick(evt) {
-			this.emitEvent('handle:click', evt);
-		},
-		handleDoubleClick(evt) {
-			this.resizedWidth = this.defaultWidth;
-			this.setLocalStorage();
-
-			this.emitEvent('handle:dblclick', evt);
-		},
-		handleMouseDown(e) {
-			e.preventDefault();
-			e.stopPropagation();
-			let offsetX = 25;
-
-			this.isMouseDown = true;
-
-			if (this.handlePosition === 'border') {
-				offsetX = this.handleBorderWidth;
-			}
-
-			this.handleEvents.mouseUp = false;
-
-			if (e.offsetX < offsetX) {
-				document.addEventListener('mousemove', this.drawerResize, false);
-			}
-
-			if (!this.handleEvents.mouseDown) {
-				this.handleEvents.mouseDown = true;
-				document.addEventListener('mouseup', this.handleMouseUp, false);
-				this.emitEvent('handle:mouseup', e);
-			}
-		},
-		handleMouseUp(e) {
-			e.preventDefault();
-			e.stopPropagation();
-
-			const drawer = this.$refs.resizeDrawer.$el;
-
-			this.isMouseDown = false;
-			this.handleEvents.mouseDown = false;
-			this.resizedWidth = drawer?.offsetWidth ?? this.defaultWidth;
-
-			document.body.style.cursor = '';
-
-			this.resizedWidth = this.checkMaxMinWidth(this.resizedWidth);
-			this.resizedWidth = useConvertToUnit({ str: this.resizedWidth }) || undefined;
-
-			useSetStorage({
-				miniVariant: this.miniVariant,
-				resizedWidth: this.resizedWidth,
-				saveWidth: this.saveWidth,
-				storageName: this.storageName,
-				storageType: this.storageType,
-			});
-
-			if (!this.handleEvents.mouseUp) {
-				this.handleEvents.mouseUp = true;
-
-				document.removeEventListener('mouseup', this.handleMouseUp, false);
-				document.removeEventListener('mousemove', this.drawerResize, false);
-				this.emitEvent('handle:mouseup', e);
-			}
-		},
-		setLocalStorage(action = 'update') {
-			if (!this.saveWidth || this.miniVariant || this.expandOnHover) {
-				return false;
-			}
-
-			let width = this.resizedWidth;
-			width = width ?? undefined;
-
-			if (action === 'set') {
-				width = this.getLocalStorage();
-				width = width || this.resizedWidth;
-			}
-
-			localStorage.setItem(this.storageName, width);
-
-			return width;
-		},
-		setup() {
-			// Disable resize if mini-variant is set //
-			if (this.isMiniVariant) {
-				this.resizedWidth = this.miniVariantWidth || undefined;
-				return false;
-			}
-
-			const storageWidth = useGetStorage(this.storageType, this.storageName);
-			const width = useConvertToUnit({ str: this.width });
-			this.resizedWidth = width;
-			this.defaultWidth = this.resizedWidth;
-
-			if (this.saveWidth && storageWidth && !this.isMiniVariant) {
-				this.resizedWidth = useGetStorage(this.storageType, this.storageName);
-			}
-
-			this.genListeners();
-
-			useSetStorage({
-				action: 'update',
-				miniVariant: this.miniVariant,
-				resizedWidth: this.resizedWidth,
-				saveWidth: this.saveWidth,
-				storageName: this.storageName,
-				storageType: this.storageType,
-			});
-
-			return false;
-		},
-		updateApplication() {
-			if (
-				!this.isActive ||
-				this.isMobile ||
-				this.temporary ||
-				!this.$el
-			) return 0;
-
-			let newWidth = this.drawerWidth;
-
-			if (!this.miniVariant && this.expandOnHover) {
-				newWidth = this.width;
-			}
-
-			if (this.miniVariant && this.expandOnHover) {
-				newWidth = this.miniVariantWidth;
-			}
-
-			const intWidth = typeof newWidth === 'number' ? newWidth : newWidth.replace('px', '');
-
-			return intWidth;
-		},
-	},
+	init();
 });
-</script>
 
-<style lang="scss" scoped>
-.v-resize-drawer {
-	&--handle {
-		&-container {
-			cursor: grab;
-			align-items: center;
-			display: flex;
-			justify-content: center;
-			position: absolute;
-			z-index: 1;
+onUnmounted(() => {
+	removeListeners();
+});
 
-			&-icon {
-				&-parent {
-					&-end,
-					&-right {
-						left: initial;
-						right: 0;
-					}
-				}
 
-				&-center {
-					&-end,
-					&-right {
-						transform: rotate(180deg);
-					}
-				}
+// -------------------------------------------------- Init //
+function init(): boolean {
 
-				&-user-icon {
-					transform: none;
-				}
+	// Disable resize if rail is set //
+	if (props.rail) {
+		resizedWidth.value = props.railWidth || undefined;
+		return false;
+	}
 
-				&-fa {
-					font-size: .7rem !important;
-				}
-			}
+	const storageWidth = useGetStorage(props.storageType, props.storageName);
+	const width = useConvertToUnit({ str: props.width });
+	resizedWidth.value = width as string;
+	defaultWidth.value = resizedWidth.value as string;
 
-			&-parent {
-				&-left,
-				&-start,
-				&-undefined {
-					right: 0;
-				}
+	if (props.saveWidth && storageWidth && !props.rail) {
+		resizedWidth.value = useGetStorage(props.storageType, props.storageName) as string;
+	}
 
-				&-end,
-				&-right {
-					left: 0;
-				}
-			}
+	useSetStorage({
+		action: 'update',
+		rail: props.rail,
+		resizedWidth: resizedWidth.value,
+		saveWidth: props.saveWidth,
+		storageName: props.storageName,
+		storageType: props.storageType,
+	});
 
-			&-position {
-				&-top {
-					top: 0;
-				}
+	return false;
+}
 
-				&-center {
-					top: 50%;
-					transform: translateY(-50%);
-				}
+// -------------------------------------------------- Model Watcher //
+watch(() => props.modelValue, (val) => {
+	emit('update:modelValue', val);
 
-				&-bottom {
-					bottom: 0;
-				}
+	if (!val) {
+		emit('close');
+		return;
+	}
+});
 
-				&-border {
-					cursor: col-resize;
-					height: 100%;
-					top: 0;
-					width: 8px;
-				}
-			}
+
+// -------------------------------------------------- Drawer Classes & Styles //
+const drawerClasses = computed(() => useDrawerClasses({
+	absolute: props.absolute,
+	expandOnHover: props.expandOnHover,
+	floating: props.floating,
+	isMouseover,
+	location: props.location,
+	rail: props.rail,
+	railWidth: props.railWidth,
+	temporary: props.temporary,
+}));
+
+const drawerStyles = computed(() => useDrawerStyles({
+	isMouseDown,
+	maxWidth: computedMaxWidth.value,
+	minWidth: computedMinWidth.value,
+	rail: props.rail,
+	railWidth: props.railWidth,
+	resizedWidth,
+	widthSnapBack: props.widthSnapBack,
+}));
+
+const drawerWidth = computed<string | undefined>(() => {
+	if (props.rail) {
+		return undefined;
+	}
+
+	return useConvertToUnit({ str: resizedWidth.value as string }) as string;
+});
+
+
+// -------------------------------------------------- Handle Container //
+const handleContainerClasses = computed(() => useHandleContainerClasses({
+	drawerLocation: props.location,
+	handlePosition: props.handlePosition,
+}));
+
+const handleContainerStyles = computed(() => useHandleContainerStyles({
+	borderWidth: props.handleBorderWidth,
+	handleColor: props.handleColor,
+	iconSize: props.handleIconSize,
+	position: props.handlePosition,
+	theme,
+}));
+
+const showHandle = computed(() => {
+	if (props.touchless && display.mobile.value) {
+		return false;
+	}
+
+	if (!props.resizable || props.rail) {
+		return false;
+	}
+
+	return true;
+});
+
+
+// -------------------------------------------------- Handle Icon //
+const handleIconStyles = computed(() => useHandleIconStyles({
+	color: props.handleColor,
+	theme,
+}));
+
+const handleIconClasses = computed(() => useHandleIconClasses({
+	drawerLocation: props.location,
+	handlePosition: props.handlePosition,
+	iconOptions,
+	isUserIcon: typeof props.handleIcon !== 'undefined' && props.handleIcon !== null,
+}));
+
+const theHandleIcon = computed(() => {
+	const icon = useGetIcon({
+		icon: props.handleIcon,
+		iconOptions,
+		position: props.handlePosition,
+	});
+
+	return icon;
+});
+
+
+// -------------------------------------------------- Drawer Events //
+function drawerMouseenter(): void {
+	isMouseover.value = true;
+	emit('drawer:mouseenter', isMouseover.value);
+}
+
+function drawerMouseleave(): void {
+	isMouseover.value = false;
+	emit('drawer:mouseleave', isMouseover.value);
+}
+
+
+function drawerResizeEvent(e: MouseEvent | TouchEvent, width: number): void {
+	let widthValue = width;
+
+	if (props.location === 'right' || props.location === 'end') {
+		widthValue = document.body.scrollWidth - widthValue;
+	}
+
+	resizedWidth.value = useConvertToUnit({ str: widthValue }) || undefined;
+
+	document.body.style.cursor = 'grabbing';
+
+	emitEvent('handle:touchmove', e);
+	emitEvent('handle:drag', e);
+}
+
+function drawerTouchResize(e: TouchEvent): void {
+	const width = e.touches[0]?.clientX ?? 0;
+
+	drawerResizeEvent(e, width);
+}
+
+function mouseResize(e: MouseEvent): void {
+	const width = e.clientX;
+
+	drawerResizeEvent(e, width);
+}
+
+// Computed Width's and Min/Mac Check //
+const computedMaxWidth = computed(() => {
+	if (props.maxWidth === '100%') {
+		return window.innerWidth;
+	}
+
+	if (String(props.maxWidth).includes('%')) {
+		const percent = parseInt(String(props.maxWidth).replace('%', ''));
+
+		return (window.innerWidth * percent) / 100;
+	}
+
+	return props.maxWidth;
+});
+
+const computedMinWidth = computed(() => {
+	if (props.minWidth === '100%') {
+		return window.innerWidth;
+	}
+
+	if (String(props.minWidth).includes('%')) {
+		const percent = parseInt(String(props.minWidth).replace('%', ''));
+
+		return (window.innerWidth * percent) / 100;
+	}
+
+	return props.minWidth;
+});
+
+function checkMaxMinWidth<T>(width: T): T {
+	let widthValue = width as string | number;
+
+	// Make sure the value is not exceeding min/max boundaries //
+	if (parseInt(widthValue as string) >= parseInt(computedMaxWidth.value as string)) {
+		widthValue = parseInt(computedMaxWidth.value as string);
+	}
+
+	if (parseInt(widthValue as string) <= parseInt(computedMinWidth.value as string)) {
+		widthValue = parseInt(computedMinWidth.value as string);
+	}
+
+	if (typeof widthValue === 'number') {
+		widthValue = Math.round(widthValue as number);
+	}
+
+	let returnWidth = useConvertToNumber(widthValue as string | number) as T;
+	const maxWidth = useConvertToNumber(computedMaxWidth.value) as T;
+	const minWidth = useConvertToNumber(computedMinWidth.value) as T;
+
+	if (returnWidth >= maxWidth) {
+		returnWidth = maxWidth as T;
+	}
+
+	if (minWidth >= returnWidth) {
+		returnWidth = minWidth as T;
+	}
+
+	return returnWidth as T;
+}
+
+// -------------------------------------------------- Handle Events //
+
+// ------------------------- Click & DoubleClick //
+function handleClick(e: Event): void {
+	emitEvent('handle:click', e);
+}
+
+function handleDoubleClick(e: Event): void {
+	resizedWidth.value = defaultWidth.value;
+
+	useSetStorage({
+		rail: props.rail,
+		resizedWidth: resizedWidth.value,
+		saveWidth: props.saveWidth,
+		storageName: props.storageName,
+		storageType: props.storageType,
+	});
+
+	emitEvent('handle:dblclick', e);
+}
+
+// ------------------------- MouseDown & Touchstart //
+function handleStart(e: MouseEvent | TouchEvent, eventOffsetX: number): void {
+	e.preventDefault();
+	e.stopPropagation();
+
+	const eventType = e.type;
+	let offsetX = 25;
+
+	isMouseDown.value = true;
+
+	if (props.handlePosition === 'border') {
+		offsetX = props.handleBorderWidth as number;
+	}
+
+	handleEvents.mouseUp = false;
+
+	if (eventOffsetX < offsetX) {
+		if (eventType === 'touchstart') {
+			document.addEventListener('touchmove', drawerTouchResize, false);
+		}
+		else {
+			document.addEventListener('mousemove', mouseResize, false);
 		}
 	}
+
+	if (!handleEvents.mouseDown) {
+		handleEvents.mouseDown = true;
+
+		if (eventType === 'touchstart') {
+			document.addEventListener('touchend', handleTouchend, false);
+			emitEvent('handle:touchstart', e);
+		}
+		else {
+			document.addEventListener('mouseup', handleMouseUp, false);
+			emitEvent('handle:mousedown', e);
+		}
+
+	}
 }
+
+function handleMouseDown(e: MouseEvent): void {
+	handleStart(e, e.offsetX);
+}
+
+function handleTouchstart(e: TouchEvent): void {
+	const clientX = e.touches[0]?.radiusX ?? 0;
+
+	handleStart(e, clientX);
+}
+
+// ------------------------- MouseUp & Touchend //
+function handleEnd(e: MouseEvent | TouchEvent): void {
+	e.preventDefault();
+	e.stopPropagation();
+
+	const eventType = e.type;
+	const drawer = resizeDrawer.value;
+
+	isMouseDown.value = false;
+	handleEvents.mouseDown = false;
+	resizedWidth.value = drawer?.width ?? defaultWidth.value;
+
+	document.body.style.cursor = '';
+
+	const widthVal = resizedWidth.value as string;
+
+	if (widthVal.includes('-')) {
+		resizedWidth.value = computedMinWidth.value;
+	}
+
+	resizedWidth.value = checkMaxMinWidth(resizedWidth.value);
+	resizedWidth.value = useConvertToUnit({ str: resizedWidth.value as string }) || undefined;
+
+	useSetStorage({
+		rail: props.rail,
+		resizedWidth: resizedWidth.value,
+		saveWidth: props.saveWidth,
+		storageName: props.storageName,
+		storageType: props.storageType,
+	});
+
+	if (!handleEvents.mouseUp) {
+		handleEvents.mouseUp = true;
+
+		if (eventType === 'touchend') {
+			document.removeEventListener('touchend', handleTouchend, false);
+			document.removeEventListener('touchmove', drawerTouchResize, false);
+			emitEvent('handle:touchend', e);
+		}
+		else {
+			document.removeEventListener('mouseup', handleMouseUp, false);
+			document.removeEventListener('mousemove', mouseResize, false);
+			emitEvent('handle:mouseup', e);
+		}
+
+	}
+}
+
+function handleMouseUp(e: MouseEvent): void {
+	handleEnd(e);
+}
+
+function handleTouchend(e: TouchEvent): void {
+	handleEnd(e);
+}
+
+
+// -------------------------------------------------- Misc Events //
+function emitEvent(name: EmitEventNames, e: Event | MouseEvent): void {
+	const widthInt = parseInt(checkMaxMinWidth(resizedWidth.value as string)) ?? 0 as number;
+
+	const drawerData = {
+		e,
+		eventName: name,
+		offsetWidth: `${window.innerWidth - widthInt}px`,
+		resizedWidth: `${widthInt}px`,
+		width: `${widthInt}px`,
+	};
+
+	emit(name, drawerData);
+}
+
+function removeListeners(): void {
+	document.removeEventListener('mouseup', handleMouseUp, false);
+	document.removeEventListener('mousemove', mouseResize, false);
+	document.removeEventListener('touchend', handleTouchend, false);
+	document.removeEventListener('touchstart', handleTouchstart, false);
+}
+</script>
+
+
+<style lang="scss">
+@use './styles/main.scss';
 </style>
+

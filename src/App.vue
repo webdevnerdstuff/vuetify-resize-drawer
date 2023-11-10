@@ -1,110 +1,102 @@
 <template>
 	<v-app id="home">
 		<!-- ====================================================== App Bar -->
-		<v-app-bar
-			app
-			class="top-app-bar"
-			clipped-left
-			clipped-right
-			color="primary"
-			dark
-			dense
-			fixed
+		<AppBar
+			@changed-theme="updateCodeBlockTheme"
+			@updated-drawer="toggleDrawer"
+		/>
+
+		<!-- ====================================================== Grid Drawer -->
+		<VResizeDrawer
+			v-model="gridDrawer"
+			:absolute="gridDrawerOptions.absolute"
+			:color="gridDrawerOptions.color"
+			:elevation="gridDrawerOptions.elevation"
+			:location="gridDrawerOptions.location"
+			:max-width="gridDrawerOptions.maxWidth"
+			:min-width="gridDrawerOptions.minWidth"
+			:save-width="gridDrawerOptions.saveWidth"
+			:scrim="false"
+			style="z-index: 9999;"
+			:temporary="gridDrawerOptions.temporary"
+			:theme="drawerOptions.theme"
+			:width="gridDrawerWidth"
+			:width-snap-back="gridDrawerOptions.widthSnapBack"
+			@handle:dblclick="gridHandleDoubleClick"
+			@handle:drag="gridHandleDrag"
 		>
-			<v-app-bar-nav-icon
-				class="nav-drawer-btn mr-2"
-				height="32"
-				width="32"
-				@click.stop="drawer = !drawer"
+			<v-container
+				class="grid-drawer-width position-fixed bg-surface elevation-5"
+				fluid
 			>
-				<v-icon>mdi-menu</v-icon>
-			</v-app-bar-nav-icon>
+				<v-row>
+					<v-col
+						class="text-center "
+						cols="12"
+					>
+						{{ computedWidth }}
 
-			<div class="site-title">Vuetify Resize Drawer</div>
+						<div class="float-right">
+							<v-btn
+								icon
+								size="x-small"
+								@click="gridDrawer = false"
+							><v-icon icon="mdi:mdi-close"></v-icon></v-btn>
+						</div>
+					</v-col>
+				</v-row>
+			</v-container>
 
-			<v-spacer></v-spacer>
-
-			<v-btn
-				class="mr-2"
-				:href="links.repo"
-				icon
-				small
-				target="_blank"
-			>
-				<v-icon>mdi-github</v-icon>
-			</v-btn>
-
-			<v-btn
-				class="mr-2"
-				:href="links.npm"
-				icon
-				small
-				target="_blank"
-			>
-				<v-icon>mdi-npm</v-icon>
-			</v-btn>
-
-			<v-btn
-				class="mr-1"
-				icon
-				small
-				@click="toggleDark"
-			>
-				<v-icon v-if="!dark">mdi-weather-sunny</v-icon>
-				<v-icon v-else>mdi-weather-night</v-icon>
-			</v-btn>
-		</v-app-bar>
+			<v-container class="bg-surface-variant pt-16">
+				<v-row
+					class="pt-5"
+					no-gutters
+				>
+					<v-col
+						v-for="n in 12"
+						:key="n"
+						class="v-col-xs-12"
+						lg="3"
+						md="4"
+						sm="6"
+					>
+						<v-sheet class="pa-2 ma-2">
+							<div class="d-none d-md-none d-sm-none d-xs-none d-lg-flex">.v-col-lg-3</div>
+							<div class="d-none d-lg-none d-sm-none d-xs-none d-md-flex">.v-col-md-4</div>
+							<div class="d-none d-xs-none d-md-none d-sm-flex">.v-col-sm-6</div>
+							<div class="d-none d-xs-flex">.v-col-xs-12</div>
+						</v-sheet>
+					</v-col>
+				</v-row>
+			</v-container>
+		</VResizeDrawer>
 
 		<!-- ====================================================== Navigation Drawer -->
-		<v-navigation-drawer
-			v-model="drawer"
-			app
-			clipped
-			:color="drawerOptions.color"
-			:expand-on-hover="drawerOptions.expandOnHover"
-			fixed
-			:mini-variant="drawerOptions.miniVariant"
-			:mini-variant-width="drawerOptions.miniVariantWidth"
-			:right="!drawerOptions.right"
-			:stateless="drawerOptions.stateless"
-			:touchless="drawerOptions.touchless"
-			:width="drawerOptions.width"
-		>
-			<v-list-item>
-				<v-list-item-content>
-					<v-list-item-title class="text-h6">
-						Navigation Drawer
-					</v-list-item-title>
-					<v-list-item-subtitle>Stuck With You</v-list-item-subtitle>
-				</v-list-item-content>
-			</v-list-item>
-
-			<v-divider></v-divider>
-
-			<Menu :drawerOptions="drawerOptions" />
-		</v-navigation-drawer>
-
 		<VResizeDrawer
 			v-model="drawer"
-			app
-			clipped
+			:absolute="drawerOptions.absolute"
 			:color="drawerOptions.color"
 			:dark="drawerOptions.dark"
+			:elevation="drawerOptions.elevation"
 			:expand-on-hover="drawerOptions.expandOnHover"
-			fixed
+			:floating="drawerOptions.floating"
+			:handle-border-width="drawerOptions.handleBorderWidth"
 			:handle-color="drawerOptions.handleColor"
 			:handle-position="drawerOptions.handlePosition"
-			:light="drawerOptions.light"
+			:image="drawerOptions.image"
+			:location="drawerOptions.location === 'left' ? 'left' : 'right'"
 			max-width="50%"
 			min-width="256"
-			:mini-variant="drawerOptions.miniVariant"
-			:mini-variant-width="drawerOptions.miniVariantWidth"
-			:overflow="drawerOptions.overflow"
+			:rail="drawerOptions.rail"
+			:rail-width="drawerOptions.railWidth"
 			:resizable="drawerOptions.resizable"
-			:right="drawerOptions.right"
 			:save-width="drawerOptions.saveWidth"
-			:stateless="drawerOptions.stateless"
+			:sticky="drawerOptions.sticky"
 			:storage-name="drawerOptions.storageName"
+			:storage-type="drawerOptions.storageType"
+			:tag="drawerOptions.tag"
+			:temporary="drawerOptions.temporary"
+			:theme="drawerOptions.theme"
 			:touchless="drawerOptions.touchless"
 			:width="drawerOptions.width"
 			@close="drawerClose"
@@ -114,245 +106,242 @@
 			@handle:mousedown="handleMousedown"
 			@handle:mouseup="handleMouseup"
 			@input="drawerInput"
-			@transitionend="drawerTransitionend"
 		>
-			<header>
+			<!-- <template #handle>
+				<v-icon>mdi mdi-cog</v-icon>
+			</template> -->
+
+			<v-list>
 				<v-list-item>
-					<v-list-item-content>
-						<v-list-item-title class="text-h6">
-							Resize Drawer
-						</v-list-item-title>
-						<v-list-item-subtitle>
-							I'm as free as a bird now
-						</v-list-item-subtitle>
-					</v-list-item-content>
+					<v-list-item-title class="text-h6"> Resize Drawer </v-list-item-title>
+					<v-list-item-subtitle>I'm as free as a bird now</v-list-item-subtitle>
 				</v-list-item>
+			</v-list>
 
-				<v-divider></v-divider>
-			</header>
+			<v-divider></v-divider>
 
-			<Menu :drawerOptions="drawerOptions" />
-
-			<v-card
-				class="overflow-content d-flex justify-center align-center"
-				color="primary"
-				dark
-				elevation="10"
-				min-width="300"
-				width="300"
-			>
-				<v-card-title>Overflow Content</v-card-title>
-			</v-card>
+			<MenuComponent :drawerOptions="drawerOptions" />
 		</VResizeDrawer>
+
+		<v-navigation-drawer
+			v-model="drawer"
+			:absolute="drawerOptions.absolute"
+			:color="drawerOptions.color"
+			:elevation="drawerOptions.elevation"
+			:expand-on-hover="drawerOptions.expandOnHover"
+			:floating="drawerOptions.floating"
+			:image="drawerOptions.image"
+			:location="drawerOptions.location === 'left' ? 'right' : 'left'"
+			:rail="drawerOptions.rail"
+			:rail-width="drawerOptions.railWidth"
+			:sticky="drawerOptions.sticky"
+			:tag="drawerOptions.tag"
+			:theme="drawerOptions.theme"
+			:touchless="drawerOptions.touchless"
+			:width="drawerOptions.width"
+		>
+			<v-list>
+				<v-list-item>
+					<v-list-item-title class="text-h6">
+						Navigation Drawer
+					</v-list-item-title>
+					<v-list-item-subtitle>Stuck With You</v-list-item-subtitle>
+				</v-list-item>
+			</v-list>
+
+			<v-divider></v-divider>
+
+			<MenuComponent :drawerOptions="drawerOptions" />
+		</v-navigation-drawer>
 
 		<!-- ====================================================== Main Container -->
 		<v-main
-			:class="[
-				{
-					'drawer-open': drawer,
-				},
-			]"
+			class="main-container pb-10"
+			:class="[{ 'drawer-open': drawer }]"
 			:style="mainStyles"
 		>
-			<Documentation
-				:drawerOptions="drawerOptions"
-				:links="links"
-			/>
+			<v-container class="px-10">
+				<DocsPage
+					:codeBlockOptions="codeBlockSettings"
+					@toggleGridDrawer="gridDrawer = !gridDrawer"
+					@updateOptions="updateOptions($event)"
+				/>
+			</v-container>
 		</v-main>
+
 	</v-app>
 </template>
 
-<script>
-import Vue from 'vue';
-import UnicornLog from 'vue-unicorn-log';
-import Documentation from './components/Documentation.vue';
-import Menu from './components/Menu.vue';
+<script setup>
+import { onMounted, computed, provide, ref } from 'vue';
+import { useDisplay } from 'vuetify';
+import AppBar from './documentation/layout/AppBar.vue';
+import MenuComponent from './documentation/components/MenuComponent.vue';
+import DocsPage from './documentation/DocsPage.vue';
+import { useCoreStore } from './stores/index';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
+import Prism from 'prismjs';
+import 'prismjs/components/prism-typescript.js';
 
-Vue.use(UnicornLog, { disabled: true });
 
-const EventBus = new Vue();
-
-Object.defineProperties(Vue.prototype, {
-	$bus: {
-		get() {
-			return EventBus;
-		},
-	},
+onMounted(() => {
+	getLocalStorage();
 });
 
-export default {
-	name: 'App',
-	components: {
-		Documentation,
-		Menu,
-	},
-	computed: {
-		mainStyles() {
-			let styles = '';
+const { smAndUp } = useDisplay();
 
-			if (this.$vuetify.breakpoint.mobile) {
-				styles += 'padding-left: 0 !important;';
-				styles += 'padding-right: 0 !important;';
-			}
+const isSmAndUp = computed(() => smAndUp.value);
+const store = useCoreStore();
+const drawer = ref(isSmAndUp.value);
+const drawerOffset = ref('256px');
+const drawerOptions = ref({
+	absolute: false,
+	color: '',
+	dark: true,
+	elevation: 10,
+	expandOnHover: true,
+	floating: false,
+	handleBorderWidth: 8,
+	handleColor: 'primary',
+	handlePosition: 'center',
+	location: 'left',
+	rail: false,
+	railWidth: 56,
+	resizable: true,
+	saveWidth: true,
+	sticky: false,
+	storageName: 'v-resize-drawer-width',
+	storageType: 'local',
+	tag: 'nav',
+	temporary: false,
+	theme: 'dark',
+	touchless: false,
+	width: undefined,
+});
+const gridDrawer = ref(false);
+const gridDrawerOptions = ref({
+	absolute: false,
+	color: '',
+	elevation: 0,
+	location: 'right',
+	maxWidth: '100%',
+	minWidth: '256px',
+	saveWidth: false,
+	temporary: true,
+	widthSnapBack: true,
+});
+const gridDrawerWidth = ref('256px');
+const computedWidth = ref(gridDrawerWidth.value);
 
-			return styles;
-		},
-	},
-	data: () => ({
-		dark: false,
-		drawer: true,
-		drawerOffset: '256px',
-		drawerOptions: {
-			color: undefined,
-			dark: false,
-			expandOnHover: false,
-			handleColor: 'primary',
-			handlePosition: 'center',
-			light: false,
-			miniVariant: false,
-			miniVariantWidth: 56,
-			overflow: false,
-			resizable: true,
-			right: false,
-			saveWidth: true,
-			stateless: false,
-			storageName: 'v-resize-drawer-width',
-			touchless: false,
-			width: undefined,
-		},
-		links: {
-			github: 'https://github.com/webdevnerdstuff',
-			npm: 'https://www.npmjs.com/package/vuetify-resize-drawer',
-			pnpm: 'https://pnpm.io/',
-			repo: 'https://github.com/webdevnerdstuff/vuetify-resize-drawer',
-			vue2: 'https://v2.vuejs.org',
-			vuetify2: 'https://v2.vuetifyjs.com/en',
-		},
-		mainContainerEl: null,
-		unicornLog: {
-			prefix: '[App.vue]',
-			styles: [
-				'background: black',
-				'color: magenta',
-				'padding: 5px',
-			],
-		},
-	}),
-	created() {
-		this.$bus.$on('updateOptions', (options) => {
-			this.$unicornLog({
-				logPrefix: this.unicornLog.prefix,
-				objects: options,
-				styles: this.unicornLog.styles,
-				text: 'updateOptions',
-			});
+const codeBlockPlugin = 'prismjs';
+const codeBlockLightTheme = 'tomorrow';
+const codeBlockDarkTheme = 'tomorrow';
 
-			this.drawerOptions = options;
-		});
-	},
-	mounted() {
-		this.getLocalStorage();
-		this.getDarkLocalStorage();
-	},
-	methods: {
-		drawerClose(val) {
-			this.$unicornLog({
-				logPrefix: this.unicornLog.prefix,
-				styles: this.unicornLog.styles,
-				text: `drawerClose: ${val}`,
-			});
+const codeBlockSettings = ref({
+	plugin: codeBlockPlugin,
+	theme: codeBlockDarkTheme,
+});
 
-			this.drawer = false;
-		},
-		drawerInput(val) {
-			this.$unicornLog({
-				logPrefix: this.unicornLog.prefix,
-				styles: this.unicornLog.styles,
-				text: `drawerInput: ${val}`,
-			});
+function updateCodeBlockTheme(val) {
+	codeBlockSettings.value.theme = codeBlockLightTheme;
 
-			if (val) {
-				this.getLocalStorage();
-				return false;
-			}
+	if (val === 'dark') {
+		codeBlockSettings.value.theme = codeBlockDarkTheme;
+	}
 
-			this.drawerOffset = 0;
-			return false;
-		},
-		drawerTransitionend(evt) {
-			this.$unicornLog({
-				logPrefix: this.unicornLog.prefix,
-				object: evt,
-				styles: this.unicornLog.styles,
-				text: 'drawerTransitionend',
-			});
-		},
-		getDarkLocalStorage() {
-			const isDark = localStorage.getItem('vuetify-resize-drawer-dark');
+	drawerOptions.value.theme = val;
+	drawerOptions.value.dark = val === 'dark';
+}
 
-			this.dark = isDark === 'true';
-			this.$vuetify.theme.dark = this.dark;
-		},
-		getLocalStorage() {
-			this.updateDrawerOffset(localStorage.getItem(this.drawerOptions.storageName) || this.drawerOffset);
-		},
-		handleClick(evt) {
-			this.$unicornLog({
-				logPrefix: this.unicornLog.prefix,
-				object: evt,
-				styles: this.unicornLog.styles,
-				text: 'handleClick',
-			});
-		},
-		handleDoubleClick(evt) {
-			this.$unicornLog({
-				logPrefix: this.unicornLog.prefix,
-				object: evt,
-				styles: this.unicornLog.styles,
-				text: 'handleDoubleClick',
-			});
+provide('drawerOptions', drawerOptions);
+provide('links', store.links);
 
-			this.updateDrawerOffset(evt.offsetWidth);
-		},
-		handleDrag(evt) {
-			this.updateDrawerOffset(evt.offsetWidth);
-		},
-		handleMousedown(evt) {
-			this.$unicornLog({
-				logPrefix: this.unicornLog.prefix,
-				object: evt,
-				styles: this.unicornLog.styles,
-				text: 'handleMousedown',
-			});
-		},
-		handleMouseup(evt) {
-			this.$unicornLog({
-				logPrefix: this.unicornLog.prefix,
-				object: evt,
-				styles: this.unicornLog.styles,
-				text: 'handleMouseup',
-			});
+const mainStyles = computed(() => {
+	const { mobile } = useDisplay();
+	let styles = '';
+	let paddingValue = drawerOffset.value;
 
-			this.updateDrawerOffset(evt.offsetWidth);
-		},
-		setDarkLocalStorage(val) {
-			localStorage.setItem('vuetify-resize-drawer-dark', val);
-		},
-		toggleDark() {
-			this.dark = !this.dark;
-			this.$vuetify.theme.dark = this.dark;
-			this.setDarkLocalStorage(this.dark);
-		},
-		updateDrawerOffset(val) {
-			this.drawerOffset = val;
-		},
-	},
-};
+	if (mobile.value || !drawer.value) {
+		paddingValue = '0';
+	}
+
+	styles += `padding-${drawerOptions.value.location}: ${paddingValue} !important;`;
+
+	return styles;
+});
+
+function drawerClose(val) {
+	eventTriggered('drawerClose', val);
+
+	drawer.value = false;
+}
+
+function drawerInput(val) {
+	eventTriggered('drawerInput', val);
+
+	if (val) {
+		getLocalStorage();
+		return false;
+	}
+
+	drawerOffset.value = 0;
+	return false;
+}
+
+function eventTriggered(eventName, eventValue = null) {
+	return { eventName, eventValue };
+}
+
+function getLocalStorage() {
+	updateDrawerOffset(localStorage.getItem(drawerOptions.value.storageName) || drawerOffset.value);
+}
+
+function handleClick(evt) {
+	eventTriggered('handleClick', evt);
+}
+
+function handleDoubleClick(evt) {
+	eventTriggered('handleDoubleClick', evt);
+
+	updateDrawerOffset(evt.resizedWidth);
+}
+
+function handleDrag(evt) {
+	updateDrawerOffset(evt.resizedWidth);
+}
+
+function handleMousedown(evt) {
+	eventTriggered('handleMousedown', evt);
+}
+
+function handleMouseup(evt) {
+	eventTriggered('handleMouseup', evt);
+
+	updateDrawerOffset(evt.resizedWidth);
+}
+
+function toggleDrawer() {
+	drawer.value = !drawer.value;
+}
+
+function updateDrawerOffset(val) {
+	drawerOffset.value = val;
+}
+
+function updateOptions(options) {
+	drawerOptions.value = options;
+}
+
+function gridHandleDrag(evt) {
+	computedWidth.value = evt.width;
+}
+
+function gridHandleDoubleClick(evt) {
+	computedWidth.value = evt.width;
+}
 </script>
 
 <style lang="scss">
-@import 'vue-code-highlight/themes/prism-tomorrow.css';
-
 html {
 	scroll-behavior: smooth;
 	scroll-padding-top: 70px;
@@ -362,16 +351,10 @@ html {
 	z-index: 99 !important;
 
 	.nav-drawer-btn {
-		margin-left: -4px !important;
-
 		.nav-drawer-icon {
 			height: 18px;
 			width: 18px;
 		}
-	}
-
-	.site-title {
-		font-family: 'Roboto', sans-serif !important;
 	}
 }
 
@@ -379,39 +362,15 @@ html {
 	position: relative;
 
 	> a {
-		bottom: 0;
+		color: rgb(var(--v-theme-primary));
 		display: inline-block;
-		left: 0;
+		inset: 0;
 		margin: 0 -0.7em;
 		position: absolute;
-		right: 0;
-		top: 0;
 
 		&:not(:hover):not(:focus) {
 			opacity: 0;
 		}
-	}
-}
-
-code {
-	&.language-bash,
-	&.language-html,
-	&.language-javascript,
-	&.language-js {
-		background-color: transparent !important;
-	}
-}
-
-.overflow-content {
-	right: -315px;
-	position: fixed;
-	top: 5px;
-}
-
-.v-navigation-drawer--right {
-	.overflow-content {
-		left: -315px;
-		right: initial;
 	}
 }
 
@@ -421,11 +380,5 @@ code {
 
 .v-divider {
 	margin: 0;
-}
-
-.drawer-open {
-	&.mini {
-		margin-left: 56px !important;
-	}
 }
 </style>
