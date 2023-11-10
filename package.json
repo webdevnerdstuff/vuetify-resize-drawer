@@ -70,9 +70,8 @@
 		"wdns"
 	],
 	"dependencies": {
-		"@wdns/vue-code-block": "^2.2.14",
-		"vue": "^3.3.4",
-		"vuetify": "^3.3.19"
+		"vue": "^3.3.8",
+		"vuetify": "^3.4.0"
 	},
 	"devDependencies": {
 		"@fortawesome/fontawesome-svg-core": "^6.4.2",
@@ -92,6 +91,7 @@
 		"@vue/cli-service": "^5.0.8",
 		"@vue/compiler-sfc": "^3.3.4",
 		"@vue/eslint-config-typescript": "^12.0.0",
+		"@wdns/vue-code-block": "^2.2.14",
 		"autoprefixer": "^10.4.16",
 		"eslint": "^8.50.0",
 		"eslint-config-prettier": "^9.0.0",
@@ -100,7 +100,7 @@
 		"eslint-plugin-vue": "^9.17.0",
 		"gh-pages": "^6.0.0",
 		"husky": "^8.0.0",
-		"lint-staged": "^14.0.1",
+		"lint-staged": "^15.0.2",
 		"pinia": "^2.1.6",
 		"postcss": "^8.4.31",
 		"postcss-html": "^1.5.0",
