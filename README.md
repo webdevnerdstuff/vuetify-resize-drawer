@@ -16,32 +16,20 @@
   </a>
 </p>
 
+## Important Information
+
+This repository and npm package has been depreciated and moved to the WebDevNerdStuff org @wdns. 
+
+You can find the new repository here:  
+[https://github.com/webdevnerdstuff/vuetify-resize-drawer](https://github.com/webdevnerdstuff/vuetify-resize-drawer)  
+  
+You can find the new NPM package here:  
+[https://www.npmjs.com/package/@wdns/vuetify-resize-drawer](https://www.npmjs.com/package/@wdns/vuetify-resize-drawer)
+
 
 ## Description
 
-The `vuetify-resize-drawer` component extends the functionality of the [v-navigation-drawer](https://vuetifyjs.com/en/components/navigation-drawers/) so that it is resizable by the user. Component is for Vuetify v2. Component for Vuetify v3 version can be found [here](https://github.com/webdevnerdstuff/vuetify3-resize-drawer).
-
-
-## Installation
- 
-Using [pnpm](https://pnpm.io/):
-```
-pnpm add @wdns/vuetify-resize-drawer
-```
- 
-Using npm:
-```
-npm i @wdns/vuetify-resize-drawer
-```
-
-## Documentation
- 
-[Documentation & Demo](https://webdevnerdstuff.github.io/vuetify-resize-drawer/)
-
-## Dependencies
- 
-[Vuetify v3](https://vuetifyjs.com/)  
-[Vue 3](https://vuejs.org/)
+The `vuetify-resize-drawer` component extends the functionality of the [v-navigation-drawer](https://vuetifyjs.com/en/components/navigation-drawers/) so that it is resizable by the user.
 
 
 ## Change Log
