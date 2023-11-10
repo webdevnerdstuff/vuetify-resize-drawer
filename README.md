@@ -1,6 +1,5 @@
-
 <p align="center">
-  <img alt="Vuetify Logo" width="100" src="https://webdevnerdstuff.github.io/vuetify-resize-drawer/images/vuetify-logo-light-atom.svg">
+  <img alt="Vuetify Logo" width="100" src="https://raw.githubusercontent.com/webdevnerdstuff/vuetify-resize-drawer/main/src/assets/vuetify-logo.svg">
 </p>
 
 <p>
@@ -20,19 +19,19 @@
 
 ## Description
 
-The `vuetify-resize-drawer` component extends the functionality of the [v-navigation-drawer](https://vuetifyjs.com/en/components/navigation-drawers/) so that it is resizable by the user. Component is for Vuetify v2. Component for Vuetify v3 version can be found [here](https://github.com/webdevnerdstuff/vuetify3-resize-drawer).
+The `vuetify-resize-drawer` component extends the functionality of the [v-navigation-drawer](https://vuetifyjs.com/en/components/navigation-drawers/) so that it is resizable by the user.
 
 
 ## Installation
  
-Using npm:
-```
-npm i vuetify-resize-drawer
-```
- 
 Using [pnpm](https://pnpm.io/):
 ```
-pnpm add vuetify-resize-drawer
+pnpm add @wdns/vuetify-resize-drawer
+```
+ 
+Using npm:
+```
+npm i @wdns/vuetify-resize-drawer
 ```
 
 ## Documentation
@@ -41,8 +40,8 @@ pnpm add vuetify-resize-drawer
 
 ## Dependencies
  
-[Vuetify v2](https://vuetifyjs.com/)  
-[Vue 2](https://v2.vuejs.org/)
+[Vuetify v3](https://vuetifyjs.com/)  
+[Vue 3](https://vuejs.org/)
 
 
 ## Change Log
@@ -52,7 +51,7 @@ pnpm add vuetify-resize-drawer
 
 ## License
 
-Copyright (c) 2022 WebDevNerdStuff  
+Copyright (c) 2023 WebDevNerdStuff  
 Licensed under the [MIT license](https://github.com/webdevnerdstuff/vuetify-resize-drawer/blob/master/LICENSE.md).
 
 
