@@ -13,9 +13,10 @@ module.exports = {
 	],
 	ignorePatterns: [
 		'.eslintrc.js',
-		'vite.build.config.ts',
-		'vite.config.ts',
+		'vite.build.config.mts',
+		'vite.config.mts',
 		'*.bk.vue',
+		'*.spec.ts',
 	],
 	overrides: [
 		{
@@ -40,11 +41,6 @@ module.exports = {
 		'vue',
 	],
 	root: true,
-	settings: {
-		'import/resolver': {
-			'babel-module': {},
-		},
-	},
 	rules: {
 		'@typescript-eslint/ban-ts-comment': 0,
 		'@typescript-eslint/ban-types': [
