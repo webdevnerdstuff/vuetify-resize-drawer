@@ -58,7 +58,6 @@
 
 
 <script setup>
-import { onMounted } from 'vue';
 import { useDisplay } from 'vuetify';
 import { useCoreStore } from '@/stores/index';
 import PlaygroundPage from '@/playground/PlaygroundPage.vue';
@@ -102,13 +101,15 @@ const gridDrawer = ref(false);
 
 provide('links', store.links);
 
+const { mobile } = useDisplay();
+
 
 function getLocalStorage() {
 	updateDrawerOffset(localStorage.getItem(drawerOptions.value.storageName) || drawerOffset.value);
 }
 
 const mainStyles = computed(() => {
-	const { mobile } = useDisplay();
+
 	let styles = '';
 	let paddingValue = drawerOffset.value;
 	let location = drawerOptions.value.location;

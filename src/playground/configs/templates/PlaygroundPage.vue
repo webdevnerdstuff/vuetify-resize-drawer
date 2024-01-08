@@ -19,9 +19,9 @@
 		:handle-color="drawerOptions.handleColor"
 		:handle-icon="drawerOptions.handleIcon"
 		:handle-icon-size="drawerOptions.handleIconSize"
-		:handle-position="drawerOptions.handlePosition"
+		:handle-position="(drawerOptions.handlePosition as HandlePositions)"
 		:image="drawerOptions.image"
-		:location="drawerOptions.location"
+		:location="(drawerOptions.location as DrawerLocations)"
 		:max-width="drawerOptions.maxWidth"
 		:min-width="drawerOptions.minWidth"
 		:rail="drawerOptions.rail"
@@ -30,7 +30,7 @@
 		:save-width="drawerOptions.saveWidth"
 		:sticky="drawerOptions.sticky"
 		:storage-name="drawerOptions.storageName"
-		:storage-type="drawerOptions.storageType"
+		:storage-type="(drawerOptions.storageType as StorageType)"
 		:tag="drawerOptions.tag"
 		:temporary="drawerOptions.temporary"
 		:theme="drawerOptions.theme"
@@ -65,9 +65,10 @@
 	<VResizeDrawer
 		:absolute="gridDrawerOptions.absolute"
 		:color="gridDrawerOptions.color"
-		:dark="gridDrawerOptions.dark"
+		:dark="drawerOptions.dark"
 		:elevation="gridDrawerOptions.elevation"
 		location="right"
+		max-width="90%"
 		:min-width="gridDrawerOptions.minWidth"
 		:model-value="gridDrawer"
 		:resizable="gridDrawerOptions.resizable"
@@ -119,11 +120,15 @@
 </template>
 
 
-<script setup>
+<script setup lang=ts>
 import { onMounted, provide, ref } from 'vue';
 import AppBar from '@/documentation/layout/AppBar.vue';
-// import MenuComponent from '@/documentation/components/MenuComponent.vue';
-// import VuetifyGridExamples from '@/documentation/components/VuetifyGridExamples.vue';
+import type {
+	DrawerLocations,
+	HandlePositions,
+	StorageType,
+} from '@/plugin/types';
+
 
 defineProps({
 	gridDrawer: {
@@ -136,17 +141,20 @@ defineProps({
 const drawerOptions = ref({
 	absolute: false,
 	color: '',
+	dark: true,
+	drawerImage: undefined,
 	elevation: 0,
 	expandOnHover: true,
 	floating: false,
 	handleBorderWidth: 8,
 	handleColor: 'primary',
-	handleIcon: null,
+	handleIcon: undefined,
 	// handleIcon: 'mdi:mdi-arrow-right-bold-box',
 	handleIconSize: 'x-small',
 	handlePosition: 'center',
+	image: undefined,
 	location: 'left',
-	maxWidth: '100%',
+	maxWidth: '50%',
 	minWidth: '256px',
 	rail: false,
 	railWidth: 56,
@@ -211,10 +219,12 @@ function toggleDrawer() {
 const gridDrawerOptions = ref({
 	absolute: false,
 	color: '',
+	dark: false,
 	elevation: 0,
 	location: 'right',
 	maxWidth: '100%',
 	minWidth: '256px',
+	resizable: true,
 	saveWidth: false,
 	temporary: false,
 	widthSnapBack: true,
@@ -256,6 +266,7 @@ function updateDrawerOffset(val) {
 function updateTheme(val) {
 	drawerOptions.value.theme = val;
 	drawerOptions.value.dark = val === 'dark';
+	gridDrawerOptions.value.dark = val === 'dark';
 }
 
 // Grid Drawer //
