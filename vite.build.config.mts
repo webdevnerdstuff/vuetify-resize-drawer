@@ -11,9 +11,12 @@ import vue from '@vitejs/plugin-vue';
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 
+const scopedPackageName = pkg.name;
+const packageName = scopedPackageName.split('/')[1];
+
 
 const banner = `/**
- * @name ${pkg.name}
+ * @name ${scopedPackageName}
  * @version ${pkg.version}
  * @description ${pkg.description}
  * @author ${pkg.author}
@@ -21,23 +24,21 @@ const banner = `/**
  * @homepage ${pkg.homepage}
  * @repository ${pkg.repository}
  * @license ${pkg.license} License
-*/
+ */
 `;
-
-const pkgName = 'vuetify-resize-drawer';
 
 export default defineConfig({
 	publicDir: false,
 	build: {
 		lib: {
 			entry: './src/plugin/index.ts',
-			name: pkgName,
+			name: packageName,
 			formats: ['es', 'cjs'],
-			fileName: format => `${pkgName}.${format}.js`,
+			fileName: format => `${packageName}.${format}.js`,
 		},
 		rollupOptions: {
 			input: {
-				main: path.resolve(__dirname, './src/index.ts')
+				main: path.resolve(__dirname, './src/plugin/index.ts')
 			},
 			external: [
 				...Object.keys(pkg.dependencies || {}),
@@ -82,18 +83,29 @@ export default defineConfig({
 				},
 			]
 		}),
-		terser(),
+		terser({
+			compress: {
+				drop_console: ['log'],
+			},
+		}),
 	],
 	resolve: {
 		alias: {
 			'@': path.resolve(__dirname, './src'),
-			'@root': path.resolve(__dirname, './')
+			'@components': path.resolve(__dirname, './src/plugin/components'),
+			'@composables': path.resolve(__dirname, './src/plugin/composables'),
+			'@plugin': path.resolve(__dirname, './src/plugin'),
+			'@root': path.resolve(__dirname, './'),
+			'@slots': path.resolve(__dirname, './src/plugin/slots'),
+			'@types': path.resolve(__dirname, './src/plugin/types'),
+			'@utils': path.resolve(__dirname, './src/plugin/utils'),
 		},
 		extensions: [
 			'.js',
 			'.json',
 			'.jsx',
 			'.mjs',
+			'.mts',
 			'.ts',
 			'.tsx',
 			'.vue',
