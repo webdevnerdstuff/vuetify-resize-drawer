@@ -1,0 +1,53 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Classes Composable > useDrawerClasses > should return class object 1`] = `
+{
+  "v-navigation-drawer--absolute": false,
+  "v-navigation-drawer--custom-rail": true,
+  "v-navigation-drawer--fixed": true,
+  "v-navigation-drawer--floating": null,
+  "v-navigation-drawer--is-mouseover": false,
+  "v-navigation-drawer--left": true,
+  "v-navigation-drawer--open-on-hover": false,
+  "v-navigation-drawer--rail": false,
+  "v-navigation-drawer--right": false,
+  "v-navigation-drawer--temporary": false,
+  "v-resize-drawer": true,
+}
+`;
+
+exports[`Classes Composable > useHandleContainerClasses > should return class object 1`] = `
+{
+  "v-resize-drawer--handle-container": true,
+  "v-resize-drawer--handle-container-parent-start": true,
+  "v-resize-drawer--handle-container-position-center": true,
+}
+`;
+
+exports[`Classes Composable > useHandleContainerClasses > should return class object 2`] = `
+{
+  "v-resize-drawer--handle-container": true,
+  "v-resize-drawer--handle-container-parent-left": true,
+  "v-resize-drawer--handle-container-position-top": true,
+}
+`;
+
+exports[`Classes Composable > useHandleIconClasses > should return class object with fa classes as false 1`] = `
+{
+  "v-resize-drawer--handle-container-icon": true,
+  "v-resize-drawer--handle-container-icon-fa": false,
+  "v-resize-drawer--handle-container-icon-fa-top": false,
+  "v-resize-drawer--handle-container-icon-top-start": true,
+  "v-resize-drawer--handle-container-icon-user-icon": false,
+}
+`;
+
+exports[`Classes Composable > useHandleIconClasses > should return class object with fa classes as true 1`] = `
+{
+  "v-resize-drawer--handle-container-icon": true,
+  "v-resize-drawer--handle-container-icon-center-left": true,
+  "v-resize-drawer--handle-container-icon-fa": true,
+  "v-resize-drawer--handle-container-icon-fa-center": true,
+  "v-resize-drawer--handle-container-icon-user-icon": false,
+}
+`;
