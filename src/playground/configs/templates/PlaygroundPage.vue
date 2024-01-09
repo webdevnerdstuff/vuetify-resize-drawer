@@ -11,7 +11,6 @@
 		v-model="drawer"
 		:absolute="drawerOptions.absolute"
 		:color="drawerOptions.color"
-		:dark="drawerOptions.dark"
 		:elevation="drawerOptions.elevation"
 		:expand-on-hover="drawerOptions.expandOnHover"
 		:floating="drawerOptions.floating"
@@ -65,14 +64,17 @@
 	<VResizeDrawer
 		:absolute="gridDrawerOptions.absolute"
 		:color="gridDrawerOptions.color"
-		:dark="drawerOptions.dark"
 		:elevation="gridDrawerOptions.elevation"
 		location="right"
 		max-width="90%"
 		:min-width="gridDrawerOptions.minWidth"
 		:model-value="gridDrawer"
+		:permantent="gridDrawerOptions.permantent"
 		:resizable="gridDrawerOptions.resizable"
 		:save-width="false"
+		:scrim="gridDrawerOptions.scrim"
+		style="z-index: 9999;"
+		:temporary="gridDrawerOptions.temporary"
 		:theme="drawerOptions.theme"
 		:width="gridDrawerWidth"
 		:width-snap-back="gridDrawerOptions.widthSnapBack"
@@ -115,7 +117,6 @@
 			</v-row>
 		</v-container>
 
-		<!-- <VuetifyGridExamples /> -->
 	</VResizeDrawer>
 </template>
 
@@ -141,7 +142,6 @@ defineProps({
 const drawerOptions = ref({
 	absolute: false,
 	color: '',
-	dark: true,
 	drawerImage: undefined,
 	elevation: 0,
 	expandOnHover: true,
@@ -217,16 +217,17 @@ function toggleDrawer() {
 
 // Grid Drawer //
 const gridDrawerOptions = ref({
-	absolute: false,
+	absolute: true,
 	color: '',
-	dark: false,
 	elevation: 0,
 	location: 'right',
 	maxWidth: '100%',
 	minWidth: '256px',
+	permantent: true,
 	resizable: true,
 	saveWidth: false,
-	temporary: false,
+	scrim: false,
+	temporary: true,
 	widthSnapBack: true,
 });
 
@@ -265,8 +266,6 @@ function updateDrawerOffset(val) {
 
 function updateTheme(val) {
 	drawerOptions.value.theme = val;
-	drawerOptions.value.dark = val === 'dark';
-	gridDrawerOptions.value.dark = val === 'dark';
 }
 
 // Grid Drawer //
