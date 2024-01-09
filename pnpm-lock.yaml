@@ -41,7 +41,7 @@ devDependencies:
     specifier: ^0.4.4
     version: 0.4.4(rollup@4.9.4)
   '@types/node':
-    specifier: ^20.10.6
+    specifier: ^20.10.7
     version: 20.10.7
   '@typescript-eslint/eslint-plugin':
     specifier: ^6.17.0
@@ -259,7 +259,7 @@ packages:
       '@babel/helper-compilation-targets': 7.22.15
       '@babel/helper-module-transforms': 7.23.3(@babel/core@7.23.3)
       '@babel/helpers': 7.23.2
-      '@babel/parser': 7.23.3
+      '@babel/parser': 7.23.6
       '@babel/template': 7.22.15
       '@babel/traverse': 7.23.3
       '@babel/types': 7.23.3
@@ -434,7 +434,7 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       '@babel/code-frame': 7.22.13
-      '@babel/parser': 7.23.3
+      '@babel/parser': 7.23.6
       '@babel/types': 7.23.3
     dev: true
 
@@ -448,7 +448,7 @@ packages:
       '@babel/helper-function-name': 7.23.0
       '@babel/helper-hoist-variables': 7.22.5
       '@babel/helper-split-export-declaration': 7.22.6
-      '@babel/parser': 7.23.3
+      '@babel/parser': 7.23.6
       '@babel/types': 7.23.3
       debug: 4.3.4
       globals: 11.12.0
