@@ -65,6 +65,7 @@ import {
 import { IconOptions, useDisplay, useTheme } from 'vuetify';
 import { VNavigationDrawer } from 'vuetify/components';
 import { AllProps } from '@utils/props';
+import { componentName } from '@utils/globals';
 import {
 	useGetStorage,
 	useSetStorage,
@@ -137,6 +138,13 @@ const display = useDisplay();
 if (settings.value.location !== 'start' && settings.value.location !== 'end' && settings.value.location !== 'left' && settings.value.location !== 'right') {
 	throw new Error("[VResizeDrawer]: 'top' and 'bottom' locations are not supported.");
 }
+
+onBeforeMount(() => {
+	console.log(componentName);
+	if (settings.value.name === componentName) {
+		settings.value.name = String(Math.floor(Math.random() * (10000 * 10000)));
+	}
+});
 
 onMounted(() => {
 	init();
