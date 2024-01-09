@@ -235,7 +235,7 @@
 						sm="12"
 					>
 						<v-select
-							v-model="handleColor"
+							v-model="options.handleColor"
 							density="comfortable"
 							:items="selectOptions.handleColor"
 							label="handleColor"
@@ -362,8 +362,6 @@
 </template>
 
 <script setup>
-import { inject, onMounted, reactive, ref, watch } from 'vue';
-
 const emit = defineEmits(['updateOptions']);
 
 
@@ -559,11 +557,6 @@ const selectOptions = {
 	],
 	handlePosition: ['border', 'center', 'top', 'bottom'],
 };
-
-watch(handleColor, (value) => {
-	options.value.handleColor = value;
-	emit('updateOptions', options.value);
-});
 
 onMounted(() => {
 	defaultOptions = JSON.parse(JSON.stringify(drawerOptions.value));
