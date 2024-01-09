@@ -8,7 +8,7 @@
 	},
 	"main": "dist/vuetify-resize-drawer.cjs.js",
 	"module": "dist/vuetify-resize-drawer.es.js",
-	"types": "dist/types/index.d.ts",
+	"types": "dist/plugin/types/index.d.ts",
 	"scripts": {
 		"dev": "NODE_OPTIONS='--no-warnings' vite",
 		"watch": "pnpm dev",
