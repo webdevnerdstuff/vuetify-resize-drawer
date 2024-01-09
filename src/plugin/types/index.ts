@@ -4,10 +4,9 @@ import {
 	CSSProperties,
 	MaybeRef,
 } from 'vue';
-import VResizeDrawer from '../VResizeDrawer.vue';
 import type { IconOptions, ThemeInstance } from 'vuetify';
+import VResizeDrawer from '../VResizeDrawer.vue';
 import type {
-	// VIcon,
 	VNavigationDrawer,
 } from 'vuetify/components';
 
