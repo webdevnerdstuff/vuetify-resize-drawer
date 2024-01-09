@@ -251,7 +251,6 @@ function getLocalStorage() {
 }
 
 function eventTriggered(eventName, eventValue = null) {
-	// console.log(eventName, eventValue);
 	return { eventName, eventValue };
 }
 

@@ -155,11 +155,7 @@
 		</v-navigation-drawer>
 
 		<!-- ====================================================== Main Container -->
-		<v-main
-			class="main-container pb-10"
-			:class="[{ 'drawer-open': drawer }]"
-			:style="mainStyles"
-		>
+		<v-main class="main-container pb-10">
 			<v-container class="px-10">
 				<DocsPage
 					:codeBlockOptions="codeBlockSettings"
@@ -188,7 +184,7 @@ onMounted(() => {
 	getLocalStorage();
 });
 
-const { mobile, smAndUp } = useDisplay();
+const { smAndUp } = useDisplay();
 
 const isSmAndUp = computed(() => smAndUp.value);
 const store = useCoreStore();
@@ -256,19 +252,6 @@ function updateCodeBlockTheme(val) {
 provide('drawerOptions', drawerOptions);
 provide('links', store.links);
 
-const mainStyles = computed(() => {
-	let styles = '';
-	let paddingValue = drawerOffset.value;
-
-	if (mobile.value || !drawer.value) {
-		paddingValue = '0';
-	}
-
-	styles += `padding-${drawerOptions.value.location}: ${paddingValue} !important;`;
-
-	return styles;
-});
-
 function drawerClose(val) {
 	eventTriggered('drawerClose', val);
 
@@ -328,7 +311,6 @@ function updateDrawerOffset(val) {
 }
 
 function updateOptions(options) {
-	console.log('APP.VUE updateOptions', options);
 	drawerOptions.value = options;
 }
 
