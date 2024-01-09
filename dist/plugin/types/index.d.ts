@@ -1,6 +1,6 @@
 import { CSSProperties, MaybeRef } from 'vue';
-import VResizeDrawer from '../VResizeDrawer.vue';
 import type { IconOptions, ThemeInstance } from 'vuetify';
+import VResizeDrawer from '../VResizeDrawer.vue';
 import type { VNavigationDrawer } from 'vuetify/components';
 export * from '../index';
 export type Classes = {
@@ -28,7 +28,7 @@ export interface Props {
     maxWidth?: VNavigationDrawer['width'];
     minWidth?: VNavigationDrawer['width'];
     modelValue?: VNavigationDrawer['modelValue'];
-    name?: string;
+    name?: VNavigationDrawer['name'];
     rail?: VNavigationDrawer['rail'];
     railWidth?: VNavigationDrawer['railWidth'];
     resizable?: boolean | undefined;
