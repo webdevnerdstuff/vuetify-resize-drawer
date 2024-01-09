@@ -69,7 +69,7 @@
 		max-width="90%"
 		:min-width="gridDrawerOptions.minWidth"
 		:model-value="gridDrawer"
-		:permantent="gridDrawerOptions.permantent"
+		:permanent="gridDrawerOptions.permanent"
 		:resizable="gridDrawerOptions.resizable"
 		:save-width="false"
 		:scrim="gridDrawerOptions.scrim"
@@ -180,7 +180,7 @@ function drawerClose() {
 }
 
 function drawerMouseenter(evt) {
-	eventTriggered('drawerMouseneter', evt);
+	eventTriggered('drawerMouseenter', evt);
 }
 
 function drawerMouseleave(evt) {
@@ -223,7 +223,7 @@ const gridDrawerOptions = ref({
 	location: 'right',
 	maxWidth: '100%',
 	minWidth: '256px',
-	permantent: true,
+	permanent: true,
 	resizable: true,
 	saveWidth: false,
 	scrim: false,
