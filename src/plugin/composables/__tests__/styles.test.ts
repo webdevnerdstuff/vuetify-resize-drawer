@@ -63,8 +63,6 @@ describe('Styles Composable', () => {
 
 
 	describe('useHandleContainerStyles', () => {
-
-		// ! This doesn't look correct - primary color (this is correct) different on rendered page //
 		it('should return styles with a background color if position is border.', () => {
 			const data = useHandleContainerStyles({
 				borderWidth: '8',
@@ -151,8 +149,6 @@ describe('Styles Composable', () => {
 		});
 	});
 
-	// ! This doesn't look correct - primary color (this is correct) different on rendered page //
-	// rendered is hsl(210.16deg, 78.72%, 46.08% / 100%)
 	describe('useHandleIconStyles', () => {
 		it('should return ...', () => {
 			const data = useHandleIconStyles({
