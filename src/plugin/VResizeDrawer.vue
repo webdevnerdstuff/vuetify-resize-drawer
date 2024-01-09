@@ -116,10 +116,6 @@ watchEffect(() => {
 
 const { handleIconSize, handlePosition } = toRefs(settings.value);
 
-const setTheme = toRef(settings.value.theme);
-
-// const handleColor = computed(() => settings.handleColor);
-
 const bindingSettings = computed(() => settings.value);
 
 const iconOptions = inject<IconOptions>(Symbol.for('vuetify:icons'));
@@ -143,7 +139,6 @@ if (settings.value.location !== 'start' && settings.value.location !== 'end' && 
 }
 
 onMounted(() => {
-
 	init();
 });
 
@@ -153,12 +148,12 @@ onUnmounted(() => {
 
 
 // -------------------------------------------------- Init //
-function init(): boolean {
+function init(): void {
 
 	// Disable resize if rail is set //
 	if (settings.value.rail) {
 		resizedWidth.value = settings.value.railWidth || undefined;
-		return false;
+		return;
 	}
 
 	const storageWidth = useGetStorage(settings.value.storageType, settings.value.storageName);
@@ -180,8 +175,6 @@ function init(): boolean {
 		storageName: settings.value.storageName,
 		storageType: settings.value.storageType,
 	});
-
-	return false;
 }
 
 
@@ -510,8 +503,8 @@ function handleTouchend(e: TouchEvent): void {
 
 // -------------------------------------------------- Theme //
 const theTheme = computed(() => {
-	if (setTheme.value) {
-		return setTheme.value;
+	if (settings.value.theme) {
+		return settings.value.theme;
 	}
 
 	return theme.global.current.value.dark === true ? 'dark' : 'light';
