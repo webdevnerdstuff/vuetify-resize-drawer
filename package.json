@@ -73,8 +73,8 @@
 		"wdns"
 	],
 	"dependencies": {
-		"vue": "^3.4.5",
-		"vuetify": "^3.4.7"
+		"vue": "^3.4.7",
+		"vuetify": "^3.4.10"
 	},
 	"devDependencies": {
 		"@fortawesome/fontawesome-svg-core": "^6.5.1",
@@ -86,13 +86,13 @@
 		"@rollup/plugin-commonjs": "^25.0.7",
 		"@rollup/plugin-node-resolve": "^15.2.3",
 		"@rollup/plugin-terser": "^0.4.4",
-		"@types/node": "^20.10.7",
-		"@typescript-eslint/eslint-plugin": "^6.17.0",
-		"@typescript-eslint/parser": "^6.17.0",
+		"@types/node": "^20.10.8",
+		"@typescript-eslint/eslint-plugin": "^6.18.1",
+		"@typescript-eslint/parser": "^6.18.1",
 		"@vitejs/plugin-vue": "^5.0.2",
 		"@vue/cli-plugin-eslint": "^5.0.8",
 		"@vue/cli-service": "^5.0.8",
-		"@vue/compiler-sfc": "^3.4.5",
+		"@vue/compiler-sfc": "^3.4.7",
 		"@vue/eslint-config-typescript": "^12.0.0",
 		"@vue/test-utils": "^2.4.3",
 		"@wdns/vue-code-block": "^2.3.1",
