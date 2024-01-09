@@ -223,7 +223,7 @@ const gridDrawerOptions = ref({
 	location: 'right',
 	maxWidth: '100%',
 	minWidth: '256px',
-	permanent: true,
+	permanent: false,
 	resizable: true,
 	saveWidth: false,
 	scrim: false,
