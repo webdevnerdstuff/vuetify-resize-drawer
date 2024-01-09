@@ -1,4 +1,4 @@
-import { Props } from '../types';
+import { Props } from './types';
 declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<Props>, {
     absolute?: boolean | undefined;
     expandOnHover?: boolean | undefined;
@@ -7,9 +7,10 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     handleColor?: string | undefined;
     handleIcon?: string | undefined;
     handleIconSize?: string | undefined;
-    handlePosition?: import('../types').HandlePositions | undefined;
+    handlePosition?: import('./types').HandlePositions | undefined;
     height?: string | number | undefined;
-    location?: import('../types').DrawerLocations;
+    image?: string | undefined;
+    location?: import('./types').DrawerLocations;
     maxWidth?: string | number | undefined;
     minWidth?: string | number | undefined;
     modelValue?: boolean | null | undefined;
@@ -19,14 +20,17 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     resizable?: boolean | undefined;
     saveWidth?: boolean | undefined;
     storageName?: string | undefined;
-    storageType?: import('../types').StorageType | undefined;
+    storageType?: import('./types').StorageType | undefined;
     tag?: string | undefined;
     temporary?: boolean | undefined;
-    touchless?: boolean | undefined;
     theme?: string | undefined;
+    touchless?: boolean | undefined;
     width?: string | number | undefined;
     widthSnapBack?: boolean | undefined;
 }>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
+    close: (...args: any[]) => void;
+    "drawer:mouseenter": (...args: any[]) => void;
+    "drawer:mouseleave": (...args: any[]) => void;
     "handle:click": (...args: any[]) => void;
     "handle:dblclick": (...args: any[]) => void;
     "handle:drag": (...args: any[]) => void;
@@ -35,11 +39,8 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     "handle:touchend": (...args: any[]) => void;
     "handle:touchmove": (...args: any[]) => void;
     "handle:touchstart": (...args: any[]) => void;
-    close: (...args: any[]) => void;
-    "drawer:mouseenter": (...args: any[]) => void;
-    "drawer:mouseleave": (...args: any[]) => void;
     "update:modelValue": (...args: any[]) => void;
-}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<Props>, {
+}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<Props>, {
     absolute?: boolean | undefined;
     expandOnHover?: boolean | undefined;
     floating?: boolean | undefined;
@@ -47,9 +48,10 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     handleColor?: string | undefined;
     handleIcon?: string | undefined;
     handleIconSize?: string | undefined;
-    handlePosition?: import('../types').HandlePositions | undefined;
+    handlePosition?: import('./types').HandlePositions | undefined;
     height?: string | number | undefined;
-    location?: import('../types').DrawerLocations;
+    image?: string | undefined;
+    location?: import('./types').DrawerLocations;
     maxWidth?: string | number | undefined;
     minWidth?: string | number | undefined;
     modelValue?: boolean | null | undefined;
@@ -59,15 +61,18 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     resizable?: boolean | undefined;
     saveWidth?: boolean | undefined;
     storageName?: string | undefined;
-    storageType?: import('../types').StorageType | undefined;
+    storageType?: import('./types').StorageType | undefined;
     tag?: string | undefined;
     temporary?: boolean | undefined;
-    touchless?: boolean | undefined;
     theme?: string | undefined;
+    touchless?: boolean | undefined;
     width?: string | number | undefined;
     widthSnapBack?: boolean | undefined;
 }>>> & {
     "onUpdate:modelValue"?: ((...args: any[]) => any) | undefined;
+    onClose?: ((...args: any[]) => any) | undefined;
+    "onDrawer:mouseenter"?: ((...args: any[]) => any) | undefined;
+    "onDrawer:mouseleave"?: ((...args: any[]) => any) | undefined;
     "onHandle:click"?: ((...args: any[]) => any) | undefined;
     "onHandle:dblclick"?: ((...args: any[]) => any) | undefined;
     "onHandle:drag"?: ((...args: any[]) => any) | undefined;
@@ -76,9 +81,6 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     "onHandle:touchend"?: ((...args: any[]) => any) | undefined;
     "onHandle:touchmove"?: ((...args: any[]) => any) | undefined;
     "onHandle:touchstart"?: ((...args: any[]) => any) | undefined;
-    onClose?: ((...args: any[]) => any) | undefined;
-    "onDrawer:mouseenter"?: ((...args: any[]) => any) | undefined;
-    "onDrawer:mouseleave"?: ((...args: any[]) => any) | undefined;
 }, {
     theme: string;
     tag: string;
@@ -89,21 +91,22 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     modelValue: boolean | null;
     rail: boolean | null;
     railWidth: string | number;
+    image: string;
     temporary: boolean;
     touchless: boolean;
     width: string | number;
-    location: "end" | "start" | "left" | "right";
-    storageName: string;
+    location: "start" | "end" | "left" | "right";
     saveWidth: boolean;
-    handlePosition: import('../types').HandlePositions;
+    storageName: string;
+    storageType: import('./types').StorageType;
+    handlePosition: import('./types').HandlePositions;
+    handleColor: string;
+    handleBorderWidth: string | number;
+    handleIconSize: string;
+    height: string | number;
     maxWidth: string | number;
     minWidth: string | number;
     widthSnapBack: boolean;
-    handleBorderWidth: string | number;
-    handleColor: string;
-    handleIconSize: string;
-    storageType: import('../types').StorageType;
-    height: string | number;
     handleIcon: string;
     resizable: boolean;
 }, {}>, {
