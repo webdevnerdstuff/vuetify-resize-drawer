@@ -2,7 +2,7 @@
 All notable changes to the "vuetify-resize-drawer" plugin will be documented in this file.
 
 ## v3.1.0
-01-08-24
+01-09-24
 [main] (@webdevnerdstuff)
 * Fix typescript issues
 * Reorganizing
