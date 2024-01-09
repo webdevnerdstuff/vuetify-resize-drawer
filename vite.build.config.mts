@@ -14,7 +14,6 @@ import { viteStaticCopy } from 'vite-plugin-static-copy';
 const scopedPackageName = pkg.name;
 const packageName = scopedPackageName.split('/')[1];
 
-
 const banner = `/**
  * @name ${scopedPackageName}
  * @version ${pkg.version}
@@ -45,6 +44,7 @@ export default defineConfig({
 			],
 			output: {
 				banner,
+				exports: 'named',
 			},
 		},
 	},
