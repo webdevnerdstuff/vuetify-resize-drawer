@@ -11,7 +11,6 @@
 		v-model="drawer"
 		:absolute="drawerOptions.absolute"
 		:color="drawerOptions.color"
-		:dark="drawerOptions.dark"
 		:elevation="drawerOptions.elevation"
 		:expand-on-hover="drawerOptions.expandOnHover"
 		:floating="drawerOptions.floating"
@@ -19,9 +18,9 @@
 		:handle-color="drawerOptions.handleColor"
 		:handle-icon="drawerOptions.handleIcon"
 		:handle-icon-size="drawerOptions.handleIconSize"
-		:handle-position="drawerOptions.handlePosition"
+		:handle-position="(drawerOptions.handlePosition as HandlePositions)"
 		:image="drawerOptions.image"
-		:location="drawerOptions.location"
+		:location="(drawerOptions.location as DrawerLocations)"
 		:max-width="drawerOptions.maxWidth"
 		:min-width="drawerOptions.minWidth"
 		:rail="drawerOptions.rail"
@@ -30,7 +29,7 @@
 		:save-width="drawerOptions.saveWidth"
 		:sticky="drawerOptions.sticky"
 		:storage-name="drawerOptions.storageName"
-		:storage-type="drawerOptions.storageType"
+		:storage-type="(drawerOptions.storageType as StorageType)"
 		:tag="drawerOptions.tag"
 		:temporary="drawerOptions.temporary"
 		:theme="drawerOptions.theme"
@@ -65,13 +64,17 @@
 	<VResizeDrawer
 		:absolute="gridDrawerOptions.absolute"
 		:color="gridDrawerOptions.color"
-		:dark="gridDrawerOptions.dark"
 		:elevation="gridDrawerOptions.elevation"
 		location="right"
+		max-width="90%"
 		:min-width="gridDrawerOptions.minWidth"
 		:model-value="gridDrawer"
+		:permanent="gridDrawerOptions.permanent"
 		:resizable="gridDrawerOptions.resizable"
 		:save-width="false"
+		:scrim="gridDrawerOptions.scrim"
+		style="z-index: 9999;"
+		:temporary="gridDrawerOptions.temporary"
 		:theme="drawerOptions.theme"
 		:width="gridDrawerWidth"
 		:width-snap-back="gridDrawerOptions.widthSnapBack"
@@ -114,16 +117,19 @@
 			</v-row>
 		</v-container>
 
-		<!-- <VuetifyGridExamples /> -->
 	</VResizeDrawer>
 </template>
 
 
-<script setup>
+<script setup lang=ts>
 import { onMounted, provide, ref } from 'vue';
 import AppBar from '@/documentation/layout/AppBar.vue';
-// import MenuComponent from '@/documentation/components/MenuComponent.vue';
-// import VuetifyGridExamples from '@/documentation/components/VuetifyGridExamples.vue';
+import type {
+	DrawerLocations,
+	HandlePositions,
+	StorageType,
+} from '@/plugin/types';
+
 
 defineProps({
 	gridDrawer: {
@@ -136,17 +142,19 @@ defineProps({
 const drawerOptions = ref({
 	absolute: false,
 	color: '',
+	drawerImage: undefined,
 	elevation: 0,
 	expandOnHover: true,
 	floating: false,
 	handleBorderWidth: 8,
 	handleColor: 'primary',
-	handleIcon: null,
+	handleIcon: undefined,
 	// handleIcon: 'mdi:mdi-arrow-right-bold-box',
 	handleIconSize: 'x-small',
 	handlePosition: 'center',
+	image: undefined,
 	location: 'left',
-	maxWidth: '100%',
+	maxWidth: '50%',
 	minWidth: '256px',
 	rail: false,
 	railWidth: 56,
@@ -172,7 +180,7 @@ function drawerClose() {
 }
 
 function drawerMouseenter(evt) {
-	eventTriggered('drawerMouseneter', evt);
+	eventTriggered('drawerMouseenter', evt);
 }
 
 function drawerMouseleave(evt) {
@@ -209,14 +217,17 @@ function toggleDrawer() {
 
 // Grid Drawer //
 const gridDrawerOptions = ref({
-	absolute: false,
+	absolute: true,
 	color: '',
 	elevation: 0,
 	location: 'right',
 	maxWidth: '100%',
 	minWidth: '256px',
+	permanent: false,
+	resizable: true,
 	saveWidth: false,
-	temporary: false,
+	scrim: false,
+	temporary: true,
 	widthSnapBack: true,
 });
 
@@ -240,7 +251,6 @@ function getLocalStorage() {
 }
 
 function eventTriggered(eventName, eventValue = null) {
-	// console.log(eventName, eventValue);
 	return { eventName, eventValue };
 }
 
@@ -255,7 +265,6 @@ function updateDrawerOffset(val) {
 
 function updateTheme(val) {
 	drawerOptions.value.theme = val;
-	drawerOptions.value.dark = val === 'dark';
 }
 
 // Grid Drawer //

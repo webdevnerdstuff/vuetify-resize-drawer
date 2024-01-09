@@ -7,15 +7,9 @@ import { createVuetify } from 'vuetify';
 import { aliases, mdi } from 'vuetify/iconsets/mdi';
 import { fa } from 'vuetify/iconsets/fa-svg';
 
-// ! This is Labs workaround, need to update later //
-import * as labs from 'vuetify/labs/components';
-
 
 export default createVuetify({
-	components: {
-		components,
-		...labs,
-	},
+	components,
 	directives,
 	icons: {
 		aliases,

@@ -1,4 +1,4 @@
-import { Props } from '@/types';
+import { Props } from '@/plugin/types';
 import { componentName } from './globals';
 
 
@@ -13,7 +13,7 @@ export const AllProps: Props = {
 	maxWidth: window.innerWidth,
 	minWidth: 56,
 	modelValue: true,
-	name: componentName,
+	name: undefined,
 	rail: false,
 	railWidth: 8,
 	resizable: true,
@@ -21,7 +21,7 @@ export const AllProps: Props = {
 	storageName: `${componentName}-width`,
 	storageType: 'local',
 	tag: 'nav',
-	theme: 'light',
+	theme: undefined,
 	touchless: false,
 	width: 256,
 	widthSnapBack: true,

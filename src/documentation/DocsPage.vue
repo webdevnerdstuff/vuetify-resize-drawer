@@ -95,7 +95,6 @@
 	<!-- Example -->
 	<ExampleSection :codeBlockOptions="codeBlockOptions" />
 
-
 	<!-- Playground -->
 	<PlaygroundSection :codeBlockOptions="codeBlockOptions" />
 

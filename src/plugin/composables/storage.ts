@@ -1,4 +1,4 @@
-import { UseSetStorage } from '@/types';
+import { UseSetStorage } from '@/plugin/types';
 
 
 export function useGetStorage(storageType: string, storageName: string): string | null {
@@ -15,7 +15,7 @@ export function useGetStorage(storageType: string, storageName: string): string 
 
 
 export const useSetStorage: UseSetStorage = (options) => {
-	const { action = 'update', resizedWidth, storageType, storageName, saveWidth, rail } = options;
+	const { action = 'update', rail, resizedWidth, saveWidth, storageName, storageType } = options;
 
 	if (!saveWidth || rail) {
 		return;

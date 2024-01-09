@@ -3,91 +3,90 @@
 @use 'vuetify/settings';
 
 .v-resize-drawer {
-  container-type: inline-size;
-  container-name: v-resize-drawer;
+	container-name: v-resize-drawer;
+	container-type: inline-size;
 
-  &--handle {
-    &-container {
-      cursor: grab;
-      align-items: center;
-      display: flex;
-      justify-content: center;
-      position: absolute;
-      z-index: 1;
+	&--handle {
+		&-container {
+			align-items: center;
+			cursor: grab;
+			display: flex;
+			justify-content: center;
+			position: absolute;
+			z-index: 1;
 
-      &-icon {
-        &-parent {
-          &-end,
-          &-right {
-            left: initial;
-            right: 0;
-          }
-        }
+			&-icon {
+				&-parent {
+					&-end,
+					&-right {
+						left: initial;
+						right: 0;
+					}
+				}
 
-        &-center {
-          &-end,
-          &-right {
-            transform: rotate(180deg);
-          }
-        }
+				&-center {
+					&-end,
+					&-right {
+						transform: rotate(180deg);
+					}
+				}
 
-        &-user-icon {
-          transform: none;
-        }
+				&-user-icon {
+					transform: none;
+				}
 
-        &-fa {
-          font-size: .7rem !important;
-        }
-      }
+				&-fa {
+					font-size: .7rem !important;
+				}
+			}
 
-      &-parent {
-        &-left,
-        &-start,
-        &-undefined {
-          right: 0;
-        }
+			&-parent {
+				&-left,
+				&-start,
+				&-undefined {
+					right: 0;
+				}
 
-        &-end,
-        &-right {
-          left: 0;
-        }
-      }
+				&-end,
+				&-right {
+					left: 0;
+				}
+			}
 
-      &-position {
-        &-top {
-          top: 0;
-        }
+			&-position {
+				&-top {
+					top: 0;
+				}
 
-        &-center {
-          top: 50%;
-          transform: translateY(-50%);
-        }
+				&-center {
+					top: 50%;
+					transform: translateY(-50%);
+				}
 
-        &-bottom {
-          bottom: 0;
-        }
+				&-bottom {
+					bottom: 0;
+				}
 
-        &-border {
-          cursor: col-resize;
-          height: 100%;
-          top: 0;
-          width: 8px;
-        }
-      }
-    }
-  }
+				&-border {
+					cursor: col-resize;
+					height: 100%;
+					top: 0;
+					width: 8px;
+				}
+			}
+		}
+	}
 }
 
 @container v-resize-drawer (width > #{map.get(settings.$grid-breakpoints, 'xs')}) and (max-width: #{map.get(settings.$grid-breakpoints, 'sm') - 0.02}) {
-  .v-col {
-    &-xs-12 {
-      flex: 0 0 100% !important;
-      max-width: 100% !important;
-      flex-basis: 0;
-      flex-grow: 1;
-      max-width: 100%;
-    }
-  }
+	.v-col {
+		&-xs-12 {
+			flex: 0 0 100% !important;
+			flex-basis: 0;
+			flex-grow: 1;
+			max-width: 100% !important;
+		}
+	}
 }
 
 // Grid Columns //

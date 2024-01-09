@@ -1,9 +1,9 @@
-import { componentName } from '../utils/globals';
+import { componentName } from '@utils/globals';
 import {
 	UseDrawerClasses,
 	UseHandleContainerClasses,
 	UseHandleIconClasses,
-} from '@/types';
+} from '@/plugin/types';
 
 
 export const useDrawerClasses: UseDrawerClasses = (options) => {
@@ -20,7 +20,7 @@ export const useDrawerClasses: UseDrawerClasses = (options) => {
 		'v-navigation-drawer--open-on-hover': expandOnHover,
 		'v-navigation-drawer--rail': rail ?? false,
 		'v-navigation-drawer--right': location === 'right' || location === 'end',
-		'v-navigation-drawer--temporary': temporary,
+		'v-navigation-drawer--temporary': temporary || false,
 	};
 };
 

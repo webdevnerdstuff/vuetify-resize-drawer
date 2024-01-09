@@ -155,11 +155,7 @@
 		</v-navigation-drawer>
 
 		<!-- ====================================================== Main Container -->
-		<v-main
-			class="main-container pb-10"
-			:class="[{ 'drawer-open': drawer }]"
-			:style="mainStyles"
-		>
+		<v-main class="main-container pb-10">
 			<v-container class="px-10">
 				<DocsPage
 					:codeBlockOptions="codeBlockSettings"
@@ -255,20 +251,6 @@ function updateCodeBlockTheme(val) {
 
 provide('drawerOptions', drawerOptions);
 provide('links', store.links);
-
-const mainStyles = computed(() => {
-	const { mobile } = useDisplay();
-	let styles = '';
-	let paddingValue = drawerOffset.value;
-
-	if (mobile.value || !drawer.value) {
-		paddingValue = '0';
-	}
-
-	styles += `padding-${drawerOptions.value.location}: ${paddingValue} !important;`;
-
-	return styles;
-});
 
 function drawerClose(val) {
 	eventTriggered('drawerClose', val);
