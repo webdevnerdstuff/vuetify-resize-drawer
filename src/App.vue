@@ -188,7 +188,7 @@ onMounted(() => {
 	getLocalStorage();
 });
 
-const { smAndUp } = useDisplay();
+const { mobile, smAndUp } = useDisplay();
 
 const isSmAndUp = computed(() => smAndUp.value);
 const store = useCoreStore();
@@ -257,7 +257,6 @@ provide('drawerOptions', drawerOptions);
 provide('links', store.links);
 
 const mainStyles = computed(() => {
-	const { mobile } = useDisplay();
 	let styles = '';
 	let paddingValue = drawerOffset.value;
 
@@ -329,6 +328,7 @@ function updateDrawerOffset(val) {
 }
 
 function updateOptions(options) {
+	console.log('APP.VUE updateOptions', options);
 	drawerOptions.value = options;
 }
 

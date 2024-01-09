@@ -1,4 +1,4 @@
-import { Props } from '@/types';
+import { Props } from '@/plugin/types';
 import { componentName } from './globals';
 
 

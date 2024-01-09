@@ -1,8 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-unused-vars */
-import { CSSProperties, MaybeRef } from 'vue';
+import {
+	CSSProperties,
+	MaybeRef,
+} from 'vue';
+import VResizeDrawer from '../VResizeDrawer.vue';
 import type { IconOptions, ThemeInstance } from 'vuetify';
-import type { VNavigationDrawer } from 'vuetify/components';
+import type {
+	// VIcon,
+	VNavigationDrawer,
+} from 'vuetify/components';
+
+export * from '../index';
 
 
 export type Classes = {
@@ -23,33 +32,36 @@ export type RGBColor = [number, number, number];
 
 // -------------------------------------------------- Props //
 export interface Props {
-	absolute?: VNavigationDrawer['$props']['absolute'];
-	expandOnHover?: VNavigationDrawer['$props']['expandOnHover'];
-	floating?: VNavigationDrawer['$props']['floating'];
+	absolute?: VNavigationDrawer['absolute'];
+	expandOnHover?: VNavigationDrawer['expandOnHover'];
+	floating?: VNavigationDrawer['floating'];
 	handleBorderWidth?: number | string;
 	handleColor?: string | undefined;
 	handleIcon?: string | undefined;
 	handleIconSize?: string | undefined;
 	handlePosition?: HandlePositions;
 	height?: number | string | undefined;
+	image?: VNavigationDrawer['image'];
 	location?: DrawerLocations;
-	maxWidth?: VNavigationDrawer['$props']['width'];
-	minWidth?: VNavigationDrawer['$props']['width'];
-	modelValue?: VNavigationDrawer['$props']['modelValue'];
+	maxWidth?: VNavigationDrawer['width'];
+	minWidth?: VNavigationDrawer['width'];
+	modelValue?: VNavigationDrawer['modelValue'];
 	name?: string;
-	rail?: VNavigationDrawer['$props']['rail'];
-	railWidth?: VNavigationDrawer['$props']['railWidth'];
+	rail?: VNavigationDrawer['rail'];
+	railWidth?: VNavigationDrawer['railWidth'];
 	resizable?: boolean | undefined;
 	saveWidth?: boolean | undefined;
 	storageName?: string | undefined;
 	storageType?: StorageType;
-	tag?: VNavigationDrawer['$props']['tag'];
-	temporary?: VNavigationDrawer['$props']['temporary'];
+	tag?: VNavigationDrawer['tag'];
+	temporary?: VNavigationDrawer['temporary'];
+	theme?: VNavigationDrawer['theme'];
 	touchless?: boolean | undefined;
-	theme?: VNavigationDrawer['$props']['theme'];
-	width?: VNavigationDrawer['$props']['width'];
+	width?: VNavigationDrawer['width'];
 	widthSnapBack?: boolean | undefined;
 }
+
+export interface GlobalOptions extends Props { }
 
 
 // -------------------------------------------------- Composables //
@@ -58,8 +70,8 @@ export interface Props {
 export interface UseConvertToUnit {
 	(
 		options: {
-			str: string | number,
 			unit?: string,
+			value: string | number,
 		}
 	): string | void;
 }
@@ -154,9 +166,18 @@ export interface UseHandleIconStyles {
 export interface UseGetIcon {
 	(
 		options: {
-			icon: string | undefined;
+			icon: Props['handleIcon'];
 			iconOptions: IconOptions | undefined;
-			position: Props['handlePosition'],
+			name: Props['handlePosition'],
 		}
-	): string;
+	): Props['handleIcon'];
+}
+
+
+declare module "vue" {
+	interface ComponentCustomProperties { }
+
+	interface GlobalComponents {
+		VResizeDrawer: typeof VResizeDrawer;
+	}
 }

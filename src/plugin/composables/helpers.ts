@@ -1,23 +1,23 @@
 import {
 	UseConvertToUnit,
-} from '@/types';
+} from '@/plugin/types';
 
 
 /*
 * Converts a string to a number with a unit.
 */
 export const useConvertToUnit: UseConvertToUnit = (options) => {
-	const { str, unit = 'px' } = options;
+	const { unit = 'px', value } = options;
 
-	if (str == null || str === '') {
+	if (value == null || value === '') {
 		return undefined;
 	}
 
-	if (!+str) {
-		return String(str);
+	if (!+value) {
+		return String(value);
 	}
 
-	return `${Number(str)}${unit}`;
+	return `${Number(value)}${unit}`;
 };
 
 

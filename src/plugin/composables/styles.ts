@@ -2,9 +2,9 @@ import {
 	UseDrawerStyles,
 	UseHandleContainerStyles,
 	UseHandleIconStyles,
-} from '@/types';
-import { useConvertToUnit } from '@/plugin/composables/helpers';
-import { useGetColor } from '@/plugin/composables/colors';
+} from '@/plugin/types';
+import { useConvertToUnit } from '@composables/helpers';
+import { useGetColor } from '@composables/colors';
 
 
 const iconSizes = {
@@ -38,7 +38,7 @@ export const useDrawerStyles: UseDrawerStyles = (options) => {
 
 	return {
 		transitionDuration: unref(isMouseDown) ? '0s' : '.2s',
-		width: useConvertToUnit({ str: widthValue as string }) as string,
+		width: useConvertToUnit({ value: widthValue as string }) as string,
 	};
 };
 
@@ -51,7 +51,7 @@ export const useHandleContainerStyles: UseHandleContainerStyles = (options) => {
 		return {
 			backgroundColor: useGetColor(handleColor as string, theme),
 			height: '100%',
-			width: useConvertToUnit({ str: borderWidth as string }) as string,
+			width: useConvertToUnit({ value: borderWidth as string }) as string,
 		};
 	}
 

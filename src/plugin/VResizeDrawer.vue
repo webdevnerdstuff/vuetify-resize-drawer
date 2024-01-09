@@ -3,12 +3,12 @@
 		v-bind="bindingSettings"
 		ref="resizeDrawer"
 		:class="drawerClasses"
-		:location="props.location"
+		:location="settings.location"
 		:model-value="modelValue"
-		:name="props.name"
+		:name="settings.name"
 		:style="drawerStyles"
-		:tag="props.tag"
-		:theme="props.theme"
+		:tag="settings.tag"
+		:theme="settings.theme"
 		:width="drawerWidth"
 		@mouseenter="drawerMouseenter"
 		@mouseleave="drawerMouseleave"
@@ -58,32 +58,33 @@
 </template>
 
 <script setup lang="ts">
-import { IconOptions, useDisplay, useTheme } from 'vuetify';
-import { VNavigationDrawer } from 'vuetify/components';
 import {
 	EmitEventNames,
 	Props,
-} from '@/types';
-import { AllProps } from './utils/props';
+} from '@/plugin/types';
+import { IconOptions, useDisplay, useTheme } from 'vuetify';
+import { VNavigationDrawer } from 'vuetify/components';
+import { AllProps } from '@utils/props';
 import {
 	useGetStorage,
 	useSetStorage,
-} from '@/plugin/composables/storage';
+} from '@composables/storage';
 import {
 	useDrawerClasses,
 	useHandleIconClasses,
 	useHandleContainerClasses,
-} from '@/plugin/composables/classes';
+} from '@composables/classes';
 import {
 	useDrawerStyles,
 	useHandleContainerStyles,
 	useHandleIconStyles,
-} from '@/plugin/composables/styles';
+} from '@composables/styles';
 import {
 	useConvertToNumber,
 	useConvertToUnit,
-} from '@/plugin/composables/helpers';
-import { useGetIcon } from '@/plugin/composables/icons';
+} from '@composables/helpers';
+import { useGetIcon } from '@composables/icons';
+import { globalOptions } from './';
 
 
 // -------------------------------------------------- Emits & Slots & Injects //
@@ -105,6 +106,18 @@ const emit = defineEmits([
 
 // -------------------------------------------------- Props //
 const props = withDefaults(defineProps<Props>(), { ...AllProps });
+
+const injectedOptions = inject(globalOptions, {});
+const settings = ref({ ...props, ...injectedOptions });
+
+watchEffect(() => {
+	settings.value = { ...props, ...injectedOptions };
+});
+
+const { handleIconSize, handlePosition } = toRefs(settings.value);
+
+// const handleColor = computed(() => settings.handleColor);
+
 const bindingSettings = computed(() => props);
 
 const iconOptions = inject<IconOptions>(Symbol.for('vuetify:icons'));
@@ -124,8 +137,8 @@ const display = useDisplay();
 
 // -------------------------------------------------- Life Cycle Hooks //
 onMounted(() => {
-	if (props.location !== 'start' && props.location !== 'end' && props.location !== 'left' && props.location !== 'right') {
-		throw new Error("VResizeDrawer: 'top' and 'bottom' locations are not supported.");
+	if (settings.value.location !== 'start' && settings.value.location !== 'end' && settings.value.location !== 'left' && settings.value.location !== 'right') {
+		throw new Error("[VResizeDrawer]: 'top' and 'bottom' locations are not supported.");
 	}
 
 	init();
@@ -140,27 +153,27 @@ onUnmounted(() => {
 function init(): boolean {
 
 	// Disable resize if rail is set //
-	if (props.rail) {
-		resizedWidth.value = props.railWidth || undefined;
+	if (settings.value.rail) {
+		resizedWidth.value = settings.value.railWidth || undefined;
 		return false;
 	}
 
-	const storageWidth = useGetStorage(props.storageType, props.storageName);
-	const width = useConvertToUnit({ str: props.width });
+	const storageWidth = useGetStorage(settings.value.storageType, settings.value.storageName);
+	const width = useConvertToUnit({ value: settings.value.width });
 	resizedWidth.value = width as string;
 	defaultWidth.value = resizedWidth.value as string;
 
-	if (props.saveWidth && storageWidth && !props.rail) {
-		resizedWidth.value = useGetStorage(props.storageType, props.storageName) as string;
+	if (settings.value.saveWidth && storageWidth && !settings.value.rail) {
+		resizedWidth.value = useGetStorage(settings.value.storageType, settings.value.storageName) as string;
 	}
 
 	useSetStorage({
 		action: 'update',
-		rail: props.rail,
+		rail: settings.value.rail,
 		resizedWidth: resizedWidth.value,
-		saveWidth: props.saveWidth,
-		storageName: props.storageName,
-		storageType: props.storageType,
+		saveWidth: settings.value.saveWidth,
+		storageName: settings.value.storageName,
+		storageType: settings.value.storageType,
 	});
 
 	return false;
@@ -179,55 +192,55 @@ watch(() => props.modelValue, (val) => {
 
 // -------------------------------------------------- Drawer Classes & Styles //
 const drawerClasses = computed(() => useDrawerClasses({
-	absolute: props.absolute,
-	expandOnHover: props.expandOnHover,
-	floating: props.floating,
+	absolute: settings.value.absolute,
+	expandOnHover: settings.value.expandOnHover,
+	floating: settings.value.floating,
 	isMouseover,
-	location: props.location,
-	rail: props.rail,
-	railWidth: props.railWidth,
-	temporary: props.temporary,
+	location: settings.value.location,
+	rail: settings.value.rail,
+	railWidth: settings.value.railWidth,
+	temporary: settings.value.temporary,
 }));
 
 const drawerStyles = computed(() => useDrawerStyles({
 	isMouseDown,
 	maxWidth: computedMaxWidth.value,
 	minWidth: computedMinWidth.value,
-	rail: props.rail,
-	railWidth: props.railWidth,
+	rail: settings.value.rail,
+	railWidth: settings.value.railWidth,
 	resizedWidth,
-	widthSnapBack: props.widthSnapBack,
+	widthSnapBack: settings.value.widthSnapBack,
 }));
 
 const drawerWidth = computed<string | undefined>(() => {
-	if (props.rail) {
+	if (settings.value.rail) {
 		return undefined;
 	}
 
-	return useConvertToUnit({ str: resizedWidth.value as string }) as string;
+	return useConvertToUnit({ value: resizedWidth.value as string }) as string;
 });
 
 
 // -------------------------------------------------- Handle Container //
 const handleContainerClasses = computed(() => useHandleContainerClasses({
-	drawerLocation: props.location,
-	handlePosition: props.handlePosition,
+	drawerLocation: settings.value.location,
+	handlePosition: settings.value.handlePosition,
 }));
 
 const handleContainerStyles = computed(() => useHandleContainerStyles({
-	borderWidth: props.handleBorderWidth,
-	handleColor: props.handleColor,
-	iconSize: props.handleIconSize,
-	position: props.handlePosition,
+	borderWidth: settings.value.handleBorderWidth || 1,
+	handleColor: settings.value.handleColor,
+	iconSize: settings.value.handleIconSize,
+	position: settings.value.handlePosition,
 	theme,
 }));
 
 const showHandle = computed(() => {
-	if (props.touchless && display.mobile.value) {
+	if (settings.value.touchless && display.mobile.value) {
 		return false;
 	}
 
-	if (!props.resizable || props.rail) {
+	if (!settings.value.resizable || settings.value.rail) {
 		return false;
 	}
 
@@ -242,17 +255,17 @@ const handleIconStyles = computed(() => useHandleIconStyles({
 }));
 
 const handleIconClasses = computed(() => useHandleIconClasses({
-	drawerLocation: props.location,
-	handlePosition: props.handlePosition,
+	drawerLocation: settings.value.location,
+	handlePosition: settings.value.handlePosition,
 	iconOptions,
-	isUserIcon: typeof props.handleIcon !== 'undefined' && props.handleIcon !== null,
+	isUserIcon: typeof settings.value.handleIcon !== 'undefined' && settings.value.handleIcon !== null,
 }));
 
 const theHandleIcon = computed(() => {
 	const icon = useGetIcon({
-		icon: props.handleIcon,
+		icon: settings.value.handleIcon,
 		iconOptions,
-		position: props.handlePosition,
+		name: settings.value.handlePosition,
 	});
 
 	return icon;
@@ -274,11 +287,11 @@ function drawerMouseleave(): void {
 function drawerResizeEvent(e: MouseEvent | TouchEvent, width: number): void {
 	let widthValue = width;
 
-	if (props.location === 'right' || props.location === 'end') {
+	if (settings.value.location === 'right' || settings.value.location === 'end') {
 		widthValue = document.body.scrollWidth - widthValue;
 	}
 
-	resizedWidth.value = useConvertToUnit({ str: widthValue }) || undefined;
+	resizedWidth.value = useConvertToUnit({ value: widthValue }) || undefined;
 
 	document.body.style.cursor = 'grabbing';
 
@@ -300,31 +313,31 @@ function mouseResize(e: MouseEvent): void {
 
 // Computed Width's and Min/Mac Check //
 const computedMaxWidth = computed(() => {
-	if (props.maxWidth === '100%') {
+	if (settings.value.maxWidth === '100%') {
 		return window.innerWidth;
 	}
 
-	if (String(props.maxWidth).includes('%')) {
-		const percent = parseInt(String(props.maxWidth).replace('%', ''));
+	if (String(settings.value.maxWidth).includes('%')) {
+		const percent = parseInt(String(settings.value.maxWidth).replace('%', ''));
 
 		return (window.innerWidth * percent) / 100;
 	}
 
-	return props.maxWidth;
+	return settings.value.maxWidth;
 });
 
 const computedMinWidth = computed(() => {
-	if (props.minWidth === '100%') {
+	if (settings.value.minWidth === '100%') {
 		return window.innerWidth;
 	}
 
-	if (String(props.minWidth).includes('%')) {
-		const percent = parseInt(String(props.minWidth).replace('%', ''));
+	if (String(settings.value.minWidth).includes('%')) {
+		const percent = parseInt(String(settings.value.minWidth).replace('%', ''));
 
 		return (window.innerWidth * percent) / 100;
 	}
 
-	return props.minWidth;
+	return settings.value.minWidth;
 });
 
 function checkMaxMinWidth<T>(width: T): T {
@@ -369,11 +382,11 @@ function handleDoubleClick(e: Event): void {
 	resizedWidth.value = defaultWidth.value;
 
 	useSetStorage({
-		rail: props.rail,
+		rail: settings.value.rail,
 		resizedWidth: resizedWidth.value,
-		saveWidth: props.saveWidth,
-		storageName: props.storageName,
-		storageType: props.storageType,
+		saveWidth: settings.value.saveWidth,
+		storageName: settings.value.storageName,
+		storageType: settings.value.storageType,
 	});
 
 	emitEvent('handle:dblclick', e);
@@ -389,8 +402,8 @@ function handleStart(e: MouseEvent | TouchEvent, eventOffsetX: number): void {
 
 	isMouseDown.value = true;
 
-	if (props.handlePosition === 'border') {
-		offsetX = props.handleBorderWidth as number;
+	if (settings.value.handlePosition === 'border') {
+		offsetX = settings.value.handleBorderWidth as number || 1;
 	}
 
 	handleEvents.mouseUp = false;
@@ -450,14 +463,14 @@ function handleEnd(e: MouseEvent | TouchEvent): void {
 	}
 
 	resizedWidth.value = checkMaxMinWidth(resizedWidth.value);
-	resizedWidth.value = useConvertToUnit({ str: resizedWidth.value as string }) || undefined;
+	resizedWidth.value = useConvertToUnit({ value: resizedWidth.value as string }) || undefined;
 
 	useSetStorage({
-		rail: props.rail,
+		rail: settings.value.rail,
 		resizedWidth: resizedWidth.value,
-		saveWidth: props.saveWidth,
-		storageName: props.storageName,
-		storageType: props.storageType,
+		saveWidth: settings.value.saveWidth,
+		storageName: settings.value.storageName,
+		storageType: settings.value.storageType,
 	});
 
 	if (!handleEvents.mouseUp) {

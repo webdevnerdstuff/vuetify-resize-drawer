@@ -1,19 +1,21 @@
 import '@/libraries/fontawesome';
 import App from './App.vue';
-import CodeBlock from '@wdns/vue-code-block';
+import { createVCodeBlock } from '@wdns/vue-code-block';
+import { createVResizeDrawer } from './plugin/index';
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import { registerPlugins } from './plugins';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import VResizeDrawer from './index';
+
 
 const app = createApp(App);
-app.use(CodeBlock);
+
+app.use(createVCodeBlock());
+app.use(createVResizeDrawer());
 app.use(createPinia());
 
 app.component('font-awesome-icon', FontAwesomeIcon);
 app.component('FaIcon', FontAwesomeIcon);
-app.component('VResizeDrawer', VResizeDrawer);
 
 registerPlugins(app);
 

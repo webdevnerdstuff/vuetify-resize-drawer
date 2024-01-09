@@ -1,4 +1,4 @@
-import { UseGetIcon } from '@/types';
+import { UseGetIcon } from '@/plugin/types';
 
 const defaultIcons = {
 	fa: {
@@ -14,27 +14,30 @@ const defaultIcons = {
 };
 
 export const useGetIcon: UseGetIcon = (options) => {
-	const { icon, iconOptions, position } = options;
+	const { icon, iconOptions, name } = options;
+
+	if (name === 'border') {
+		return;
+	}
 
 	if (icon) {
 		return icon;
 	}
 
-	const defaultSet = iconOptions?.defaultSet as string;
+	const defaultSet = iconOptions?.defaultSet as string ?? '';
 	let iconAbbv = defaultSet.toLowerCase();
 
 	iconAbbv = iconAbbv === 'fa' || iconAbbv === 'fasvg' ? 'fa' : iconAbbv;
-
 	const iconSet = defaultIcons[iconAbbv];
 
 	if (!iconSet) {
-		throw new Error(`VResizeDrawer: No default ${iconOptions?.defaultSet} icon set found. Please set the icon prop.`);
+		throw new Error(`[VResizeDrawer]: No default ${iconOptions?.defaultSet} icon set found.`);
 	}
 
-	const newIcon = iconSet[position as string];
+	const newIcon = iconSet[name as string];
 
 	if (!newIcon) {
-		throw new Error(`VResizeDrawer: No ${name} icon found. Please set the icon prop, or set the default icon set to 'mdi' or 'fa'`);
+		throw new Error(`[VResizeDrawer]: No ${name} icon found.`);
 	}
 
 	return newIcon;
