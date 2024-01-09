@@ -1,6 +1,6 @@
 {
 	"name": "@wdns/vuetify-resize-drawer",
-	"version": "3.1.0",
+	"version": "3.1.1",
 	"description": "The vuetify-resize-drawer component extends the functionality of the v-navigation-drawer so that it is resizable by the user.",
 	"private": false,
 	"publishConfig": {
