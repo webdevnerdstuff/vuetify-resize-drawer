@@ -65,7 +65,6 @@ import {
 import { IconOptions, useDisplay, useTheme } from 'vuetify';
 import { VNavigationDrawer } from 'vuetify/components';
 import { AllProps } from '@utils/props';
-import { componentName } from '@utils/globals';
 import {
 	useGetStorage,
 	useSetStorage,
@@ -135,13 +134,8 @@ const display = useDisplay();
 
 
 // -------------------------------------------------- Life Cycle Hooks //
-if (settings.value.location !== 'start' && settings.value.location !== 'end' && settings.value.location !== 'left' && settings.value.location !== 'right') {
-	throw new Error("[VResizeDrawer]: 'top' and 'bottom' locations are not supported.");
-}
-
 onBeforeMount(() => {
-	console.log(componentName);
-	if (settings.value.name === componentName) {
+	if (typeof settings.value.name === 'undefined') {
 		settings.value.name = String(Math.floor(Math.random() * (10000 * 10000)));
 	}
 });
@@ -157,6 +151,9 @@ onUnmounted(() => {
 
 // -------------------------------------------------- Init //
 function init(): void {
+	if (settings.value.location !== 'start' && settings.value.location !== 'end' && settings.value.location !== 'left' && settings.value.location !== 'right') {
+		throw new Error("[VResizeDrawer]: 'top' and 'bottom' locations are not supported.");
+	}
 
 	// Disable resize if rail is set //
 	if (settings.value.rail) {
