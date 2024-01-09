@@ -8,7 +8,7 @@
 		:name="settings.name"
 		:style="drawerStyles"
 		:tag="settings.tag"
-		:theme="settings.theme"
+		:theme="theTheme"
 		:width="drawerWidth"
 		@mouseenter="drawerMouseenter"
 		@mouseleave="drawerMouseleave"
@@ -116,9 +116,11 @@ watchEffect(() => {
 
 const { handleIconSize, handlePosition } = toRefs(settings.value);
 
+const setTheme = toRef(settings.value.theme);
+
 // const handleColor = computed(() => settings.handleColor);
 
-const bindingSettings = computed(() => props);
+const bindingSettings = computed(() => settings.value);
 
 const iconOptions = inject<IconOptions>(Symbol.for('vuetify:icons'));
 const defaultWidth = ref<Props['width']>(256);
@@ -136,10 +138,11 @@ const display = useDisplay();
 
 
 // -------------------------------------------------- Life Cycle Hooks //
+if (settings.value.location !== 'start' && settings.value.location !== 'end' && settings.value.location !== 'left' && settings.value.location !== 'right') {
+	throw new Error("[VResizeDrawer]: 'top' and 'bottom' locations are not supported.");
+}
+
 onMounted(() => {
-	if (settings.value.location !== 'start' && settings.value.location !== 'end' && settings.value.location !== 'left' && settings.value.location !== 'right') {
-		throw new Error("[VResizeDrawer]: 'top' and 'bottom' locations are not supported.");
-	}
 
 	init();
 });
@@ -167,6 +170,8 @@ function init(): boolean {
 		resizedWidth.value = useGetStorage(settings.value.storageType, settings.value.storageName) as string;
 	}
 
+	resizedWidth.value = useConvertToNumber(resizedWidth.value as string);
+
 	useSetStorage({
 		action: 'update',
 		rail: settings.value.rail,
@@ -178,6 +183,7 @@ function init(): boolean {
 
 	return false;
 }
+
 
 // -------------------------------------------------- Model Watcher //
 watch(() => props.modelValue, (val) => {
@@ -212,12 +218,14 @@ const drawerStyles = computed(() => useDrawerStyles({
 	widthSnapBack: settings.value.widthSnapBack,
 }));
 
-const drawerWidth = computed<string | undefined>(() => {
+const drawerWidth = computed<string | number | undefined>(() => {
 	if (settings.value.rail) {
 		return undefined;
 	}
 
-	return useConvertToUnit({ value: resizedWidth.value as string }) as string;
+	const width = useConvertToUnit({ value: resizedWidth.value as string }) as string;
+
+	return useConvertToNumber(width);
 });
 
 
@@ -379,7 +387,7 @@ function handleClick(e: Event): void {
 }
 
 function handleDoubleClick(e: Event): void {
-	resizedWidth.value = defaultWidth.value;
+	resizedWidth.value = useConvertToNumber(defaultWidth.value as string);
 
 	useSetStorage({
 		rail: settings.value.rail,
@@ -458,12 +466,13 @@ function handleEnd(e: MouseEvent | TouchEvent): void {
 
 	const widthVal = resizedWidth.value as string;
 
-	if (widthVal.includes('-')) {
+	if (String(widthVal).includes('-')) {
 		resizedWidth.value = computedMinWidth.value;
 	}
 
 	resizedWidth.value = checkMaxMinWidth(resizedWidth.value);
 	resizedWidth.value = useConvertToUnit({ value: resizedWidth.value as string }) || undefined;
+	resizedWidth.value = useConvertToNumber(resizedWidth.value as string);
 
 	useSetStorage({
 		rail: settings.value.rail,
@@ -497,6 +506,16 @@ function handleMouseUp(e: MouseEvent): void {
 function handleTouchend(e: TouchEvent): void {
 	handleEnd(e);
 }
+
+
+// -------------------------------------------------- Theme //
+const theTheme = computed(() => {
+	if (setTheme.value) {
+		return setTheme.value;
+	}
+
+	return theme.global.current.value.dark === true ? 'dark' : 'light';
+});
 
 
 // -------------------------------------------------- Misc Events //
