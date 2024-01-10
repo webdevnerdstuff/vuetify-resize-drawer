@@ -63,14 +63,14 @@
 				<v-btn
 					class="ms-1 me-1"
 					:href="links.vuetifyPlayground"
-					target="blank"
+					target="_blank"
 					variant="outlined"
 				>Drawer Example</v-btn>
 
 				<v-btn
 					class="ms-1"
 					:href="links.vuetifyPlaygroundGrid"
-					target="blank"
+					target="_blank"
 					variant="outlined"
 				>Grid System Example</v-btn>
 			</v-alert>
