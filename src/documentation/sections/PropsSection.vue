@@ -582,7 +582,7 @@ function resetOptions() {
 }
 
 :deep(code) {
-	background-color: rgba(255, 255, 255, 0.1) !important;
+	background-color: rgb(255 255 255 / 10%) !important;
 	border-radius: 3px;
 	font-size: 85%;
 	font-weight: normal;
@@ -591,7 +591,7 @@ function resetOptions() {
 
 .v-theme--light {
 	:deep(code) {
-		background-color: rgba(0, 0, 0, 0.05) !important;
+		background-color: rgb(0 0 0 / 5%) !important;
 	}
 }
 
