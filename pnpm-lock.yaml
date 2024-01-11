@@ -60,10 +60,7 @@ devDependencies:
     version: 5.0.8(@vue/cli-service@5.0.8)(eslint@8.56.0)
   '@vue/cli-service':
     specifier: ^5.0.8
-    version: 5.0.8(@babel/core@7.23.7)(@vue/compiler-sfc@3.4.10)(prettier@3.1.1)(vue@3.4.10)
-  '@vue/compiler-sfc':
-    specifier: ^3.4.10
-    version: 3.4.10
+    version: 5.0.8(@babel/core@7.23.7)(prettier@3.1.1)(vue@3.4.10)
   '@vue/eslint-config-typescript':
     specifier: ^12.0.0
     version: 12.0.0(eslint-plugin-vue@9.20.0)(eslint@8.56.0)(typescript@5.3.3)
@@ -1640,7 +1637,7 @@ packages:
       '@vue/cli-service': ^3.0.0 || ^4.0.0 || ^5.0.0-0
       eslint: '>=7.5.0'
     dependencies:
-      '@vue/cli-service': 5.0.8(@babel/core@7.23.7)(@vue/compiler-sfc@3.4.10)(prettier@3.1.1)(vue@3.4.10)
+      '@vue/cli-service': 5.0.8(@babel/core@7.23.7)(prettier@3.1.1)(vue@3.4.10)
       '@vue/cli-shared-utils': 5.0.8
       eslint: 8.56.0
       eslint-webpack-plugin: 3.2.0(eslint@8.56.0)(webpack@5.88.2)
@@ -1660,7 +1657,7 @@ packages:
     peerDependencies:
       '@vue/cli-service': ^3.0.0 || ^4.0.0 || ^5.0.0-0
     dependencies:
-      '@vue/cli-service': 5.0.8(@babel/core@7.23.7)(@vue/compiler-sfc@3.4.10)(prettier@3.1.1)(vue@3.4.10)
+      '@vue/cli-service': 5.0.8(@babel/core@7.23.7)(prettier@3.1.1)(vue@3.4.10)
       '@vue/cli-shared-utils': 5.0.8
     transitivePeerDependencies:
       - encoding
@@ -1671,10 +1668,10 @@ packages:
     peerDependencies:
       '@vue/cli-service': ^3.0.0 || ^4.0.0 || ^5.0.0-0
     dependencies:
-      '@vue/cli-service': 5.0.8(@babel/core@7.23.7)(@vue/compiler-sfc@3.4.10)(prettier@3.1.1)(vue@3.4.10)
+      '@vue/cli-service': 5.0.8(@babel/core@7.23.7)(prettier@3.1.1)(vue@3.4.10)
     dev: true
 
-  /@vue/cli-service@5.0.8(@babel/core@7.23.7)(@vue/compiler-sfc@3.4.10)(prettier@3.1.1)(vue@3.4.10):
+  /@vue/cli-service@5.0.8(@babel/core@7.23.7)(prettier@3.1.1)(vue@3.4.10):
     resolution: {integrity: sha512-nV7tYQLe7YsTtzFrfOMIHc5N2hp5lHG2rpYr0aNja9rNljdgcPZLyQRb2YRivTHqTv7lI962UXFURcpStHgyFw==}
     engines: {node: ^12.0.0 || >= 14.0.0}
     hasBin: true
@@ -1714,7 +1711,7 @@ packages:
       '@vue/cli-plugin-vuex': 5.0.8(@vue/cli-service@5.0.8)
       '@vue/cli-shared-utils': 5.0.8
       '@vue/component-compiler-utils': 3.3.0
-      '@vue/vue-loader-v15': /vue-loader@15.11.1(@vue/compiler-sfc@3.4.10)(css-loader@6.8.1)(prettier@3.1.1)(webpack@5.88.2)
+      '@vue/vue-loader-v15': /vue-loader@15.11.1(css-loader@6.8.1)(prettier@3.1.1)(webpack@5.88.2)
       '@vue/web-component-wrapper': 1.3.0
       acorn: 8.10.0
       acorn-walk: 8.2.0
@@ -1751,7 +1748,7 @@ packages:
       ssri: 8.0.1
       terser-webpack-plugin: 5.3.9(webpack@5.88.2)
       thread-loader: 3.0.4(webpack@5.88.2)
-      vue-loader: 17.3.1(@vue/compiler-sfc@3.4.10)(vue@3.4.10)(webpack@5.88.2)
+      vue-loader: 17.3.1(vue@3.4.10)(webpack@5.88.2)
       vue-style-loader: 4.1.3
       webpack: 5.88.2
       webpack-bundle-analyzer: 4.9.0
@@ -8835,7 +8832,7 @@ packages:
     resolution: {integrity: sha512-BXq3jwIagosjgNVae6tkHzzIk6a8MHFtzAdwhnV5VlvPTFxDCvIttgSiHWjdGoTJvXtmRu5HacExfdarRcFhog==}
     dev: true
 
-  /vue-loader@15.11.1(@vue/compiler-sfc@3.4.10)(css-loader@6.8.1)(prettier@3.1.1)(webpack@5.88.2):
+  /vue-loader@15.11.1(css-loader@6.8.1)(prettier@3.1.1)(webpack@5.88.2):
     resolution: {integrity: sha512-0iw4VchYLePqJfJu9s62ACWUXeSqM30SQqlIftbYWM3C+jpPcEHKSPUZBLjSF9au4HTHQ/naF6OGnO3Q/qGR3Q==}
     peerDependencies:
       '@vue/compiler-sfc': ^3.0.8
@@ -8854,7 +8851,6 @@ packages:
       vue-template-compiler:
         optional: true
     dependencies:
-      '@vue/compiler-sfc': 3.4.10
       '@vue/component-compiler-utils': 3.3.0
       css-loader: 6.8.1(webpack@5.88.2)
       hash-sum: 1.0.2
@@ -8919,7 +8915,7 @@ packages:
       - whiskers
     dev: true
 
-  /vue-loader@17.3.1(@vue/compiler-sfc@3.4.10)(vue@3.4.10)(webpack@5.88.2):
+  /vue-loader@17.3.1(vue@3.4.10)(webpack@5.88.2):
     resolution: {integrity: sha512-nmVu7KU8geOyzsStyyaxID/uBGDMS8BkPXb6Lu2SNkMawriIbb+hYrNtgftHMKxOSkjjjTF5OSSwPo3KP59egg==}
     peerDependencies:
       '@vue/compiler-sfc': '*'
@@ -8931,7 +8927,6 @@ packages:
       vue:
         optional: true
     dependencies:
-      '@vue/compiler-sfc': 3.4.10
       chalk: 4.1.2
       hash-sum: 2.0.0
       vue: 3.4.10(typescript@5.3.3)
