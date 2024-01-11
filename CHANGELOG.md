@@ -20,7 +20,7 @@ All notable changes to the "vuetify-resize-drawer" plugin will be documented in 
 [main] (@webdevnerdstuff)
 * Merging in vuetify3-resize-drawer
 * Changing package to an npm organization package
-* Updating release version to be more inline with vue/veutify 3 versions
+* Updating release version to be more inline with vue/vuetify 3 versions
   * The change from v2.1.1 to v3.0.0 is not a breaking change, only a version change
 
 ## v2.1.1
