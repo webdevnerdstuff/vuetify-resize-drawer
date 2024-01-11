@@ -1,6 +1,12 @@
 # Change Log
 All notable changes to the "vuetify-resize-drawer" plugin will be documented in this file.
 
+## v3.1.2
+01-11-24
+[main] (@webdevnerdstuff)
+* Minor style adjustments
+* Update packages
+
 ## v3.1.0
 01-09-24
 [main] (@webdevnerdstuff)
