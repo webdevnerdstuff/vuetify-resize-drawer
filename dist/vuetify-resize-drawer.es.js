@@ -4,7 +4,7 @@ import { VNavigationDrawer as Me } from "vuetify/components";
 import { VIcon as $e } from "vuetify/lib/components/VIcon/index.mjs";
 /**
  * @name @wdns/vuetify-resize-drawer
- * @version 3.1.2
+ * @version 3.1.3
  * @description The vuetify-resize-drawer component extends the functionality of the v-navigation-drawer so that it is resizable by the user.
  * @author WebDevNerdStuff & Bunnies... lots and lots of bunnies! <webdevnerdstuff@gmail.com> (https://webdevnerdstuff.com)
  * @copyright Copyright 2024, WebDevNerdStuff
