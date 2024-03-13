@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to the "vuetify-resize-drawer" plugin will be documented in this file.
 
+## v3.1.4
+2024-03-13
+[main] (@webdevnerdstuff)
+* Change component to use `defineAsyncComponent`
+
 ## v3.1.3
 2024-02-26
 [main] (@webdevnerdstuff)
