@@ -1,10 +1,10 @@
-import { unref as d, defineComponent as we, mergeDefaults as Be, inject as K, ref as L, watchEffect as ye, toRefs as Ce, computed as D, useSlots as Ee, onBeforeMount as We, onMounted as Se, onUnmounted as Ae, watch as ke, openBlock as P, createBlock as Z, mergeProps as be, withCtx as Le, createElementBlock as J, normalizeClass as Q, normalizeStyle as ee, renderSlot as N, createCommentVNode as x } from "vue";
-import { useTheme as Ie, useDisplay as Ge } from "vuetify";
+import { unref as d, defineComponent as we, mergeDefaults as Be, inject as K, ref as L, watchEffect as ye, toRefs as Ce, computed as D, useSlots as Ee, onBeforeMount as We, onMounted as Se, onUnmounted as Ae, watch as ke, openBlock as P, createBlock as Z, mergeProps as be, withCtx as Le, createElementBlock as J, normalizeClass as Q, normalizeStyle as ee, renderSlot as N, createCommentVNode as x, defineAsyncComponent as $e } from "vue";
+import { useTheme as Ge, useDisplay as Ie } from "vuetify";
 import { VNavigationDrawer as Me } from "vuetify/components";
-import { VIcon as $e } from "vuetify/lib/components/VIcon/index.mjs";
+import { VIcon as ze } from "vuetify/lib/components/VIcon/index.mjs";
 /**
  * @name @wdns/vuetify-resize-drawer
- * @version 3.1.3
+ * @version 3.1.4
  * @description The vuetify-resize-drawer component extends the functionality of the v-navigation-drawer so that it is resizable by the user.
  * @author WebDevNerdStuff & Bunnies... lots and lots of bunnies! <webdevnerdstuff@gmail.com> (https://webdevnerdstuff.com)
  * @copyright Copyright 2024, WebDevNerdStuff
@@ -12,7 +12,7 @@ import { VIcon as $e } from "vuetify/lib/components/VIcon/index.mjs";
  * @repository https://github.com/webdevnerdstuff/vuetify-resize-drawer
  * @license MIT License
  */
-const y = "v-resize-drawer", ze = { handleBorderWidth: 8, handleColor: "primary", handleIcon: void 0, handleIconSize: "x-small", handlePosition: "center", height: void 0, location: "start", maxWidth: window.innerWidth, minWidth: 56, modelValue: !0, name: void 0, rail: !1, railWidth: 8, resizable: !0, saveWidth: !0, storageName: `${y}-width`, storageType: "local", tag: "nav", theme: void 0, touchless: !1, width: 256, widthSnapBack: !0 };
+const y = "v-resize-drawer", Pe = { handleBorderWidth: 8, handleColor: "primary", handleIcon: void 0, handleIconSize: "x-small", handlePosition: "center", height: void 0, location: "start", maxWidth: window.innerWidth, minWidth: 56, modelValue: !0, name: void 0, rail: !1, railWidth: 8, resizable: !0, saveWidth: !0, storageName: `${y}-width`, storageType: "local", tag: "nav", theme: void 0, touchless: !1, width: 256, widthSnapBack: !0 };
 function q(s, l) {
   return s === "local" ? localStorage.getItem(l) : s === "session" ? sessionStorage.getItem(l) : "";
 }
@@ -22,7 +22,7 @@ const V = (s) => {
     return;
   let c = o;
   c = c ?? void 0, l === "set" && (c = q(h, e) ?? "", c = c || o), h === "local" && localStorage.setItem(e, String(c)), h === "session" && sessionStorage.setItem(e, String(c));
-}, I = (s) => {
+}, $ = (s) => {
   const { unit: l = "px", value: r } = s;
   if (r != null && r !== "")
     return +r ? `${Number(r)}${l}` : String(r);
@@ -98,12 +98,12 @@ const te = (s, l) => {
     return Object.entries(e).find(([h]) => h === o);
   }(s, l);
   return r ? `hsl(${ae(r[1])})` : `hsl(${ae(s)})`;
-}, Pe = { default: "1.5em", large: "1.75em", small: "1.25em", "x-large": "2em", "x-small": "1em" }, Ne = { fa: { bottom: "fas fa-grip", center: "fas fa-angles-right", top: "fas fa-grip" }, mdi: { bottom: "mdi:mdi-dots-grid", center: "mdi:mdi-chevron-double-right", top: "mdi:mdi-dots-grid" } }, xe = { key: 0, class: "v-resize-drawer--handle-slot" }, Te = we({ __name: "VResizeDrawer", props: Be({ absolute: {}, expandOnHover: {}, floating: {}, handleBorderWidth: {}, handleColor: {}, handleIcon: {}, handleIconSize: {}, handlePosition: {}, height: {}, image: {}, location: {}, maxWidth: {}, minWidth: {}, modelValue: {}, name: {}, rail: {}, railWidth: {}, resizable: { type: Boolean }, saveWidth: { type: Boolean }, storageName: {}, storageType: {}, tag: {}, temporary: {}, theme: {}, touchless: { type: Boolean }, width: {}, widthSnapBack: { type: Boolean } }, { ...ze }), emits: ["close", "drawer:mouseenter", "drawer:mouseleave", "handle:click", "handle:dblclick", "handle:drag", "handle:mousedown", "handle:mouseup", "handle:touchend", "handle:touchmove", "handle:touchstart", "update:modelValue"], setup(s, { emit: l }) {
+}, Ne = { default: "1.5em", large: "1.75em", small: "1.25em", "x-large": "2em", "x-small": "1em" }, xe = { fa: { bottom: "fas fa-grip", center: "fas fa-angles-right", top: "fas fa-grip" }, mdi: { bottom: "mdi:mdi-dots-grid", center: "mdi:mdi-chevron-double-right", top: "mdi:mdi-dots-grid" } }, Te = { key: 0, class: "v-resize-drawer--handle-slot" }, Ue = we({ __name: "VResizeDrawer", props: Be({ absolute: {}, expandOnHover: {}, floating: {}, handleBorderWidth: {}, handleColor: {}, handleIcon: {}, handleIconSize: {}, handlePosition: {}, height: {}, image: {}, location: {}, maxWidth: {}, minWidth: {}, modelValue: {}, name: {}, rail: {}, railWidth: {}, resizable: { type: Boolean }, saveWidth: { type: Boolean }, storageName: {}, storageType: {}, tag: {}, temporary: {}, theme: {}, touchless: { type: Boolean }, width: {}, widthSnapBack: { type: Boolean } }, { ...Pe }), emits: ["close", "drawer:mouseenter", "drawer:mouseleave", "handle:click", "handle:dblclick", "handle:drag", "handle:mousedown", "handle:mouseup", "handle:touchend", "handle:touchmove", "handle:touchstart", "update:modelValue"], setup(s, { emit: l }) {
   const r = l, o = s, v = K(ne, {}), e = L({ ...o, ...v });
   ye(() => {
     e.value = { ...o, ...v };
   });
-  const { handleIconSize: h, handlePosition: c } = Ce(e.value), m = D(() => e.value), w = K(Symbol.for("vuetify:icons")), f = L(256), F = { mouseDown: !1, mouseUp: !0 }, B = L(!1), W = L(!1), k = L(), u = L(256), T = Ee(), R = Ie(), oe = Ge();
+  const { handleIconSize: h, handlePosition: c } = Ce(e.value), m = D(() => e.value), w = K(Symbol.for("vuetify:icons")), f = L(256), F = { mouseDown: !1, mouseUp: !0 }, B = L(!1), W = L(!1), k = L(), u = L(256), T = Ee(), R = Ge(), oe = Ie();
   We(() => {
     e.value.name === void 0 && (e.value.name = String(Math.floor(1e8 * Math.random())));
   }), Se(() => {
@@ -112,11 +112,11 @@ const te = (s, l) => {
         throw new Error("[VResizeDrawer]: 'top' and 'bottom' locations are not supported.");
       if (e.value.rail)
         return void (u.value = e.value.railWidth || void 0);
-      const a = q(e.value.storageType, e.value.storageName), t = I({ value: e.value.width });
+      const a = q(e.value.storageType, e.value.storageName), t = $({ value: e.value.width });
       u.value = t, f.value = u.value, e.value.saveWidth && a && !e.value.rail && (u.value = q(e.value.storageType, e.value.storageName)), u.value = A(u.value), V({ action: "update", rail: e.value.rail, resizedWidth: u.value, saveWidth: e.value.saveWidth, storageName: e.value.storageName, storageType: e.value.storageType });
     })();
   }), Ae(() => {
-    document.removeEventListener("mouseup", $, !1), document.removeEventListener("mousemove", O, !1), document.removeEventListener("touchend", z, !1), document.removeEventListener("touchstart", X, !1);
+    document.removeEventListener("mouseup", M, !1), document.removeEventListener("mousemove", O, !1), document.removeEventListener("touchend", z, !1), document.removeEventListener("touchstart", X, !1);
   }), ke(() => o.modelValue, (a) => {
     r("update:modelValue", a), a || r("close");
   });
@@ -128,11 +128,11 @@ const te = (s, l) => {
     if (p)
       return {};
     let S = p ? g : d(C);
-    return b || (parseInt(S) >= parseInt(n) && (S = parseInt(n)), parseInt(S) <= parseInt(i) && (S = parseInt(i))), { transitionDuration: d(t) ? "0s" : ".2s", width: I({ value: S }) };
-  })({ isMouseDown: W, maxWidth: M.value, minWidth: G.value, rail: e.value.rail, railWidth: e.value.railWidth, resizedWidth: u, widthSnapBack: e.value.widthSnapBack })), le = D(() => {
+    return b || (parseInt(S) >= parseInt(n) && (S = parseInt(n)), parseInt(S) <= parseInt(i) && (S = parseInt(i))), { transitionDuration: d(t) ? "0s" : ".2s", width: $({ value: S }) };
+  })({ isMouseDown: W, maxWidth: I.value, minWidth: G.value, rail: e.value.rail, railWidth: e.value.railWidth, resizedWidth: u, widthSnapBack: e.value.widthSnapBack })), le = D(() => {
     if (e.value.rail)
       return;
-    const a = I({ value: u.value });
+    const a = $({ value: u.value });
     return A(a);
   }), ue = D(() => ((a) => {
     const { drawerLocation: t, handlePosition: n } = a;
@@ -140,8 +140,8 @@ const te = (s, l) => {
   })({ drawerLocation: e.value.location, handlePosition: e.value.handlePosition })), se = D(() => ((a) => {
     const { borderWidth: t, handleColor: n, iconSize: i, position: p, theme: g } = a;
     if (p === "border")
-      return { backgroundColor: te(n, g), height: "100%", width: I({ value: t }) };
-    const C = Pe[i];
+      return { backgroundColor: te(n, g), height: "100%", width: $({ value: t }) };
+    const C = Ne[i];
     return { backgroundColor: "transparent", height: C, width: C };
   })({ borderWidth: e.value.handleBorderWidth || 1, handleColor: e.value.handleColor, iconSize: e.value.handleIconSize, position: e.value.handlePosition, theme: R })), de = D(() => (!e.value.touchless || !oe.mobile.value) && !(!e.value.resizable || e.value.rail)), ce = D(() => ((a) => {
     const { color: t, theme: n } = a;
@@ -157,7 +157,7 @@ const te = (s, l) => {
       return n;
     let g = ((i == null ? void 0 : i.defaultSet) ?? "").toLowerCase();
     g = g === "fa" || g === "fasvg" ? "fa" : g;
-    const C = Ne[g];
+    const C = xe[g];
     if (!C)
       throw new Error(`[VResizeDrawer]: No default ${i == null ? void 0 : i.defaultSet} icon set found.`);
     const b = C[p];
@@ -173,7 +173,7 @@ const te = (s, l) => {
   }
   function U(a, t) {
     let n = t;
-    e.value.location !== "right" && e.value.location !== "end" || (n = document.body.scrollWidth - n), u.value = I({ value: n }) || void 0, document.body.style.cursor = "grabbing", E("handle:touchmove", a), E("handle:drag", a);
+    e.value.location !== "right" && e.value.location !== "end" || (n = document.body.scrollWidth - n), u.value = $({ value: n }) || void 0, document.body.style.cursor = "grabbing", E("handle:touchmove", a), E("handle:drag", a);
   }
   function H(a) {
     var t;
@@ -182,7 +182,7 @@ const te = (s, l) => {
   function O(a) {
     U(a, a.clientX);
   }
-  const M = D(() => {
+  const I = D(() => {
     if (e.value.maxWidth === "100%")
       return window.innerWidth;
     if (String(e.value.maxWidth).includes("%")) {
@@ -201,9 +201,9 @@ const te = (s, l) => {
   });
   function j(a) {
     let t = a;
-    parseInt(t) >= parseInt(M.value) && (t = parseInt(M.value)), parseInt(t) <= parseInt(G.value) && (t = parseInt(G.value)), typeof t == "number" && (t = Math.round(t));
+    parseInt(t) >= parseInt(I.value) && (t = parseInt(I.value)), parseInt(t) <= parseInt(G.value) && (t = parseInt(G.value)), typeof t == "number" && (t = Math.round(t));
     let n = A(t);
-    const i = A(M.value), p = A(G.value);
+    const i = A(I.value), p = A(G.value);
     return n >= i && (n = i), p >= n && (n = p), n;
   }
   function pe(a) {
@@ -216,7 +216,7 @@ const te = (s, l) => {
     a.preventDefault(), a.stopPropagation();
     const n = a.type;
     let i = 25;
-    W.value = !0, e.value.handlePosition === "border" && (i = e.value.handleBorderWidth || 1), F.mouseUp = !1, t < i && (n === "touchstart" ? document.addEventListener("touchmove", H, !1) : document.addEventListener("mousemove", O, !1)), F.mouseDown || (F.mouseDown = !0, n === "touchstart" ? (document.addEventListener("touchend", z, !1), E("handle:touchstart", a)) : (document.addEventListener("mouseup", $, !1), E("handle:mousedown", a)));
+    W.value = !0, e.value.handlePosition === "border" && (i = e.value.handleBorderWidth || 1), F.mouseUp = !1, t < i && (n === "touchstart" ? document.addEventListener("touchmove", H, !1) : document.addEventListener("mousemove", O, !1)), F.mouseDown || (F.mouseDown = !0, n === "touchstart" ? (document.addEventListener("touchend", z, !1), E("handle:touchstart", a)) : (document.addEventListener("mouseup", M, !1), E("handle:mousedown", a)));
   }
   function fe(a) {
     Y(a, a.offsetX);
@@ -230,9 +230,9 @@ const te = (s, l) => {
     const t = a.type, n = k.value;
     W.value = !1, F.mouseDown = !1, u.value = (n == null ? void 0 : n.width) ?? f.value, document.body.style.cursor = "";
     const i = u.value;
-    String(i).includes("-") && (u.value = G.value), u.value = j(u.value), u.value = I({ value: u.value }) || void 0, u.value = A(u.value), V({ rail: e.value.rail, resizedWidth: u.value, saveWidth: e.value.saveWidth, storageName: e.value.storageName, storageType: e.value.storageType }), F.mouseUp || (F.mouseUp = !0, t === "touchend" ? (document.removeEventListener("touchend", z, !1), document.removeEventListener("touchmove", H, !1), E("handle:touchend", a)) : (document.removeEventListener("mouseup", $, !1), document.removeEventListener("mousemove", O, !1), E("handle:mouseup", a)));
+    String(i).includes("-") && (u.value = G.value), u.value = j(u.value), u.value = $({ value: u.value }) || void 0, u.value = A(u.value), V({ rail: e.value.rail, resizedWidth: u.value, saveWidth: e.value.saveWidth, storageName: e.value.storageName, storageType: e.value.storageType }), F.mouseUp || (F.mouseUp = !0, t === "touchend" ? (document.removeEventListener("touchend", z, !1), document.removeEventListener("touchmove", H, !1), E("handle:touchend", a)) : (document.removeEventListener("mouseup", M, !1), document.removeEventListener("mousemove", O, !1), E("handle:mouseup", a)));
   }
-  function $(a) {
+  function M(a) {
     _(a);
   }
   function z(a) {
@@ -243,17 +243,17 @@ const te = (s, l) => {
     const n = parseInt(j(u.value)) ?? 0, i = { e: t, eventName: a, offsetWidth: window.innerWidth - n + "px", resizedWidth: `${n}px`, width: `${n}px` };
     r(a, i);
   }
-  return (a, t) => (P(), Z(d(Me), be(d(m), { ref_key: "resizeDrawer", ref: k, class: d(re), location: d(e).location, "model-value": a.modelValue, name: d(e).name, style: d(ie), tag: d(e).tag, theme: d(De), width: d(le), onMouseenter: me, onMouseleave: Fe }), { default: Le(() => [d(de) ? (P(), J("div", { key: 0, class: Q(d(ue)), style: ee(d(se)), onClick: pe, onDblclick: ge, onMousedown: fe, onMouseup: $, onTouchend: z, onTouchstart: X }, [d(T).handle ? (P(), J("div", xe, [N(a.$slots, "handle")])) : d(c) !== "border" ? (P(), Z($e, { key: 1, class: Q(["v-resize-drawer--handle-icon", d(he)]), icon: d(ve), size: d(h), style: ee(d(ce)) }, null, 8, ["class", "icon", "size", "style"])) : x("", !0)], 38)) : x("", !0), d(T).prepend ? N(a.$slots, "prepend", { key: 1 }) : x("", !0), N(a.$slots, "default"), d(T).append ? N(a.$slots, "append", { key: 2 }) : x("", !0)]), _: 3 }, 16, ["class", "location", "model-value", "name", "style", "tag", "theme", "width"]));
+  return (a, t) => (P(), Z(d(Me), be(d(m), { ref_key: "resizeDrawer", ref: k, class: d(re), location: d(e).location, "model-value": a.modelValue, name: d(e).name, style: d(ie), tag: d(e).tag, theme: d(De), width: d(le), onMouseenter: me, onMouseleave: Fe }), { default: Le(() => [d(de) ? (P(), J("div", { key: 0, class: Q(d(ue)), style: ee(d(se)), onClick: pe, onDblclick: ge, onMousedown: fe, onMouseup: M, onTouchend: z, onTouchstart: X }, [d(T).handle ? (P(), J("div", Te, [N(a.$slots, "handle")])) : d(c) !== "border" ? (P(), Z(ze, { key: 1, class: Q(["v-resize-drawer--handle-icon", d(he)]), icon: d(ve), size: d(h), style: ee(d(ce)) }, null, 8, ["class", "icon", "size", "style"])) : x("", !0)], 38)) : x("", !0), d(T).prepend ? N(a.$slots, "prepend", { key: 1 }) : x("", !0), N(a.$slots, "default"), d(T).append ? N(a.$slots, "append", { key: 2 }) : x("", !0)]), _: 3 }, 16, ["class", "location", "model-value", "name", "style", "tag", "theme", "width"]));
 } }), ne = Symbol();
-function Ue(s = {}) {
+function He(s = {}) {
   return { install: (l) => {
-    l.provide(ne, s), l.component("VResizeDrawer", Te);
+    l.provide(ne, s), l.component("VResizeDrawer", $e(() => import("./VResizeDrawer-BDG6QtZv.mjs")));
   } };
 }
 export {
-  Te as VResizeDrawer,
-  Ue as createVResizeDrawer,
-  Te as default,
+  Ue as VResizeDrawer,
+  He as createVResizeDrawer,
+  Ue as default,
   ne as globalOptions
 };
 (function(){"use strict";try{if(typeof document<"u"){var n=document.createElement("style");n.appendChild(document.createTextNode(".v-resize-drawer{container-name:v-resize-drawer;container-type:inline-size}.v-resize-drawer--handle-container{align-items:center;cursor:grab;display:flex;justify-content:center;position:absolute;z-index:1}.v-resize-drawer--handle-container-icon-parent-end,.v-resize-drawer--handle-container-icon-parent-right{left:initial;right:0}.v-resize-drawer--handle-container-icon-center-end,.v-resize-drawer--handle-container-icon-center-right{transform:rotate(180deg)}.v-resize-drawer--handle-container-icon-user-icon{transform:none}.v-resize-drawer--handle-container-icon-fa{font-size:.7rem!important}.v-resize-drawer--handle-container-parent-left,.v-resize-drawer--handle-container-parent-start,.v-resize-drawer--handle-container-parent-undefined{right:0}.v-resize-drawer--handle-container-parent-end,.v-resize-drawer--handle-container-parent-right{left:0}.v-resize-drawer--handle-container-position-top{top:0}.v-resize-drawer--handle-container-position-center{top:50%;transform:translateY(-50%)}.v-resize-drawer--handle-container-position-bottom{bottom:0}.v-resize-drawer--handle-container-position-border{cursor:col-resize;height:100%;top:0;width:8px}@container v-resize-drawer (width > 0) and (max-width: 599.98px){.v-col-xs-12{flex:0 0 100%!important;flex-basis:0;flex-grow:1;max-width:100%!important}}@container v-resize-drawer (min-width: 600px){.v-col-sm-1{flex:0 0 8.3333333333%;max-width:8.3333333333%}.v-col-sm-2{flex:0 0 16.6666666667%;max-width:16.6666666667%}.v-col-sm-3{flex:0 0 25%;max-width:25%}.v-col-sm-4{flex:0 0 33.3333333333%;max-width:33.3333333333%}.v-col-sm-5{flex:0 0 41.6666666667%;max-width:41.6666666667%}.v-col-sm-6{flex:0 0 50%;max-width:50%}.v-col-sm-7{flex:0 0 58.3333333333%;max-width:58.3333333333%}.v-col-sm-8{flex:0 0 66.6666666667%;max-width:66.6666666667%}.v-col-sm-9{flex:0 0 75%;max-width:75%}.v-col-sm-10{flex:0 0 83.3333333333%;max-width:83.3333333333%}.v-col-sm-11{flex:0 0 91.6666666667%;max-width:91.6666666667%}.v-col-sm-12{flex:0 0 100%;max-width:100%}}@container v-resize-drawer (min-width: 960px){.v-col-md-1{flex:0 0 8.3333333333%;max-width:8.3333333333%}.v-col-md-2{flex:0 0 16.6666666667%;max-width:16.6666666667%}.v-col-md-3{flex:0 0 25%;max-width:25%}.v-col-md-4{flex:0 0 33.3333333333%;max-width:33.3333333333%}.v-col-md-5{flex:0 0 41.6666666667%;max-width:41.6666666667%}.v-col-md-6{flex:0 0 50%;max-width:50%}.v-col-md-7{flex:0 0 58.3333333333%;max-width:58.3333333333%}.v-col-md-8{flex:0 0 66.6666666667%;max-width:66.6666666667%}.v-col-md-9{flex:0 0 75%;max-width:75%}.v-col-md-10{flex:0 0 83.3333333333%;max-width:83.3333333333%}.v-col-md-11{flex:0 0 91.6666666667%;max-width:91.6666666667%}.v-col-md-12{flex:0 0 100%;max-width:100%}}@container v-resize-drawer (min-width: 1280px){.v-col-lg-1{flex:0 0 8.3333333333%;max-width:8.3333333333%}.v-col-lg-2{flex:0 0 16.6666666667%;max-width:16.6666666667%}.v-col-lg-3{flex:0 0 25%;max-width:25%}.v-col-lg-4{flex:0 0 33.3333333333%;max-width:33.3333333333%}.v-col-lg-5{flex:0 0 41.6666666667%;max-width:41.6666666667%}.v-col-lg-6{flex:0 0 50%;max-width:50%}.v-col-lg-7{flex:0 0 58.3333333333%;max-width:58.3333333333%}.v-col-lg-8{flex:0 0 66.6666666667%;max-width:66.6666666667%}.v-col-lg-9{flex:0 0 75%;max-width:75%}.v-col-lg-10{flex:0 0 83.3333333333%;max-width:83.3333333333%}.v-col-lg-11{flex:0 0 91.6666666667%;max-width:91.6666666667%}.v-col-lg-12{flex:0 0 100%;max-width:100%}}@container v-resize-drawer (min-width: 1920px){.v-col-xl-1{flex:0 0 8.3333333333%;max-width:8.3333333333%}.v-col-xl-2{flex:0 0 16.6666666667%;max-width:16.6666666667%}.v-col-xl-3{flex:0 0 25%;max-width:25%}.v-col-xl-4{flex:0 0 33.3333333333%;max-width:33.3333333333%}.v-col-xl-5{flex:0 0 41.6666666667%;max-width:41.6666666667%}.v-col-xl-6{flex:0 0 50%;max-width:50%}.v-col-xl-7{flex:0 0 58.3333333333%;max-width:58.3333333333%}.v-col-xl-8{flex:0 0 66.6666666667%;max-width:66.6666666667%}.v-col-xl-9{flex:0 0 75%;max-width:75%}.v-col-xl-10{flex:0 0 83.3333333333%;max-width:83.3333333333%}.v-col-xl-11{flex:0 0 91.6666666667%;max-width:91.6666666667%}.v-col-xl-12{flex:0 0 100%;max-width:100%}}@container v-resize-drawer (min-width: 2560px){.v-col-xxl-1{flex:0 0 8.3333333333%;max-width:8.3333333333%}.v-col-xxl-2{flex:0 0 16.6666666667%;max-width:16.6666666667%}.v-col-xxl-3{flex:0 0 25%;max-width:25%}.v-col-xxl-4{flex:0 0 33.3333333333%;max-width:33.3333333333%}.v-col-xxl-5{flex:0 0 41.6666666667%;max-width:41.6666666667%}.v-col-xxl-6{flex:0 0 50%;max-width:50%}.v-col-xxl-7{flex:0 0 58.3333333333%;max-width:58.3333333333%}.v-col-xxl-8{flex:0 0 66.6666666667%;max-width:66.6666666667%}.v-col-xxl-9{flex:0 0 75%;max-width:75%}.v-col-xxl-10{flex:0 0 83.3333333333%;max-width:83.3333333333%}.v-col-xxl-11{flex:0 0 91.6666666667%;max-width:91.6666666667%}.v-col-xxl-12{flex:0 0 100%;max-width:100%}}@container v-resize-drawer only print{.hidden-print-only{display:none!important}}@container v-resize-drawer only print{.d-print-only-none{display:none!important}.d-print-only-inline{display:inline!important}.d-print-only-inline-block{display:inline-block!important}.d-print-only-block{display:block!important}.d-print-only-table{display:table!important}.d-print-only-table-row{display:table-row!important}.d-print-only-table-cell{display:table-cell!important}.d-print-only-flex{display:flex!important}.d-print-only-inline-flex{display:inline-flex!important}}@container v-resize-drawer only screen{.hidden-screen-only{display:none!important}}@container v-resize-drawer only screen{.d-screen-only-none{display:none!important}.d-screen-only-inline{display:inline!important}.d-screen-only-inline-block{display:inline-block!important}.d-screen-only-block{display:block!important}.d-screen-only-table{display:table!important}.d-screen-only-table-row{display:table-row!important}.d-screen-only-table-cell{display:table-cell!important}.d-screen-only-flex{display:flex!important}.d-screen-only-inline-flex{display:inline-flex!important}}@container v-resize-drawer (max-width: 599.98px){.hidden-xs{display:none!important}}@container v-resize-drawer (max-width: 599.98px){.d-xs-none{display:none!important}.d-xs-inline{display:inline!important}.d-xs-inline-block{display:inline-block!important}.d-xs-block{display:block!important}.d-xs-table{display:table!important}.d-xs-table-row{display:table-row!important}.d-xs-table-cell{display:table-cell!important}.d-xs-flex{display:flex!important}.d-xs-inline-flex{display:inline-flex!important}}@container v-resize-drawer (min-width: 600px) and (max-width: 959.98px){.hidden-sm{display:none!important}}@container v-resize-drawer (min-width: 600px) and (max-width: 959.98px){.d-sm-none{display:none!important}.d-sm-inline{display:inline!important}.d-sm-inline-block{display:inline-block!important}.d-sm-block{display:block!important}.d-sm-table{display:table!important}.d-sm-table-row{display:table-row!important}.d-sm-table-cell{display:table-cell!important}.d-sm-flex{display:flex!important}.d-sm-inline-flex{display:inline-flex!important}}@container v-resize-drawer (min-width: 960px) and (max-width: 1279.98px){.hidden-md{display:none!important}}@container v-resize-drawer (min-width: 960px) and (max-width: 1279.98px){.d-md-none{display:none!important}.d-md-inline{display:inline!important}.d-md-inline-block{display:inline-block!important}.d-md-block{display:block!important}.d-md-table{display:table!important}.d-md-table-row{display:table-row!important}.d-md-table-cell{display:table-cell!important}.d-md-flex{display:flex!important}.d-md-inline-flex{display:inline-flex!important}}@container v-resize-drawer (min-width: 1280px) and (max-width: 1919.98px){.hidden-lg{display:none!important}}@container v-resize-drawer (min-width: 1280px) and (max-width: 1919.98px){.d-lg-none{display:none!important}.d-lg-inline{display:inline!important}.d-lg-inline-block{display:inline-block!important}.d-lg-block{display:block!important}.d-lg-table{display:table!important}.d-lg-table-row{display:table-row!important}.d-lg-table-cell{display:table-cell!important}.d-lg-flex{display:flex!important}.d-lg-inline-flex{display:inline-flex!important}}@container v-resize-drawer (min-width: 1920px) and (max-width: 2559.98px){.hidden-xl{display:none!important}}@container v-resize-drawer (min-width: 1920px) and (max-width: 2559.98px){.d-xl-none{display:none!important}.d-xl-inline{display:inline!important}.d-xl-inline-block{display:inline-block!important}.d-xl-block{display:block!important}.d-xl-table{display:table!important}.d-xl-table-row{display:table-row!important}.d-xl-table-cell{display:table-cell!important}.d-xl-flex{display:flex!important}.d-xl-inline-flex{display:inline-flex!important}}@container v-resize-drawer (min-width: 2560px){.hidden-xxl{display:none!important}}@container v-resize-drawer (min-width: 2560px){.d-xxl-none{display:none!important}.d-xxl-inline{display:inline!important}.d-xxl-inline-block{display:inline-block!important}.d-xxl-block{display:block!important}.d-xxl-table{display:table!important}.d-xxl-table-row{display:table-row!important}.d-xxl-table-cell{display:table-cell!important}.d-xxl-flex{display:flex!important}.d-xxl-inline-flex{display:inline-flex!important}}@container v-resize-drawer (min-width: 600px){.hidden-sm-and-up{display:none!important}}@container v-resize-drawer (min-width: 600px){.d-sm-and-up-none{display:none!important}.d-sm-and-up-inline{display:inline!important}.d-sm-and-up-inline-block{display:inline-block!important}.d-sm-and-up-block{display:block!important}.d-sm-and-up-table{display:table!important}.d-sm-and-up-table-row{display:table-row!important}.d-sm-and-up-table-cell{display:table-cell!important}.d-sm-and-up-flex{display:flex!important}.d-sm-and-up-inline-flex{display:inline-flex!important}}@container v-resize-drawer (min-width: 960px){.hidden-md-and-up{display:none!important}}@container v-resize-drawer (min-width: 960px){.d-md-and-up-none{display:none!important}.d-md-and-up-inline{display:inline!important}.d-md-and-up-inline-block{display:inline-block!important}.d-md-and-up-block{display:block!important}.d-md-and-up-table{display:table!important}.d-md-and-up-table-row{display:table-row!important}.d-md-and-up-table-cell{display:table-cell!important}.d-md-and-up-flex{display:flex!important}.d-md-and-up-inline-flex{display:inline-flex!important}}@container v-resize-drawer (min-width: 1280px){.hidden-lg-and-up{display:none!important}}@container v-resize-drawer (min-width: 1280px){.d-lg-and-up-none{display:none!important}.d-lg-and-up-inline{display:inline!important}.d-lg-and-up-inline-block{display:inline-block!important}.d-lg-and-up-block{display:block!important}.d-lg-and-up-table{display:table!important}.d-lg-and-up-table-row{display:table-row!important}.d-lg-and-up-table-cell{display:table-cell!important}.d-lg-and-up-flex{display:flex!important}.d-lg-and-up-inline-flex{display:inline-flex!important}}@container v-resize-drawer (min-width: 1920px){.hidden-xl-and-up{display:none!important}}@container v-resize-drawer (min-width: 1920px){.d-xl-and-up-none{display:none!important}.d-xl-and-up-inline{display:inline!important}.d-xl-and-up-inline-block{display:inline-block!important}.d-xl-and-up-block{display:block!important}.d-xl-and-up-table{display:table!important}.d-xl-and-up-table-row{display:table-row!important}.d-xl-and-up-table-cell{display:table-cell!important}.d-xl-and-up-flex{display:flex!important}.d-xl-and-up-inline-flex{display:inline-flex!important}}@container v-resize-drawer (max-width: 959.98px){.hidden-sm-and-down{display:none!important}}@container v-resize-drawer (max-width: 959.98px){.d-sm-and-down-none{display:none!important}.d-sm-and-down-inline{display:inline!important}.d-sm-and-down-inline-block{display:inline-block!important}.d-sm-and-down-block{display:block!important}.d-sm-and-down-table{display:table!important}.d-sm-and-down-table-row{display:table-row!important}.d-sm-and-down-table-cell{display:table-cell!important}.d-sm-and-down-flex{display:flex!important}.d-sm-and-down-inline-flex{display:inline-flex!important}}@container v-resize-drawer (max-width: 1279.98px){.hidden-md-and-down{display:none!important}}@container v-resize-drawer (max-width: 1279.98px){.d-md-and-down-none{display:none!important}.d-md-and-down-inline{display:inline!important}.d-md-and-down-inline-block{display:inline-block!important}.d-md-and-down-block{display:block!important}.d-md-and-down-table{display:table!important}.d-md-and-down-table-row{display:table-row!important}.d-md-and-down-table-cell{display:table-cell!important}.d-md-and-down-flex{display:flex!important}.d-md-and-down-inline-flex{display:inline-flex!important}}@container v-resize-drawer (max-width: 1919.98px){.hidden-lg-and-down{display:none!important}}@container v-resize-drawer (max-width: 1919.98px){.d-lg-and-down-none{display:none!important}.d-lg-and-down-inline{display:inline!important}.d-lg-and-down-inline-block{display:inline-block!important}.d-lg-and-down-block{display:block!important}.d-lg-and-down-table{display:table!important}.d-lg-and-down-table-row{display:table-row!important}.d-lg-and-down-table-cell{display:table-cell!important}.d-lg-and-down-flex{display:flex!important}.d-lg-and-down-inline-flex{display:inline-flex!important}}@container v-resize-drawer (max-width: 2559.98px){.hidden-xl-and-down{display:none!important}}@container v-resize-drawer (max-width: 2559.98px){.d-xl-and-down-none{display:none!important}.d-xl-and-down-inline{display:inline!important}.d-xl-and-down-inline-block{display:inline-block!important}.d-xl-and-down-block{display:block!important}.d-xl-and-down-table{display:table!important}.d-xl-and-down-table-row{display:table-row!important}.d-xl-and-down-table-cell{display:table-cell!important}.d-xl-and-down-flex{display:flex!important}.d-xl-and-down-inline-flex{display:inline-flex!important}}")),document.head.appendChild(n)}}catch(i){console.error("vite-plugin-css-injected-by-js",i)}})();
