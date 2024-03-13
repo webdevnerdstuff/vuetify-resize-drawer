@@ -10,7 +10,7 @@ export function createVResizeDrawer(options: GlobalOptions = {}) {
 	const install = (app: App) => {
 		app.provide(globalOptions, options);
 
-		app.component('VResizeDrawer', VResizeDrawer);
+		app.component('VResizeDrawer', defineAsyncComponent(() => import('./VResizeDrawer.vue')));
 	};
 
 	return {
