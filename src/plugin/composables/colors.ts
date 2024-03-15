@@ -18,7 +18,7 @@ function checkIfThemeVarColor(color: string) {
 }
 
 function checkIfThemeColor(color: string, theme: ThemeInstance) {
-	const themeColors = theme.global.current.value.colors;
+	const themeColors = theme.global.current.value?.colors ?? {};
 
 	return Object.entries(themeColors).find(([key]) => {
 		return key === color;
