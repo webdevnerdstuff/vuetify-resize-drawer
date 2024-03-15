@@ -4,7 +4,7 @@ import { VNavigationDrawer as Me } from "vuetify/components";
 import { VIcon as ze } from "vuetify/lib/components/VIcon/index.mjs";
 /**
  * @name @wdns/vuetify-resize-drawer
- * @version 3.1.4
+ * @version 3.1.5
  * @description The vuetify-resize-drawer component extends the functionality of the v-navigation-drawer so that it is resizable by the user.
  * @author WebDevNerdStuff & Bunnies... lots and lots of bunnies! <webdevnerdstuff@gmail.com> (https://webdevnerdstuff.com)
  * @copyright Copyright 2024, WebDevNerdStuff
@@ -238,7 +238,10 @@ const te = (s, l) => {
   function z(a) {
     _(a);
   }
-  const De = D(() => e.value.theme ? e.value.theme : R.global.current.value.dark === !0 ? "dark" : "light");
+  const De = D(() => {
+    var a;
+    return e.value.theme ? e.value.theme : ((a = R.global.current.value) == null ? void 0 : a.dark) === !0 ? "dark" : "light";
+  });
   function E(a, t) {
     const n = parseInt(j(u.value)) ?? 0, i = { e: t, eventName: a, offsetWidth: window.innerWidth - n + "px", resizedWidth: `${n}px`, width: `${n}px` };
     r(a, i);
@@ -247,7 +250,7 @@ const te = (s, l) => {
 } }), ne = Symbol();
 function He(s = {}) {
   return { install: (l) => {
-    l.provide(ne, s), l.component("VResizeDrawer", $e(() => import("./VResizeDrawer-BDG6QtZv.mjs")));
+    l.provide(ne, s), l.component("VResizeDrawer", $e(() => import("./VResizeDrawer-CdFuiyWd.mjs")));
   } };
 }
 export {

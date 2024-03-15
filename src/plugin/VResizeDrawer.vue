@@ -512,7 +512,7 @@ const theTheme = computed(() => {
 		return settings.value.theme;
 	}
 
-	return theme.global.current.value.dark === true ? 'dark' : 'light';
+	return theme.global.current.value?.dark === true ? 'dark' : 'light';
 });
 
 
