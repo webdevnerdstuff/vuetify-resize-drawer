@@ -1,7 +1,7 @@
 import o from "./vuetify-resize-drawer.es.js";
 /**
  * @name @wdns/vuetify-resize-drawer
- * @version 3.1.5
+ * @version 3.1.6
  * @description The vuetify-resize-drawer component extends the functionality of the v-navigation-drawer so that it is resizable by the user.
  * @author WebDevNerdStuff & Bunnies... lots and lots of bunnies! <webdevnerdstuff@gmail.com> (https://webdevnerdstuff.com)
  * @copyright Copyright 2024, WebDevNerdStuff
