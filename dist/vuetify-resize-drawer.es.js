@@ -1,10 +1,10 @@
-import { unref as d, defineComponent as we, mergeDefaults as Be, inject as K, ref as L, watchEffect as ye, toRefs as Ce, computed as D, useSlots as Ee, onBeforeMount as We, onMounted as Se, onUnmounted as Ae, watch as ke, openBlock as P, createBlock as Z, mergeProps as be, withCtx as Le, createElementBlock as J, normalizeClass as Q, normalizeStyle as ee, renderSlot as N, createCommentVNode as x, defineAsyncComponent as $e } from "vue";
+import { unref as c, defineComponent as we, mergeDefaults as Be, inject as K, ref as L, watchEffect as ye, toRefs as Ce, computed as D, useSlots as Ee, onBeforeMount as We, onMounted as Se, onUnmounted as Ae, watch as ke, openBlock as P, createBlock as Z, mergeProps as be, withCtx as Le, createElementBlock as J, normalizeClass as Q, normalizeStyle as ee, renderSlot as N, createCommentVNode as x, defineAsyncComponent as $e } from "vue";
 import { useTheme as Ge, useDisplay as Ie } from "vuetify";
 import { VNavigationDrawer as Me } from "vuetify/components";
 import { VIcon as ze } from "vuetify/lib/components/VIcon/index.mjs";
 /**
  * @name @wdns/vuetify-resize-drawer
- * @version 3.1.5
+ * @version 3.1.6
  * @description The vuetify-resize-drawer component extends the functionality of the v-navigation-drawer so that it is resizable by the user.
  * @author WebDevNerdStuff & Bunnies... lots and lots of bunnies! <webdevnerdstuff@gmail.com> (https://webdevnerdstuff.com)
  * @copyright Copyright 2024, WebDevNerdStuff
@@ -20,8 +20,8 @@ const V = (s) => {
   const { action: l = "update", rail: r, resizedWidth: o, saveWidth: v, storageName: e, storageType: h } = s;
   if (!v || r)
     return;
-  let c = o;
-  c = c ?? void 0, l === "set" && (c = q(h, e) ?? "", c = c || o), h === "local" && localStorage.setItem(e, String(c)), h === "session" && sessionStorage.setItem(e, String(c));
+  let d = o;
+  d = d ?? void 0, l === "set" && (d = q(h, e) ?? "", d = d || o), h === "local" && localStorage.setItem(e, String(d)), h === "session" && sessionStorage.setItem(e, String(d));
 }, $ = (s) => {
   const { unit: l = "px", value: r } = s;
   if (r != null && r !== "")
@@ -32,10 +32,10 @@ const V = (s) => {
       const v = /(\d+(\.\d+)?)(\s*([a-zA-Z]+))?/, e = o.match(v);
       if (!e)
         return o;
-      const h = parseFloat(e[1]), c = e[4];
+      const h = parseFloat(e[1]), d = e[4];
       if (!isNaN(h)) {
         const m = Math.round(h);
-        return c ? `${m} ${c}` : `${m}`;
+        return d ? `${m} ${d}` : `${m}`;
       }
       return o;
     }
@@ -50,7 +50,7 @@ function ae(s) {
     return Object.entries(F).forEach(([W, k]) => {
       f.toLowerCase() != W.toLowerCase() || (B = k);
     }), B;
-  }(s), r = 0, o = 0, v = 0, e = 0, h = 0, c = 0;
+  }(s), r = 0, o = 0, v = 0, e = 0, h = 0, d = 0;
   if (l.substring(0, 1) === "#")
     l = function(f) {
       let F = f.replace("#", "");
@@ -62,8 +62,8 @@ function ae(s) {
     l = [...l.matchAll(/\d+/g)].map(Number);
   else if (l.includes("hsl"))
     return l = [...l.matchAll(/\d+/g)].map(Number), r = l[0], o = l[1], v = l[2], `${r} ${o}% ${v}%`;
-  [e, h, c] = l, e /= 255, h /= 255, c /= 255;
-  const m = Math.max(e, h, c), w = Math.min(e, h, c);
+  [e, h, d] = l, e /= 255, h /= 255, d /= 255;
+  const m = Math.max(e, h, d), w = Math.min(e, h, d);
   if (m === null || !w === null || isNaN(m) || isNaN(w))
     return "0 0% 100% / 12%";
   if (r = (m + w) / 2, o = (m + w) / 2, v = (m + w) / 2, m == w)
@@ -72,12 +72,12 @@ function ae(s) {
     const f = m - w;
     switch (o = v > 0.5 ? f / (2 - m - w) : f / (m + w), m) {
       case e:
-        r = (h - c) / f + (h < c ? 6 : 0);
+        r = (h - d) / f + (h < d ? 6 : 0);
         break;
       case h:
-        r = (c - e) / f + 2;
+        r = (d - e) / f + 2;
         break;
-      case c:
+      case d:
         r = (e - h) / f + 4;
     }
     r /= 6;
@@ -94,8 +94,9 @@ const te = (s, l) => {
   }(s))
     return `rgb(var(${s}))`;
   const r = function(o, v) {
-    const e = v.global.current.value.colors;
-    return Object.entries(e).find(([h]) => h === o);
+    var h;
+    const e = ((h = v.global.current.value) == null ? void 0 : h.colors) ?? {};
+    return Object.entries(e).find(([d]) => d === o);
   }(s, l);
   return r ? `hsl(${ae(r[1])})` : `hsl(${ae(s)})`;
 }, Ne = { default: "1.5em", large: "1.75em", small: "1.25em", "x-large": "2em", "x-small": "1em" }, xe = { fa: { bottom: "fas fa-grip", center: "fas fa-angles-right", top: "fas fa-grip" }, mdi: { bottom: "mdi:mdi-dots-grid", center: "mdi:mdi-chevron-double-right", top: "mdi:mdi-dots-grid" } }, Te = { key: 0, class: "v-resize-drawer--handle-slot" }, Ue = we({ __name: "VResizeDrawer", props: Be({ absolute: {}, expandOnHover: {}, floating: {}, handleBorderWidth: {}, handleColor: {}, handleIcon: {}, handleIconSize: {}, handlePosition: {}, height: {}, image: {}, location: {}, maxWidth: {}, minWidth: {}, modelValue: {}, name: {}, rail: {}, railWidth: {}, resizable: { type: Boolean }, saveWidth: { type: Boolean }, storageName: {}, storageType: {}, tag: {}, temporary: {}, theme: {}, touchless: { type: Boolean }, width: {}, widthSnapBack: { type: Boolean } }, { ...Pe }), emits: ["close", "drawer:mouseenter", "drawer:mouseleave", "handle:click", "handle:dblclick", "handle:drag", "handle:mousedown", "handle:mouseup", "handle:touchend", "handle:touchmove", "handle:touchstart", "update:modelValue"], setup(s, { emit: l }) {
@@ -103,7 +104,7 @@ const te = (s, l) => {
   ye(() => {
     e.value = { ...o, ...v };
   });
-  const { handleIconSize: h, handlePosition: c } = Ce(e.value), m = D(() => e.value), w = K(Symbol.for("vuetify:icons")), f = L(256), F = { mouseDown: !1, mouseUp: !0 }, B = L(!1), W = L(!1), k = L(), u = L(256), T = Ee(), R = Ge(), oe = Ie();
+  const { handleIconSize: h, handlePosition: d } = Ce(e.value), m = D(() => e.value), w = K(Symbol.for("vuetify:icons")), f = L(256), F = { mouseDown: !1, mouseUp: !0 }, B = L(!1), W = L(!1), k = L(), u = L(256), T = Ee(), R = Ge(), oe = Ie();
   We(() => {
     e.value.name === void 0 && (e.value.name = String(Math.floor(1e8 * Math.random())));
   }), Se(() => {
@@ -122,13 +123,13 @@ const te = (s, l) => {
   });
   const re = D(() => ((a) => {
     const { absolute: t = !1, expandOnHover: n, floating: i, isMouseover: p, location: g, rail: C, railWidth: b, temporary: S } = a;
-    return { [`${y}`]: !0, "v-navigation-drawer--absolute": t ?? !1, "v-navigation-drawer--custom-rail": Number(b) !== 56, "v-navigation-drawer--fixed": !t, "v-navigation-drawer--floating": i, "v-navigation-drawer--is-mouseover": d(p), "v-navigation-drawer--left": g === "left" || g === "start" || g === void 0, "v-navigation-drawer--open-on-hover": n, "v-navigation-drawer--rail": C ?? !1, "v-navigation-drawer--right": g === "right" || g === "end", "v-navigation-drawer--temporary": S || !1 };
+    return { [`${y}`]: !0, "v-navigation-drawer--absolute": t ?? !1, "v-navigation-drawer--custom-rail": Number(b) !== 56, "v-navigation-drawer--fixed": !t, "v-navigation-drawer--floating": i, "v-navigation-drawer--is-mouseover": c(p), "v-navigation-drawer--left": g === "left" || g === "start" || g === void 0, "v-navigation-drawer--open-on-hover": n, "v-navigation-drawer--rail": C ?? !1, "v-navigation-drawer--right": g === "right" || g === "end", "v-navigation-drawer--temporary": S || !1 };
   })({ absolute: e.value.absolute, expandOnHover: e.value.expandOnHover, floating: e.value.floating, isMouseover: B, location: e.value.location, rail: e.value.rail, railWidth: e.value.railWidth, temporary: e.value.temporary })), ie = D(() => ((a) => {
     const { isMouseDown: t, maxWidth: n, minWidth: i, rail: p, railWidth: g, resizedWidth: C, widthSnapBack: b } = a;
     if (p)
       return {};
-    let S = p ? g : d(C);
-    return b || (parseInt(S) >= parseInt(n) && (S = parseInt(n)), parseInt(S) <= parseInt(i) && (S = parseInt(i))), { transitionDuration: d(t) ? "0s" : ".2s", width: $({ value: S }) };
+    let S = p ? g : c(C);
+    return b || (parseInt(S) >= parseInt(n) && (S = parseInt(n)), parseInt(S) <= parseInt(i) && (S = parseInt(i))), { transitionDuration: c(t) ? "0s" : ".2s", width: $({ value: S }) };
   })({ isMouseDown: W, maxWidth: I.value, minWidth: G.value, rail: e.value.rail, railWidth: e.value.railWidth, resizedWidth: u, widthSnapBack: e.value.widthSnapBack })), le = D(() => {
     if (e.value.rail)
       return;
@@ -246,11 +247,11 @@ const te = (s, l) => {
     const n = parseInt(j(u.value)) ?? 0, i = { e: t, eventName: a, offsetWidth: window.innerWidth - n + "px", resizedWidth: `${n}px`, width: `${n}px` };
     r(a, i);
   }
-  return (a, t) => (P(), Z(d(Me), be(d(m), { ref_key: "resizeDrawer", ref: k, class: d(re), location: d(e).location, "model-value": a.modelValue, name: d(e).name, style: d(ie), tag: d(e).tag, theme: d(De), width: d(le), onMouseenter: me, onMouseleave: Fe }), { default: Le(() => [d(de) ? (P(), J("div", { key: 0, class: Q(d(ue)), style: ee(d(se)), onClick: pe, onDblclick: ge, onMousedown: fe, onMouseup: M, onTouchend: z, onTouchstart: X }, [d(T).handle ? (P(), J("div", Te, [N(a.$slots, "handle")])) : d(c) !== "border" ? (P(), Z(ze, { key: 1, class: Q(["v-resize-drawer--handle-icon", d(he)]), icon: d(ve), size: d(h), style: ee(d(ce)) }, null, 8, ["class", "icon", "size", "style"])) : x("", !0)], 38)) : x("", !0), d(T).prepend ? N(a.$slots, "prepend", { key: 1 }) : x("", !0), N(a.$slots, "default"), d(T).append ? N(a.$slots, "append", { key: 2 }) : x("", !0)]), _: 3 }, 16, ["class", "location", "model-value", "name", "style", "tag", "theme", "width"]));
+  return (a, t) => (P(), Z(c(Me), be(c(m), { ref_key: "resizeDrawer", ref: k, class: c(re), location: c(e).location, "model-value": a.modelValue, name: c(e).name, style: c(ie), tag: c(e).tag, theme: c(De), width: c(le), onMouseenter: me, onMouseleave: Fe }), { default: Le(() => [c(de) ? (P(), J("div", { key: 0, class: Q(c(ue)), style: ee(c(se)), onClick: pe, onDblclick: ge, onMousedown: fe, onMouseup: M, onTouchend: z, onTouchstart: X }, [c(T).handle ? (P(), J("div", Te, [N(a.$slots, "handle")])) : c(d) !== "border" ? (P(), Z(ze, { key: 1, class: Q(["v-resize-drawer--handle-icon", c(he)]), icon: c(ve), size: c(h), style: ee(c(ce)) }, null, 8, ["class", "icon", "size", "style"])) : x("", !0)], 38)) : x("", !0), c(T).prepend ? N(a.$slots, "prepend", { key: 1 }) : x("", !0), N(a.$slots, "default"), c(T).append ? N(a.$slots, "append", { key: 2 }) : x("", !0)]), _: 3 }, 16, ["class", "location", "model-value", "name", "style", "tag", "theme", "width"]));
 } }), ne = Symbol();
 function He(s = {}) {
   return { install: (l) => {
-    l.provide(ne, s), l.component("VResizeDrawer", $e(() => import("./VResizeDrawer-CdFuiyWd.mjs")));
+    l.provide(ne, s), l.component("VResizeDrawer", $e(() => import("./VResizeDrawer-CJUYR-yg.mjs")));
   } };
 }
 export {
