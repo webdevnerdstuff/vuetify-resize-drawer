@@ -9,14 +9,21 @@ import {
 export const useDrawerClasses: UseDrawerClasses = (options) => {
 	const { absolute = false, expandOnHover, floating, isMouseover, location, rail, railWidth, temporary } = options;
 
+	let isLeft = location === 'left' || location === 'start' || typeof location === 'undefined';
+
+	if (location === 'top' || location === 'bottom') {
+		isLeft = false;
+	}
+
 	return {
 		[`${componentName}`]: true,
+		[`${componentName}--${location}`]: location === 'bottom' || location === 'top',
 		'v-navigation-drawer--absolute': absolute ?? false,
 		'v-navigation-drawer--custom-rail': Number(railWidth) !== 56,
 		'v-navigation-drawer--fixed': !absolute,
 		'v-navigation-drawer--floating': floating,
 		'v-navigation-drawer--is-mouseover': unref(isMouseover),
-		'v-navigation-drawer--left': location === 'left' || location === 'start' || typeof location === 'undefined',
+		'v-navigation-drawer--left': isLeft,
 		'v-navigation-drawer--open-on-hover': expandOnHover,
 		'v-navigation-drawer--rail': rail ?? false,
 		'v-navigation-drawer--right': location === 'right' || location === 'end',

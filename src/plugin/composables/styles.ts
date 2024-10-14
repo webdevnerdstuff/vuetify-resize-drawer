@@ -7,7 +7,7 @@ import { useConvertToUnit } from '@composables/helpers';
 import { useGetColor } from '@composables/colors';
 
 
-const iconSizes = {
+export const iconSizes = {
 	default: '1.5em',
 	large: '1.75em',
 	small: '1.25em',
@@ -18,49 +18,77 @@ const iconSizes = {
 
 // -------------------------------------------------- Drawer //
 export const useDrawerStyles: UseDrawerStyles = (options) => {
-	const { isMouseDown, maxWidth, minWidth, rail, railWidth, resizedWidth, widthSnapBack } = options;
+	const { isMouseDown, location, maxWidth, minWidth, rail, railWidth, resizedAmount, widthSnapBack } = options;
 
 	if (rail) {
 		return {};
 	}
 
-	let widthValue = rail ? railWidth : unref(resizedWidth);
+	let mountValue = rail ? railWidth : unref(resizedAmount);
 
 	if (!widthSnapBack) {
-		if (parseInt(widthValue as string) >= parseInt(maxWidth as string)) {
-			widthValue = parseInt(maxWidth as string);
+		if (parseInt(mountValue as string) >= parseInt(maxWidth as string)) {
+			mountValue = parseInt(maxWidth as string);
 		}
 
-		if (parseInt(widthValue as string) <= parseInt(minWidth as string)) {
-			widthValue = parseInt(minWidth as string);
+		if (parseInt(mountValue as string) <= parseInt(minWidth as string)) {
+			mountValue = parseInt(minWidth as string);
 		}
 	}
 
-	return {
-		transitionDuration: unref(isMouseDown) ? '0s' : '.2s',
-		width: useConvertToUnit({ value: widthValue as string }) as string,
-	};
+	let response = {};
+
+	if (location === 'top' || location === 'bottom') {
+		response = {
+			minHeight: `${useConvertToUnit({ value: mountValue as string }) as string} !important`,
+			transitionDuration: unref(isMouseDown) ? '0s' : '.2s',
+			width: '100%',
+		};
+	}
+	else {
+		response = {
+			transitionDuration: unref(isMouseDown) ? '0s' : '.2s',
+			width: useConvertToUnit({ value: mountValue as string }) as string,
+		};
+	}
+
+	return response;
 };
 
 
 // -------------------------------------------------- Handle //
 export const useHandleContainerStyles: UseHandleContainerStyles = (options) => {
-	const { borderWidth, handleColor, iconSize, position, theme } = options;
+	const { borderWidth, handleColor, iconSizeUnit, location, position, theme } = options;
+
+	const transform = `translateX(-50%) ${location === 'top' ? 'rotate(90deg)' : 'rotate(-90deg)'}`;
+	let height = '100%';
+	let width = '100%';
+
+	if (location === 'bottom' || location === 'top') {
+		height = `${iconSizeUnit}px`;
+
+		if (position === 'border') {
+			height = useConvertToUnit({ value: borderWidth as string }) as string;
+		}
+	}
+	else {
+		width = useConvertToUnit({ value: borderWidth as string }) as string;
+	}
+
 
 	if (position === 'border') {
 		return {
 			backgroundColor: useGetColor(handleColor as string, theme),
-			height: '100%',
-			width: useConvertToUnit({ value: borderWidth as string }) as string,
+			height,
+			width,
 		};
 	}
 
-	const dimensions = iconSizes[iconSize as string];
-
 	return {
 		backgroundColor: 'transparent',
-		height: dimensions,
-		width: dimensions,
+		height: height,
+		transform: location === 'top' || location === 'bottom' ? transform : undefined,
+		width: `${iconSizeUnit}px`,
 	};
 };
 

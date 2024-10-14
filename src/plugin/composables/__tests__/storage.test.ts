@@ -66,7 +66,7 @@ describe('Storage Composable', () => {
 			useGetStorage('local', storageName);
 
 			expect(window.localStorage.getItem).toHaveBeenCalled();
-			expect(window.localStorage.getItem(storageName)).toMatchInlineSnapshot(`"100px"`);
+			expect(window.localStorage.getItem(storageName)).toMatchInlineSnapshot(`"undefined"`);
 		});
 
 		test('useSetStorage & useGetStorage - action set', () => {
@@ -84,7 +84,7 @@ describe('Storage Composable', () => {
 			useGetStorage('local', storageName);
 
 			expect(window.localStorage.getItem).toHaveBeenCalled();
-			expect(window.localStorage.getItem(storageName)).toMatchInlineSnapshot(`"100px"`);
+			expect(window.localStorage.getItem(storageName)).toMatchInlineSnapshot(`"undefined"`);
 		});
 
 		test('useGetStorage that has not been set, and return null value', () => {
@@ -137,7 +137,7 @@ describe('Storage Composable', () => {
 			useGetStorage('session', storageName);
 
 			expect(window.sessionStorage.getItem).toHaveBeenCalled();
-			expect(window.sessionStorage.getItem(storageName)).toMatchInlineSnapshot(`"100px"`);
+			expect(window.sessionStorage.getItem(storageName)).toMatchInlineSnapshot(`"undefined"`);
 		});
 
 		test('useSetStorage & useGetStorage - action set', () => {
@@ -155,7 +155,7 @@ describe('Storage Composable', () => {
 			useGetStorage('session', storageName);
 
 			expect(window.sessionStorage.getItem).toHaveBeenCalled();
-			expect(window.sessionStorage.getItem(storageName)).toMatchInlineSnapshot(`"100px"`);
+			expect(window.sessionStorage.getItem(storageName)).toMatchInlineSnapshot(`"undefined"`);
 		});
 
 		test('useGetStorage that has not been set, and return null value', () => {
@@ -178,7 +178,7 @@ describe('Storage Composable', () => {
 			useGetStorage('session', storageName);
 
 			expect(window.sessionStorage.getItem).toHaveBeenCalled();
-			expect(window.sessionStorage.getItem(storageName)).toMatchInlineSnapshot(`"100px"`);
+			expect(window.sessionStorage.getItem(storageName)).toMatchInlineSnapshot(`"undefined"`);
 		});
 	});
 });

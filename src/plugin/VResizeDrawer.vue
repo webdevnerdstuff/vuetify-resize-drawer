@@ -75,6 +75,7 @@ import {
 	useHandleContainerClasses,
 } from '@composables/classes';
 import {
+	iconSizes,
 	useDrawerStyles,
 	useHandleContainerStyles,
 	useHandleIconStyles,
@@ -82,6 +83,7 @@ import {
 import {
 	useConvertToNumber,
 	useConvertToUnit,
+	useUnitToPx,
 } from '@composables/helpers';
 import { useGetIcon } from '@composables/icons';
 import { globalOptions } from './';
@@ -120,18 +122,22 @@ const bindingSettings = computed(() => settings.value);
 
 const iconOptions = inject<IconOptions>(Symbol.for('vuetify:icons'));
 const defaultWidth = ref<Props['width']>(256);
+const defaultHeight = ref<Props['height']>(256);
 const handleEvents: { mouseUp: boolean, mouseDown: boolean; } = {
 	mouseDown: false,
 	mouseUp: true,
 };
 const isMouseover = ref<boolean>(false);
 const isMouseDown = ref<boolean>(false);
+const location = ref<Props['location']>(settings.value.location);
 const resizeDrawer = ref<VNavigationDrawer>();
-const resizedWidth = ref<string | number | undefined>(256);
+const resizedAmount = ref<string | number | undefined>(256);
 const slots = useSlots();
 const theme = useTheme();
 const display = useDisplay();
 
+const isTopOrBottom = computed<boolean>(() => location.value === 'top' || location.value === 'bottom');
+const storageName = computed<string>(() => `${settings.value.storageName}-${settings.value.location}`);
 
 // -------------------------------------------------- Life Cycle Hooks //
 onBeforeMount(() => {
@@ -151,33 +157,33 @@ onUnmounted(() => {
 
 // -------------------------------------------------- Init //
 function init(): void {
-	if (settings.value.location !== 'start' && settings.value.location !== 'end' && settings.value.location !== 'left' && settings.value.location !== 'right') {
-		throw new Error("[VResizeDrawer]: 'top' and 'bottom' locations are not supported.");
+	if (!isAllowedHandlePosition.value) {
+		throw new Error("[VResizeDrawer]: 'bottom' location does not support 'bottom' or 'top' handle positions.");
 	}
 
 	// Disable resize if rail is set //
-	if (settings.value.rail) {
-		resizedWidth.value = settings.value.railWidth || undefined;
+	if (settings.value.rail && !isTopOrBottom.value) {
+		resizedAmount.value = settings.value.railWidth || undefined;
 		return;
 	}
 
-	const storageWidth = useGetStorage(settings.value.storageType, settings.value.storageName);
-	const width = useConvertToUnit({ value: settings.value.width });
-	resizedWidth.value = width as string;
-	defaultWidth.value = resizedWidth.value as string;
+	const storageAmount = useGetStorage(settings.value.storageType, storageName.value);
+	const amount = useConvertToUnit({ value: isTopOrBottom.value ? settings.value.height : settings.value.width });
+	resizedAmount.value = amount as string;
+	defaultWidth.value = resizedAmount.value as string;
 
-	if (settings.value.saveWidth && storageWidth && !settings.value.rail) {
-		resizedWidth.value = useGetStorage(settings.value.storageType, settings.value.storageName) as string;
+	if ((settings.value.saveHeight || settings.value.saveWidth) && storageAmount && !settings.value.rail) {
+		resizedAmount.value = useGetStorage(settings.value.storageType, storageName.value) as string;
 	}
 
-	resizedWidth.value = useConvertToNumber(resizedWidth.value as string);
+	resizedAmount.value = useConvertToNumber(resizedAmount.value as string);
 
 	useSetStorage({
 		action: 'update',
 		rail: settings.value.rail,
-		resizedWidth: resizedWidth.value,
-		saveWidth: settings.value.saveWidth,
-		storageName: settings.value.storageName,
+		resizedAmount: resizedAmount.value,
+		saveAmount: settings.value.saveHeight || settings.value.saveWidth,
+		storageName: storageName.value,
 		storageType: settings.value.storageType,
 	});
 }
@@ -208,20 +214,25 @@ const drawerClasses = computed(() => useDrawerClasses({
 
 const drawerStyles = computed(() => useDrawerStyles({
 	isMouseDown,
-	maxWidth: computedMaxWidth.value,
-	minWidth: computedMinWidth.value,
+	location: settings.value.location,
+	maxWidth: computedMaxAmount.value,
+	minWidth: computedMinAmount.value,
 	rail: settings.value.rail,
 	railWidth: settings.value.railWidth,
-	resizedWidth,
+	resizedAmount: resizedAmount.value,
 	widthSnapBack: settings.value.widthSnapBack,
 }));
 
 const drawerWidth = computed<string | number | undefined>(() => {
+	if (isTopOrBottom.value) {
+		return undefined;
+	}
+
 	if (settings.value.rail) {
 		return undefined;
 	}
 
-	const width = useConvertToUnit({ value: resizedWidth.value as string }) as string;
+	const width = useConvertToUnit({ value: resizedAmount.value as string }) as string;
 
 	return useConvertToNumber(width);
 });
@@ -237,6 +248,8 @@ const handleContainerStyles = computed(() => useHandleContainerStyles({
 	borderWidth: settings.value.handleBorderWidth || 1,
 	handleColor: settings.value.handleColor,
 	iconSize: settings.value.handleIconSize,
+	iconSizeUnit: iconSizeUnit.value,
+	location: settings.value.location,
 	position: settings.value.handlePosition,
 	theme,
 }));
@@ -250,8 +263,21 @@ const showHandle = computed(() => {
 		return false;
 	}
 
+	if (!isAllowedHandlePosition.value) {
+		return false;
+	}
+
 	return true;
 });
+
+const isAllowedHandlePosition = computed<boolean>(() => {
+	if ((settings.value.location === 'bottom' || settings.value.location === 'top') && (settings.value.handlePosition === 'bottom' || settings.value.handlePosition === 'top')) {
+		return false;
+	}
+
+	return true;
+});
+
 
 
 // -------------------------------------------------- Handle Icon //
@@ -264,7 +290,7 @@ const handleIconClasses = computed(() => useHandleIconClasses({
 	drawerLocation: settings.value.location,
 	handlePosition: settings.value.handlePosition,
 	iconOptions,
-	isUserIcon: typeof settings.value.handleIcon !== 'undefined' && settings.value.handleIcon !== null,
+	isUserIcon: settings.value.handleIcon != null && settings.value.handleIcon !== '',
 }));
 
 const theHandleIcon = computed(() => {
@@ -276,6 +302,13 @@ const theHandleIcon = computed(() => {
 
 	return icon;
 });
+
+
+const iconSizeUnit = ref(useUnitToPx(String(handleIconSize.value)));
+
+if (Object.keys(iconSizes).some(key => key.includes(String(handleIconSize.value)))) {
+	iconSizeUnit.value = useUnitToPx(iconSizes[String(handleIconSize.value)]);
+}
 
 
 // -------------------------------------------------- Drawer Events //
@@ -290,14 +323,39 @@ function drawerMouseleave(): void {
 }
 
 
-function drawerResizeEvent(e: MouseEvent | TouchEvent, width: number): void {
-	let widthValue = width;
+function calculateYOffset(x: number): number {
+	const a = -0.00029;
+	const b = -0.356;
+	const c = 43.56;
+
+	// Calculate y using the formula y = ax^2 + bx + c
+	const y = a * x * x + b * x + c;
+
+	return Math.ceil(y);
+}
+
+
+function drawerResizeEvent(e: MouseEvent | TouchEvent, amount: number): void {
+	let amountValue = amount;
 
 	if (settings.value.location === 'right' || settings.value.location === 'end') {
-		widthValue = document.body.scrollWidth - widthValue;
+		amountValue = document.body.scrollWidth - amountValue + (iconSizeUnit.value / 2);
 	}
 
-	resizedWidth.value = useConvertToUnit({ value: widthValue }) || undefined;
+	if (settings.value.location === 'left' || settings.value.location === 'start') {
+		amountValue = amountValue + (iconSizeUnit.value / 2);
+	}
+
+	if (settings.value.location === 'top') {
+		const offset = calculateYOffset(iconSizeUnit.value);
+		amountValue = amountValue - offset;
+	}
+
+	if (settings.value.location === 'bottom') {
+		amountValue = document.body.scrollHeight - amountValue + (iconSizeUnit.value / 2);
+	}
+
+	resizedAmount.value = useConvertToUnit({ value: amountValue }) || undefined;
 
 	document.body.style.cursor = 'grabbing';
 
@@ -306,75 +364,89 @@ function drawerResizeEvent(e: MouseEvent | TouchEvent, width: number): void {
 }
 
 function drawerTouchResize(e: TouchEvent): void {
-	const width = e.touches[0]?.clientX ?? 0;
+	const amount = isTopOrBottom.value ? e.touches[0]?.clientY : e.touches[0]?.clientX;
 
-	drawerResizeEvent(e, width);
+	drawerResizeEvent(e, amount as number);
 }
 
 function mouseResize(e: MouseEvent): void {
-	const width = e.clientX;
+	const amount = isTopOrBottom.value ? e.clientY : e.clientX;
 
-	drawerResizeEvent(e, width);
+	drawerResizeEvent(e, amount as number);
 }
 
-// Computed Width's and Min/Mac Check //
-const computedMaxWidth = computed(() => {
-	if (settings.value.maxWidth === '100%') {
+// Computed Height/Width and Min/Max Check //
+const computedMaxAmount = computed(() => {
+	const maxValue = isTopOrBottom.value ? settings.value.maxHeight : settings.value.maxWidth;
+
+	if (isTopOrBottom.value && settings.value.maxHeight === '100%') {
+		return window.innerHeight;
+	}
+
+	if (settings.value.maxHeight === '100%') {
 		return window.innerWidth;
 	}
 
-	if (String(settings.value.maxWidth).includes('%')) {
-		const percent = parseInt(String(settings.value.maxWidth).replace('%', ''));
+	if (String(maxValue).includes('%')) {
+		const percent = parseInt(String(maxValue).replace('%', ''));
+		const innerAmount = isTopOrBottom.value ? window.innerHeight : window.innerWidth;
 
-		return (window.innerWidth * percent) / 100;
+		return (innerAmount * percent) / 100;
 	}
 
-	return settings.value.maxWidth;
+	return maxValue;
 });
 
-const computedMinWidth = computed(() => {
+const computedMinAmount = computed(() => {
+	const minValue = isTopOrBottom.value ? settings.value.minHeight : settings.value.minWidth;
+
+	if (isTopOrBottom.value && settings.value.minHeight === '100%') {
+		return window.innerHeight;
+	}
+
 	if (settings.value.minWidth === '100%') {
 		return window.innerWidth;
 	}
 
-	if (String(settings.value.minWidth).includes('%')) {
-		const percent = parseInt(String(settings.value.minWidth).replace('%', ''));
+	if (String(minValue).includes('%')) {
+		const percent = parseInt(String(minValue).replace('%', ''));
+		const innerAmount = isTopOrBottom.value ? window.innerHeight : window.innerWidth;
 
-		return (window.innerWidth * percent) / 100;
+		return (innerAmount * percent) / 100;
 	}
 
-	return settings.value.minWidth;
+	return minValue;
 });
 
-function checkMaxMinWidth<T>(width: T): T {
-	let widthValue = width as string | number;
+function checkMaxMinAmount<T>(amount: T): T {
+	let amountValue = amount as string | number;
 
 	// Make sure the value is not exceeding min/max boundaries //
-	if (parseInt(widthValue as string) >= parseInt(computedMaxWidth.value as string)) {
-		widthValue = parseInt(computedMaxWidth.value as string);
+	if (parseInt(amountValue as string) >= parseInt(computedMaxAmount.value as string)) {
+		amountValue = parseInt(computedMaxAmount.value as string);
 	}
 
-	if (parseInt(widthValue as string) <= parseInt(computedMinWidth.value as string)) {
-		widthValue = parseInt(computedMinWidth.value as string);
+	if (parseInt(amountValue as string) <= parseInt(computedMinAmount.value as string)) {
+		amountValue = parseInt(computedMinAmount.value as string);
 	}
 
-	if (typeof widthValue === 'number') {
-		widthValue = Math.round(widthValue as number);
+	if (typeof amountValue === 'number') {
+		amountValue = Math.round(amountValue as number);
 	}
 
-	let returnWidth = useConvertToNumber(widthValue as string | number) as T;
-	const maxWidth = useConvertToNumber(computedMaxWidth.value) as T;
-	const minWidth = useConvertToNumber(computedMinWidth.value) as T;
+	let returnAmount = useConvertToNumber(amountValue as string | number) as T;
+	const maxAmount = useConvertToNumber(computedMaxAmount.value) as T;
+	const minAmount = useConvertToNumber(computedMinAmount.value) as T;
 
-	if (returnWidth >= maxWidth) {
-		returnWidth = maxWidth as T;
+	if (returnAmount >= maxAmount) {
+		returnAmount = maxAmount as T;
 	}
 
-	if (minWidth >= returnWidth) {
-		returnWidth = minWidth as T;
+	if (minAmount >= returnAmount) {
+		returnAmount = minAmount as T;
 	}
 
-	return returnWidth as T;
+	return returnAmount as T;
 }
 
 // -------------------------------------------------- Handle Events //
@@ -385,13 +457,17 @@ function handleClick(e: Event): void {
 }
 
 function handleDoubleClick(e: Event): void {
-	resizedWidth.value = useConvertToNumber(defaultWidth.value as string);
+	resizedAmount.value = defaultWidth.value;
+
+	if (isTopOrBottom.value) {
+		resizedAmount.value = defaultHeight.value;
+	}
 
 	useSetStorage({
 		rail: settings.value.rail,
-		resizedWidth: resizedWidth.value,
-		saveWidth: settings.value.saveWidth,
-		storageName: settings.value.storageName,
+		resizedAmount: resizedAmount.value,
+		saveAmount: settings.value.saveHeight || settings.value.saveWidth,
+		storageName: storageName.value,
 		storageType: settings.value.storageType,
 	});
 
@@ -404,13 +480,14 @@ function handleStart(e: MouseEvent | TouchEvent, eventOffsetX: number): void {
 	e.stopPropagation();
 
 	const eventType = e.type;
-	let offsetX = 25;
+	let offsetX = iconSizeUnit.value;
 
 	isMouseDown.value = true;
 
 	if (settings.value.handlePosition === 'border') {
 		offsetX = settings.value.handleBorderWidth as number || 1;
 	}
+
 
 	handleEvents.mouseUp = false;
 
@@ -439,13 +516,13 @@ function handleStart(e: MouseEvent | TouchEvent, eventOffsetX: number): void {
 }
 
 function handleMouseDown(e: MouseEvent): void {
-	handleStart(e, e.offsetX);
+	const offset = isTopOrBottom.value ? e.offsetY : e.offsetX;
+	handleStart(e, offset);
 }
 
 function handleTouchstart(e: TouchEvent): void {
-	const clientX = e.touches[0]?.radiusX ?? 0;
-
-	handleStart(e, clientX);
+	const client = (isTopOrBottom.value ? e.touches[0]?.radiusY : e.touches[0]?.radiusX) ?? 0;
+	handleStart(e, client);
 }
 
 // ------------------------- MouseUp & Touchend //
@@ -458,25 +535,29 @@ function handleEnd(e: MouseEvent | TouchEvent): void {
 
 	isMouseDown.value = false;
 	handleEvents.mouseDown = false;
-	resizedWidth.value = drawer?.width ?? defaultWidth.value;
+
+
+	if (!isTopOrBottom.value) {
+		resizedAmount.value = drawer?.width ?? defaultWidth.value;
+	}
 
 	document.body.style.cursor = '';
 
-	const widthVal = resizedWidth.value as string;
+	const amountVal = resizedAmount.value as string;
 
-	if (String(widthVal).includes('-')) {
-		resizedWidth.value = computedMinWidth.value;
+	if (String(amountVal).includes('-')) {
+		resizedAmount.value = computedMinAmount.value;
 	}
 
-	resizedWidth.value = checkMaxMinWidth(resizedWidth.value);
-	resizedWidth.value = useConvertToUnit({ value: resizedWidth.value as string }) || undefined;
-	resizedWidth.value = useConvertToNumber(resizedWidth.value as string);
+	resizedAmount.value = checkMaxMinAmount(resizedAmount.value);
+	resizedAmount.value = useConvertToUnit({ value: resizedAmount.value as string }) || undefined;
+	resizedAmount.value = useConvertToNumber(resizedAmount.value as string);
 
 	useSetStorage({
 		rail: settings.value.rail,
-		resizedWidth: resizedWidth.value,
-		saveWidth: settings.value.saveWidth,
-		storageName: settings.value.storageName,
+		resizedAmount: resizedAmount.value,
+		saveAmount: settings.value.saveHeight || settings.value.saveWidth,
+		storageName: storageName.value,
 		storageType: settings.value.storageType,
 	});
 
@@ -493,7 +574,6 @@ function handleEnd(e: MouseEvent | TouchEvent): void {
 			document.removeEventListener('mousemove', mouseResize, false);
 			emitEvent('handle:mouseup', e);
 		}
-
 	}
 }
 
@@ -518,12 +598,14 @@ const theTheme = computed(() => {
 
 // -------------------------------------------------- Misc Events //
 function emitEvent(name: EmitEventNames, e: Event | MouseEvent): void {
-	const widthInt = parseInt(checkMaxMinWidth(resizedWidth.value as string)) ?? 0 as number;
+	const widthInt = parseInt(checkMaxMinAmount(resizedAmount.value as string)) ?? 0 as number;
 
 	const drawerData = {
 		e,
 		eventName: name,
 		offsetWidth: `${window.innerWidth - widthInt}px`,
+		resizedAmount: `${widthInt}px`,
+		resizedHeight: `${widthInt}px`,
 		resizedWidth: `${widthInt}px`,
 		width: `${widthInt}px`,
 	};
@@ -543,4 +625,3 @@ function removeListeners(): void {
 <style lang="scss">
 @use './styles/main.scss';
 </style>
-

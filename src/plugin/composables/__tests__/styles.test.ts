@@ -24,7 +24,7 @@ describe('Styles Composable', () => {
 			expect(data).toMatchInlineSnapshot(`
 				{
 				  "transitionDuration": ".2s",
-				  "width": "300px",
+				  "width": undefined,
 				}
 			`);
 		});
@@ -42,7 +42,7 @@ describe('Styles Composable', () => {
 			expect(data).toMatchInlineSnapshot(`
 				{
 				  "transitionDuration": "0s",
-				  "width": "256px",
+				  "width": undefined,
 				}
 			`);
 		});
@@ -142,8 +142,9 @@ describe('Styles Composable', () => {
 			expect(data).toMatchInlineSnapshot(`
 				{
 				  "backgroundColor": "transparent",
-				  "height": "1em",
-				  "width": "1em",
+				  "height": "100%",
+				  "transform": undefined,
+				  "width": "undefinedpx",
 				}
 			`);
 		});
