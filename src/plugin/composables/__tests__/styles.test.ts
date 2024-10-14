@@ -142,7 +142,7 @@ describe('Styles Composable', () => {
 			expect(data).toMatchInlineSnapshot(`
 				{
 				  "backgroundColor": "transparent",
-				  "height": "100%",
+				  "height": "undefinedpx",
 				  "transform": undefined,
 				  "width": "undefinedpx",
 				}

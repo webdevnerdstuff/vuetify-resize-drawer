@@ -220,7 +220,7 @@ const drawerStyles = computed(() => useDrawerStyles({
 	rail: settings.value.rail,
 	railWidth: settings.value.railWidth,
 	resizedAmount: resizedAmount.value,
-	widthSnapBack: settings.value.widthSnapBack,
+	snapBack: settings.value.snapBack || settings.value.widthSnapBack,
 }));
 
 const drawerWidth = computed<string | number | undefined>(() => {
@@ -277,7 +277,6 @@ const isAllowedHandlePosition = computed<boolean>(() => {
 
 	return true;
 });
-
 
 
 // -------------------------------------------------- Handle Icon //
@@ -352,7 +351,7 @@ function drawerResizeEvent(e: MouseEvent | TouchEvent, amount: number): void {
 	}
 
 	if (settings.value.location === 'bottom') {
-		amountValue = document.body.scrollHeight - amountValue + (iconSizeUnit.value / 2);
+		amountValue = window.innerHeight - amountValue + (iconSizeUnit.value / 2);
 	}
 
 	resizedAmount.value = useConvertToUnit({ value: amountValue }) || undefined;
@@ -488,7 +487,6 @@ function handleStart(e: MouseEvent | TouchEvent, eventOffsetX: number): void {
 		offsetX = settings.value.handleBorderWidth as number || 1;
 	}
 
-
 	handleEvents.mouseUp = false;
 
 	if (eventOffsetX < offsetX) {
@@ -517,11 +515,14 @@ function handleStart(e: MouseEvent | TouchEvent, eventOffsetX: number): void {
 
 function handleMouseDown(e: MouseEvent): void {
 	const offset = isTopOrBottom.value ? e.offsetY : e.offsetX;
+
 	handleStart(e, offset);
 }
 
 function handleTouchstart(e: TouchEvent): void {
-	const client = (isTopOrBottom.value ? e.touches[0]?.radiusY : e.touches[0]?.radiusX) ?? 0;
+	let client = (isTopOrBottom.value ? e.touches[0]?.radiusY : e.touches[0]?.radiusX) ?? 0;
+	client = client / 2;
+
 	handleStart(e, client);
 }
 

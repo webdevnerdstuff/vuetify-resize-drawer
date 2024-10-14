@@ -99,6 +99,7 @@
 	}
 
 	&--top {
+		top: 0 !important;
 		transition: min-height 0.3s;
 
 		.v-resize-drawer--handle-container {

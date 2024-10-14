@@ -21,7 +21,7 @@ export type Classes = {
 export type EmitEventNames = 'handle:click' | 'handle:dblclick' | 'handle:drag' | 'handle:mousedown' | 'handle:mouseup' | 'handle:touchend' | 'handle:touchmove' | 'handle:touchstart';
 export type StorageType = 'local' | 'session';
 export type HandlePositions = 'bottom' | 'border' | 'center' | 'top';
-export type DrawerLocations = 'end' | 'start' | 'left' | 'right' | 'top' | 'bottom' | undefined;
+export type DrawerLocations = 'bottom' | 'end' | 'start' | 'left' | 'right' | 'top' | undefined;
 
 type Height = number | string | undefined;
 
@@ -55,6 +55,7 @@ export interface Props {
 	resizable?: boolean | undefined;
 	saveHeight?: boolean | undefined;
 	saveWidth?: boolean | undefined;
+	snapBack?: boolean | undefined;
 	storageName?: string | undefined;
 	storageType?: StorageType;
 	tag?: VNavigationDrawer['tag'];
@@ -144,7 +145,7 @@ export interface UseDrawerStyles {
 			rail?: Props['rail'],
 			railWidth?: Props['railWidth'],
 			resizedAmount: MaybeRef<string | number | undefined>,
-			widthSnapBack?: Props['widthSnapBack'],
+			snapBack?: Props['snapBack'],
 		}
 	): CSSProperties;
 }

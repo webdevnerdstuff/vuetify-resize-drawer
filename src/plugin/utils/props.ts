@@ -20,11 +20,11 @@ export const AllProps: Props = {
 	railWidth: 8,
 	resizable: true,
 	saveWidth: true,
+	snapBack: true,
 	storageName: `${componentName}-width`,
 	storageType: 'local',
 	tag: 'nav',
 	theme: undefined,
 	touchless: false,
 	width: 256,
-	widthSnapBack: true,
 };

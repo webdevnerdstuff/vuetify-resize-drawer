@@ -79,6 +79,12 @@ export const useConvertToNumber = (val: string | number): number => {
 export const useUnitToPx = (valueWithUnit: Props['handleIconSize']): number => {
 	if (!valueWithUnit) return 0;
 
+
+	// check if string valueWithUnit contains px
+	if (typeof valueWithUnit === 'number') {
+		return valueWithUnit;
+	}
+
 	// Create a temporary element for calculating the value
 	const tempElement = document.createElement('div');
 	tempElement.style.position = 'absolute';

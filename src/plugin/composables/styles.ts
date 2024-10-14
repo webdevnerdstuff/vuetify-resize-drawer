@@ -18,7 +18,7 @@ export const iconSizes = {
 
 // -------------------------------------------------- Drawer //
 export const useDrawerStyles: UseDrawerStyles = (options) => {
-	const { isMouseDown, location, maxWidth, minWidth, rail, railWidth, resizedAmount, widthSnapBack } = options;
+	const { isMouseDown, location, maxWidth, minWidth, rail, railWidth, resizedAmount, snapBack } = options;
 
 	if (rail) {
 		return {};
@@ -26,7 +26,7 @@ export const useDrawerStyles: UseDrawerStyles = (options) => {
 
 	let mountValue = rail ? railWidth : unref(resizedAmount);
 
-	if (!widthSnapBack) {
+	if (!snapBack) {
 		if (parseInt(mountValue as string) >= parseInt(maxWidth as string)) {
 			mountValue = parseInt(maxWidth as string);
 		}
@@ -40,6 +40,7 @@ export const useDrawerStyles: UseDrawerStyles = (options) => {
 
 	if (location === 'top' || location === 'bottom') {
 		response = {
+			maxHeight: `${useConvertToUnit({ value: mountValue as string }) as string} !important`,
 			minHeight: `${useConvertToUnit({ value: mountValue as string }) as string} !important`,
 			transitionDuration: unref(isMouseDown) ? '0s' : '.2s',
 			width: '100%',
@@ -61,22 +62,18 @@ export const useHandleContainerStyles: UseHandleContainerStyles = (options) => {
 	const { borderWidth, handleColor, iconSizeUnit, location, position, theme } = options;
 
 	const transform = `translateX(-50%) ${location === 'top' ? 'rotate(90deg)' : 'rotate(-90deg)'}`;
-	let height = '100%';
-	let width = '100%';
-
-	if (location === 'bottom' || location === 'top') {
-		height = `${iconSizeUnit}px`;
-
-		if (position === 'border') {
-			height = useConvertToUnit({ value: borderWidth as string }) as string;
-		}
-	}
-	else {
-		width = useConvertToUnit({ value: borderWidth as string }) as string;
-	}
-
+	let height = `${iconSizeUnit}px`;
+	let width = `${iconSizeUnit}px`;
 
 	if (position === 'border') {
+		if (location === 'bottom' || location === 'top') {
+			height = useConvertToUnit({ value: borderWidth as string }) as string;
+		}
+		else {
+			height = '100%';
+			width = useConvertToUnit({ value: borderWidth as string }) as string;
+		}
+
 		return {
 			backgroundColor: useGetColor(handleColor as string, theme),
 			height,
@@ -88,7 +85,7 @@ export const useHandleContainerStyles: UseHandleContainerStyles = (options) => {
 		backgroundColor: 'transparent',
 		height: height,
 		transform: location === 'top' || location === 'bottom' ? transform : undefined,
-		width: `${iconSizeUnit}px`,
+		width,
 	};
 };
 
