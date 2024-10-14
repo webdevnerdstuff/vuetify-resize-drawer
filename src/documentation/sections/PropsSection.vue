@@ -447,8 +447,20 @@ const propsSupported = reactive({
 		},
 		{
 			default: '100%',
+			desc: 'The maximum height of the navigation drawer. Accepts: number, px, or %',
+			name: 'max-height',
+			type: 'string',
+		},
+		{
+			default: '100%',
 			desc: 'The maximum width of the navigation drawer. Accepts: number, px, or %',
 			name: 'max-width',
+			type: 'string',
+		},
+		{
+			default: '56',
+			desc: 'The minimum height of the navigation drawer. Accepts: number, px, or %',
+			name: 'min-height',
 			type: 'string',
 		},
 		{
