@@ -9,33 +9,7 @@
 	<!-- ====================================================== Navigation Drawer -->
 	<VResizeDrawer
 		v-model="drawer"
-		:absolute="drawerOptions.absolute"
-		:color="drawerOptions.color"
-		:elevation="drawerOptions.elevation"
-		:expand-on-hover="drawerOptions.expandOnHover"
-		:floating="drawerOptions.floating"
-		:handle-border-width="drawerOptions.handleBorderWidth"
-		:handle-color="drawerOptions.handleColor"
-		:handle-icon="drawerOptions.handleIcon"
-		:handle-icon-size="drawerOptions.handleIconSize"
-		:handle-position="(drawerOptions.handlePosition as HandlePositions)"
-		:image="drawerOptions.image"
-		:location="(drawerOptions.location as DrawerLocations)"
-		:max-width="drawerOptions.maxWidth"
-		:min-width="drawerOptions.minWidth"
-		:rail="drawerOptions.rail"
-		:rail-width="drawerOptions.railWidth"
-		:resizable="drawerOptions.resizable"
-		:save-width="drawerOptions.saveWidth"
-		:sticky="drawerOptions.sticky"
-		:storage-name="drawerOptions.storageName"
-		:storage-type="(drawerOptions.storageType as StorageType)"
-		:tag="drawerOptions.tag"
-		:temporary="drawerOptions.temporary"
-		:theme="drawerOptions.theme"
-		:touchless="drawerOptions.touchless"
-		:width="drawerOptions.width"
-		:width-snap-back="drawerOptions.widthSnapBack"
+		v-bind="drawerOptions"
 		@close="drawerClose"
 		@drawer:mouseenter="drawerMouseenter"
 		@drawer:mouseleave="drawerMouseleave"
@@ -62,22 +36,12 @@
 
 	<!-- ====================================================== Grid Drawer -->
 	<VResizeDrawer
-		:absolute="gridDrawerOptions.absolute"
-		:color="gridDrawerOptions.color"
-		:elevation="gridDrawerOptions.elevation"
-		location="right"
-		max-width="90%"
-		:min-width="gridDrawerOptions.minWidth"
+		v-bind="gridDrawerOptions"
 		:model-value="gridDrawer"
-		:permanent="gridDrawerOptions.permanent"
-		:resizable="gridDrawerOptions.resizable"
 		:save-width="false"
-		:scrim="gridDrawerOptions.scrim"
 		style="z-index: 9999;"
-		:temporary="gridDrawerOptions.temporary"
 		:theme="drawerOptions.theme"
 		:width="gridDrawerWidth"
-		:width-snap-back="gridDrawerOptions.widthSnapBack"
 		@close="gridDrawerClose"
 		@handle:dblclick="gridHandleDoubleClick"
 		@handle:drag="gridHandleDrag"
@@ -124,11 +88,6 @@
 <script setup lang=ts>
 import { onMounted, provide, ref } from 'vue';
 import AppBar from '@/documentation/layout/AppBar.vue';
-import type {
-	DrawerLocations,
-	HandlePositions,
-	StorageType,
-} from '@/plugin/types';
 
 
 defineProps({
@@ -138,37 +97,40 @@ defineProps({
 	},
 });
 
-
 const drawerOptions = ref({
-	absolute: false,
+	absolute: true,
 	color: '',
 	drawerImage: undefined,
 	elevation: 0,
 	expandOnHover: true,
-	floating: false,
+	fixed: true,
+	floating: true,
 	handleBorderWidth: 8,
 	handleColor: 'primary',
-	handleIcon: undefined,
 	// handleIcon: 'mdi:mdi-arrow-right-bold-box',
 	handleIconSize: 'x-small',
-	handlePosition: 'center',
+	handlePosition: 'center' as const,
+	height: undefined,
 	image: undefined,
-	location: 'left',
+	location: 'left' as const,
+	maxHeight: '50%',
 	maxWidth: '50%',
+	minHeight: '256px',
 	minWidth: '256px',
 	rail: false,
 	railWidth: 56,
 	resizable: true,
-	saveWidth: true,
+	saveHeight: true,
+	saveWidth: false,
+	snapBack: true,
 	sticky: false,
-	storageName: 'vuetify-resize-drawer-playground-width',
-	storageType: 'local',
+	storageName: 'vuetify-resize-drawer-playground-amount',
+	storageType: 'local' as const,
 	tag: 'nav',
 	temporary: false,
 	theme: 'dark',
 	touchless: false,
 	width: undefined,
-	widthSnapBack: true,
 });
 
 const drawer = ref(true);
@@ -220,11 +182,14 @@ const gridDrawerOptions = ref({
 	absolute: true,
 	color: '',
 	elevation: 0,
-	location: 'right',
-	maxWidth: '100%',
+	handleIconSize: 'x-small',
+	handlePosition: 'center' as const,
+	location: 'right' as const,
+	maxWidth: '90%',
 	minWidth: '256px',
 	permanent: false,
 	resizable: true,
+	saveHeight: true,
 	saveWidth: false,
 	scrim: false,
 	temporary: true,
