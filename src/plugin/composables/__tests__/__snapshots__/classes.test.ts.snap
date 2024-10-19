@@ -13,6 +13,7 @@ exports[`Classes Composable > useDrawerClasses > should return class object 1`] 
   "v-navigation-drawer--right": false,
   "v-navigation-drawer--temporary": false,
   "v-resize-drawer": true,
+  "v-resize-drawer--start": false,
 }
 `;
 

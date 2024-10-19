@@ -1,6 +1,15 @@
 # Change Log
 All notable changes to the "vuetify-resize-drawer" plugin will be documented in this file.
 
+## v3.2.0
+2024-10-14
+[main] (@webdevnerdstuff)
+* Adding `bottom` and `top` location support
+* Fix issue with handle mouse position
+* Change `width-snap-back` prop to `snap-back` (`width-snap-back` is backwards compatible)
+* Add `max-height` and `min-height` props
+* Update packages
+
 ## v3.1.6
 2024-03-14
 [main] (@webdevnerdstuff)

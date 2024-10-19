@@ -1,4 +1,5 @@
 import {
+	Props,
 	UseConvertToUnit,
 } from '@/plugin/types';
 
@@ -69,4 +70,37 @@ export const useConvertToNumber = (val: string | number): number => {
 	}
 
 	return drawerWidth;
+};
+
+
+/*
+* Converts a unit to px.
+*/
+export const useUnitToPx = (valueWithUnit: Props['handleIconSize']): number => {
+	if (!valueWithUnit) return 0;
+
+
+	// check if string valueWithUnit contains px
+	if (typeof valueWithUnit === 'number') {
+		return valueWithUnit;
+	}
+
+	// Create a temporary element for calculating the value
+	const tempElement = document.createElement('div');
+	tempElement.style.position = 'absolute';
+	tempElement.style.visibility = 'hidden';
+	tempElement.style.width = valueWithUnit as string;
+
+	// Append the temporary element to the specified parent or body
+	const targetParent = document.body;
+	targetParent.appendChild(tempElement);
+
+	// Get the computed width in px
+	const computedValue = getComputedStyle(tempElement).width;
+
+	// Remove the temporary element after calculation
+	targetParent.removeChild(tempElement);
+
+	// Return the numeric px value
+	return parseFloat(computedValue);
 };
