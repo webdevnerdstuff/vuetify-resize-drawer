@@ -74,31 +74,7 @@
 		<!-- ====================================================== Navigation Drawer -->
 		<VResizeDrawer
 			v-model="drawer"
-			:absolute="drawerOptions.absolute"
-			:color="drawerOptions.color"
-			:dark="drawerOptions.dark"
-			:elevation="drawerOptions.elevation"
-			:expand-on-hover="drawerOptions.expandOnHover"
-			:floating="drawerOptions.floating"
-			:handle-border-width="drawerOptions.handleBorderWidth"
-			:handle-color="drawerOptions.handleColor"
-			:handle-position="drawerOptions.handlePosition"
-			:image="drawerOptions.image"
-			:location="drawerOptions.location === 'left' ? 'left' : 'right'"
-			max-width="50%"
-			min-width="256"
-			:rail="drawerOptions.rail"
-			:rail-width="drawerOptions.railWidth"
-			:resizable="drawerOptions.resizable"
-			:save-width="drawerOptions.saveWidth"
-			:sticky="drawerOptions.sticky"
-			:storage-name="drawerOptions.storageName"
-			:storage-type="drawerOptions.storageType"
-			:tag="drawerOptions.tag"
-			:temporary="drawerOptions.temporary"
-			:theme="drawerOptions.theme"
-			:touchless="drawerOptions.touchless"
-			:width="drawerOptions.width"
+			v-bind="drawerOptions"
 			@close="drawerClose"
 			@handle:click="handleClick"
 			@handle:dblclick="handleDoubleClick"
@@ -196,11 +172,15 @@ const drawerOptions = ref({
 	dark: true,
 	elevation: 10,
 	expandOnHover: true,
-	floating: false,
+	floating: true,
 	handleBorderWidth: 8,
 	handleColor: 'primary',
 	handlePosition: 'center',
 	location: 'left',
+	maxHeight: "50%",
+	maxWidth: "50%",
+	minHeight: "256",
+	minWidth: "256",
 	rail: false,
 	railWidth: 56,
 	resizable: true,
@@ -223,8 +203,8 @@ const gridDrawerOptions = ref({
 	maxWidth: '100%',
 	minWidth: '256px',
 	saveWidth: false,
+	snapBack: true,
 	temporary: true,
-	widthSnapBack: true,
 });
 const gridDrawerWidth = ref('256px');
 const computedWidth = ref(gridDrawerWidth.value);

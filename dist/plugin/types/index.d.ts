@@ -1,7 +1,7 @@
 import { CSSProperties, MaybeRef } from 'vue';
-import type { IconOptions, ThemeInstance } from 'vuetify';
-import VResizeDrawer from '../VResizeDrawer.vue';
-import type { VNavigationDrawer } from 'vuetify/components';
+import { IconOptions, ThemeInstance } from 'vuetify';
+import { default as VResizeDrawer } from '../VResizeDrawer.vue';
+import { VIcon, VNavigationDrawer } from 'vuetify/components';
 export * from '../index';
 export type Classes = {
     [key: string]: boolean | undefined;
@@ -9,7 +9,8 @@ export type Classes = {
 export type EmitEventNames = 'handle:click' | 'handle:dblclick' | 'handle:drag' | 'handle:mousedown' | 'handle:mouseup' | 'handle:touchend' | 'handle:touchmove' | 'handle:touchstart';
 export type StorageType = 'local' | 'session';
 export type HandlePositions = 'bottom' | 'border' | 'center' | 'top';
-export type DrawerLocations = 'end' | 'start' | 'left' | 'right' | undefined;
+export type DrawerLocations = 'bottom' | 'end' | 'start' | 'left' | 'right' | 'top' | undefined;
+type Height = number | string | undefined;
 export type HEXColor = string;
 export type HSLColor = [number, number, number];
 export type RGBColor = [number, number, number];
@@ -20,19 +21,23 @@ export interface Props {
     handleBorderWidth?: number | string;
     handleColor?: string | undefined;
     handleIcon?: string | undefined;
-    handleIconSize?: string | undefined;
+    handleIconSize?: VIcon['size'];
     handlePosition?: HandlePositions;
-    height?: number | string | undefined;
+    height?: Height;
     image?: VNavigationDrawer['image'];
     location?: DrawerLocations;
+    maxHeight?: Height;
     maxWidth?: VNavigationDrawer['width'];
+    minHeight?: Height;
     minWidth?: VNavigationDrawer['width'];
     modelValue?: VNavigationDrawer['modelValue'];
     name?: VNavigationDrawer['name'];
     rail?: VNavigationDrawer['rail'];
     railWidth?: VNavigationDrawer['railWidth'];
     resizable?: boolean | undefined;
+    saveHeight?: boolean | undefined;
     saveWidth?: boolean | undefined;
+    snapBack?: boolean | undefined;
     storageName?: string | undefined;
     storageType?: StorageType;
     tag?: VNavigationDrawer['tag'];
@@ -53,10 +58,11 @@ export interface UseConvertToUnit {
 export interface UseSetStorage {
     (options: {
         action?: string;
+        resizedAmount?: MaybeRef<string | number | undefined>;
         resizedWidth?: MaybeRef<string | number | undefined>;
         storageType?: StorageType;
         storageName?: Props['storageName'];
-        saveWidth?: Props['saveWidth'];
+        saveAmount?: Props['saveWidth'] | Props['saveHeight'];
         rail?: Props['rail'];
     }): void;
 }
@@ -89,12 +95,15 @@ export interface UseHandleIconClasses {
 export interface UseDrawerStyles {
     (options: {
         isMouseDown?: MaybeRef<boolean>;
+        location?: Props['location'];
+        maxHeight?: Props['maxHeight'];
+        minHeight?: Props['minHeight'];
         maxWidth?: Props['maxWidth'];
         minWidth?: Props['minWidth'];
         rail?: Props['rail'];
         railWidth?: Props['railWidth'];
-        resizedWidth: MaybeRef<string | number | undefined>;
-        widthSnapBack?: Props['widthSnapBack'];
+        resizedAmount: MaybeRef<string | number | undefined>;
+        snapBack?: Props['snapBack'];
     }): CSSProperties;
 }
 export interface UseHandleContainerStyles {
@@ -102,6 +111,8 @@ export interface UseHandleContainerStyles {
         borderWidth?: Props['handleBorderWidth'];
         handleColor?: Props['handleColor'];
         iconSize?: Props['handleIconSize'];
+        iconSizeUnit?: number;
+        location?: Props['location'];
         position?: Props['handlePosition'];
         theme: ThemeInstance;
     }): CSSProperties;

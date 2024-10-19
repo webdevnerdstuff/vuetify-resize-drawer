@@ -15,26 +15,26 @@ export function useGetStorage(storageType: string, storageName: string): string 
 
 
 export const useSetStorage: UseSetStorage = (options) => {
-	const { action = 'update', rail, resizedWidth, saveWidth, storageName, storageType } = options;
+	const { action = 'update', rail, resizedAmount, saveAmount, storageName, storageType } = options;
 
-	if (!saveWidth || rail) {
+	if (rail && !saveAmount) {
 		return;
 	}
 
-	let width = resizedWidth;
-	width = width ?? undefined;
+	let amount = resizedAmount;
+	amount = amount ?? undefined;
 
 	if (action === 'set') {
-		width = useGetStorage(storageType as string, storageName as string) ?? '';
-		width = width || resizedWidth;
+		amount = useGetStorage(storageType as string, storageName as string) ?? '';
+		amount = amount || resizedAmount;
 	}
 
 	if (storageType === 'local') {
-		localStorage.setItem(storageName as string, String(width));
+		localStorage.setItem(storageName as string, String(amount));
 	}
 
 	if (storageType === 'session') {
-		sessionStorage.setItem(storageName as string, String(width));
+		sessionStorage.setItem(storageName as string, String(amount));
 	}
 
 	return;
