@@ -59,7 +59,7 @@ const classes = inject<Docs.GlobalClasses>('classes')!;
 
 const usageGlobalPlugin = `import { createApp } from 'vue';
 import App from './App.vue';
-import { createVResizeDrawer } from '@wdns/vuetify-resize-drawer';
+im${''}port { createVResizeDrawer } from '@wdns/vuetify-resize-drawer';
 
 const app = createApp(App);
 
@@ -71,7 +71,7 @@ app.mount('#app');`;
 
 const usageGlobalComponent = `import { createApp } from 'vue';
 import App from './App.vue';
-import { VResizeDrawer } from  '@wdns/vuetify-resize-drawer';
+im${''}port { VResizeDrawer } from  '@wdns/vuetify-resize-drawer';
 
 const app = createApp(App);
 
