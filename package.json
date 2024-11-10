@@ -77,7 +77,7 @@
 	],
 	"dependencies": {
 		"vue": "^3.5.12",
-		"vuetify": "^3.7.2"
+		"vuetify": "^3.7.4"
 	},
 	"devDependencies": {
 		"@eslint/js": "^9.14.0",
