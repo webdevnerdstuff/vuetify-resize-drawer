@@ -1,11 +1,11 @@
 import '@/libraries/fontawesome';
-import App from './App.vue';
-import { createVCodeBlock } from '@wdns/vue-code-block';
-import { createVResizeDrawer } from './plugin/index';
-import { createApp } from 'vue';
-import { createPinia } from 'pinia';
-import { registerPlugins } from './plugins';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { createVCodeBlock } from '@wdns/vue-code-block';
+import { createPinia } from 'pinia';
+import { createApp } from 'vue';
+import App from './App.vue';
+import { createVResizeDrawer } from './plugin/index';
+import { registerPlugins } from './plugins';
 
 
 const app = createApp(App);

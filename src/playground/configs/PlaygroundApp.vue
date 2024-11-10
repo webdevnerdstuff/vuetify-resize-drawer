@@ -52,9 +52,9 @@
 </template>
 
 
-<script setup>
-import { useCoreStore } from '@/stores/index';
+<script setup lang="ts">
 import PlaygroundPage from '@/playground/PlaygroundPage.vue';
+import { useCoreStore } from '@/stores/index';
 
 const store = useCoreStore();
 const gridDrawer = ref(false);
@@ -63,5 +63,4 @@ provide('links', store.links);
 </script>
 
 
-<style scoped>
-</style>
+<style scoped></style>

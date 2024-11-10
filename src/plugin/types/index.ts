@@ -1,15 +1,13 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable no-unused-vars */
 import {
 	CSSProperties,
 	MaybeRef,
 } from 'vue';
 import type { IconOptions, ThemeInstance } from 'vuetify';
-import VResizeDrawer from '../VResizeDrawer.vue';
 import type {
 	VIcon,
 	VNavigationDrawer,
 } from 'vuetify/components';
+import VResizeDrawer from '../VResizeDrawer.vue';
 
 export * from '../index';
 
@@ -185,7 +183,7 @@ export interface UseGetIcon {
 }
 
 
-declare module "vue" {
+declare module 'vue' {
 	interface ComponentCustomProperties { }
 
 	interface GlobalComponents {

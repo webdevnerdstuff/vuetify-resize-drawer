@@ -1,10 +1,10 @@
 import '@/libraries/fontawesome';
-import PlaygroundApp from './PlaygroundApp.vue';
-import { createApp } from 'vue';
-import { createPinia } from 'pinia';
-import { registerPlugins } from '../../plugins';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { createPinia } from 'pinia';
+import { createApp } from 'vue';
 import { createVResizeDrawer } from '../../plugin/index';
+import { registerPlugins } from '../../plugins';
+import PlaygroundApp from './PlaygroundApp.vue';
 
 
 const app = createApp(PlaygroundApp);

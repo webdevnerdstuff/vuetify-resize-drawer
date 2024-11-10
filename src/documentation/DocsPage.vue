@@ -13,6 +13,7 @@
 			<h1 class="v-heading text-h3 text-sm-h3 mb-4">
 				Vuetify 3 Resize Drawer
 			</h1>
+			<p class="mb-4 text-grey-darken-1">by WebDevNerdStuff</p>
 			<v-chip
 				color="primary"
 				size="small"
@@ -39,7 +40,7 @@
 
 			<v-row>
 				<v-col cols="12">
-					<CodeBlock
+					<VCodeBlock
 						code="pnpm add @wdns/vuetify-resize-drawer"
 						:highlightjs="codeBlockSettings.plugin === 'highlightjs'"
 						lang="plain"
@@ -52,105 +53,80 @@
 								target="_blank"
 							>pnpm</a>:
 						</template>
-					</CodeBlock>
+					</VCodeBlock>
 				</v-col>
 				<v-col cols="12">
-					<CodeBlock
+					<VCodeBlock
 						code="npm i @wdns/vuetify-resize-drawer"
 						highlightjs
 						lang="plain"
 					>
 						<template #label>Using npm:</template>
-					</CodeBlock>
+					</VCodeBlock>
 				</v-col>
 			</v-row>
 		</v-col>
 	</v-row>
 
 	<!-- Description -->
-	<DescriptionSection
-		:classes="classes"
-		:drawerOptions="drawerOptions"
-		:links="links"
-	/>
+	<Section.DescriptionSection />
 
 	<!-- Usage -->
-	<UsageSection :codeBlockOptions="codeBlockOptions" />
+	<Section.UsageSection />
 
 	<!-- Props -->
-	<PropsSection @updateOptions="updatedOptions" />
+	<Section.PropsSection @updateOptions="updatedOptions" />
 
 	<!-- Grid -->
-	<GridSection @toggle-grid-drawer="toggleGridDrawer" />
+	<Section.GridSection @toggle-grid-drawer="toggleGridDrawer" />
 
 	<!-- Events -->
-	<EventsSection :codeBlockOptions="codeBlockOptions" />
+	<Section.EventsSection />
 
 	<!-- Slots -->
-	<SlotsSection />
+	<Section.SlotsSection />
 
 	<!-- SASS Variables -->
-	<SassVariablesSection />
+	<Section.SassVariablesSection />
 
 	<!-- Example -->
-	<ExampleSection :codeBlockOptions="codeBlockOptions" />
+	<Section.ExampleSection />
 
 	<!-- Playground -->
-	<PlaygroundSection :codeBlockOptions="codeBlockOptions" />
+	<Section.PlaygroundSection />
 
 	<!-- Dependencies -->
-	<DependenciesSection />
+	<Section.DependenciesSection />
 
 	<!-- License -->
-	<LicenseSection />
+	<Section.LicenseSection />
 
 	<!-- Legal -->
-	<LegalSection />
+	<Section.LegalSection />
 </template>
 
-<script setup>
-import { computed, inject, provide, reactive, ref } from 'vue';
+<script setup lang="ts">
+import * as Section from '@/documentation/sections';
 import packageInfo from '../../package.json';
-import {
-	DependenciesSection,
-	DescriptionSection,
-	EventsSection,
-	ExampleSection,
-	GridSection,
-	LegalSection,
-	LicenseSection,
-	PlaygroundSection,
-	PropsSection,
-	SassVariablesSection,
-	SlotsSection,
-	UsageSection,
-} from '@/documentation/sections';
 
 const emit = defineEmits([
 	'toggleGridDrawer',
 	'updateOptions',
 ]);
 
-const props = defineProps({
-	codeBlockOptions: {
-		required: true,
-		type: Object,
-	},
-});
+const codeBlockSettings = inject<Docs.CodeBlockSettings>('codeBlockSettings')!;
+const links = inject<Docs.Links>('links')!;
 
-const codeBlockSettings = computed(() => props.codeBlockOptions);
-const links = inject('links');
 const classes = reactive({
 	appLink: 'app-link text-decoration-none primary--text font-weight-medium d-inline-block font-weight-bold',
 	h2: 'text-primary v-heading text-h4 text-sm-h4 mb-2',
 	h3: 'text-blue-darken-2 v-heading text-h5 text-sm-h5 mb-0',
+	h4: 'text-secondary v-heading text-h6 text-sm-h6 mb-0',
 	headerA: 'text-decoration-none text-right text-md-left d-none d-sm-flex',
 });
-const componentVersion = ref(packageInfo.version);
+const componentVersion = ref<string | number>(packageInfo.version);
 
-const drawerOptions = inject('drawerOptions');
-provide('classes', classes);
-
+provide<Docs.GlobalClasses>('classes', classes);
 
 function updatedOptions(event) {
 	emit('updateOptions', event);
@@ -161,32 +137,4 @@ function toggleGridDrawer() {
 }
 </script>
 
-<style lang="scss">
-:deep(code) {
-	&.ic {
-		background-color: rgb(255 255 255 / 10%) !important;
-		border-radius: 3px;
-		font-size: 85%;
-		font-weight: normal;
-		padding: 0.2em 0.4em;
-	}
-}
-
-code {
-	&.ic {
-		background-color: rgb(255 255 255 / 10%) !important;
-		border-radius: 3px;
-		font-size: 85%;
-		font-weight: normal;
-		padding: 0.2em 0.4em;
-	}
-}
-
-.v-theme--light {
-	code {
-		&.ic {
-			background-color: rgb(0 0 0 / 10%) !important;
-		}
-	}
-}
-</style>
+<style lang="scss"></style>

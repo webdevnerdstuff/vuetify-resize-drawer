@@ -1,5 +1,5 @@
-import type { App } from 'vue';
 import type { GlobalOptions } from './types';
+import type { App } from 'vue';
 import './styles/main.scss';
 import VResizeDrawer from './VResizeDrawer.vue';
 

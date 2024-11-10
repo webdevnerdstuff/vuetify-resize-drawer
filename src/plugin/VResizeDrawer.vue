@@ -32,11 +32,11 @@
 			</template>
 
 			<v-icon
-				v-else-if="handlePosition !== 'border'"
+				v-else-if="handlePositionInternal !== 'border'"
 				class="v-resize-drawer--handle-icon"
 				:class="handleIconClasses"
 				:icon="theHandleIcon"
-				:size="handleIconSize"
+				:size="handleIconSizeInternal"
 				:style="handleIconStyles"
 			></v-icon>
 		</div>
@@ -58,34 +58,34 @@
 </template>
 
 <script setup lang="ts">
+import { IconOptions, useDisplay, useTheme } from 'vuetify';
+import { VNavigationDrawer } from 'vuetify/components';
 import {
 	EmitEventNames,
 	Props,
 } from '@/plugin/types';
-import { IconOptions, useDisplay, useTheme } from 'vuetify';
-import { VNavigationDrawer } from 'vuetify/components';
-import { AllProps } from '@utils/props';
-import {
-	useGetStorage,
-	useSetStorage,
-} from '@composables/storage';
 import {
 	useDrawerClasses,
-	useHandleIconClasses,
 	useHandleContainerClasses,
+	useHandleIconClasses,
 } from '@composables/classes';
-import {
-	iconSizes,
-	useDrawerStyles,
-	useHandleContainerStyles,
-	useHandleIconStyles,
-} from '@composables/styles';
 import {
 	useConvertToNumber,
 	useConvertToUnit,
 	useUnitToPx,
 } from '@composables/helpers';
 import { useGetIcon } from '@composables/icons';
+import {
+	useGetStorage,
+	useSetStorage,
+} from '@composables/storage';
+import {
+	iconSizes,
+	useDrawerStyles,
+	useHandleContainerStyles,
+	useHandleIconStyles,
+} from '@composables/styles';
+import { AllProps } from '@utils/props';
 import { globalOptions } from './';
 
 
@@ -116,7 +116,8 @@ watchEffect(() => {
 	settings.value = { ...props, ...injectedOptions };
 });
 
-const { handleIconSize, handlePosition } = toRefs(settings.value);
+const handleIconSizeInternal = toRef(settings.value, 'handleIconSize');
+const handlePositionInternal = toRef(settings.value, 'handlePosition');
 
 const bindingSettings = computed(() => settings.value);
 
@@ -129,15 +130,15 @@ const handleEvents: { mouseUp: boolean, mouseDown: boolean; } = {
 };
 const isMouseover = ref<boolean>(false);
 const isMouseDown = ref<boolean>(false);
-const location = ref<Props['location']>(settings.value.location);
+const locationInternal = ref<Props['location']>(settings.value.location);
 const resizeDrawer = ref<VNavigationDrawer>();
 const resizedAmount = ref<string | number | undefined>(256);
 const slots = useSlots();
-const theme = useTheme();
+const themeInternal = useTheme();
 const display = useDisplay();
 
-const isTopOrBottom = computed<boolean>(() => location.value === 'top' || location.value === 'bottom');
-const storageName = computed<string>(() => `${settings.value.storageName}-${settings.value.location}`);
+const isTopOrBottom = computed<boolean>(() => locationInternal.value === 'top' || locationInternal.value === 'bottom');
+const storageNameInternal = computed<string>(() => `${settings.value.storageName}-${settings.value.location}`);
 
 // -------------------------------------------------- Life Cycle Hooks //
 onBeforeMount(() => {
@@ -167,13 +168,13 @@ function init(): void {
 		return;
 	}
 
-	const storageAmount = useGetStorage(settings.value.storageType, storageName.value);
+	const storageAmount = useGetStorage(settings.value.storageType, storageNameInternal.value);
 	const amount = useConvertToUnit({ value: isTopOrBottom.value ? settings.value.height : settings.value.width });
 	resizedAmount.value = amount as string;
 	defaultWidth.value = resizedAmount.value as string;
 
 	if ((settings.value.saveHeight || settings.value.saveWidth) && storageAmount && !settings.value.rail) {
-		resizedAmount.value = useGetStorage(settings.value.storageType, storageName.value) as string;
+		resizedAmount.value = useGetStorage(settings.value.storageType, storageNameInternal.value) as string;
 	}
 
 	resizedAmount.value = useConvertToNumber(resizedAmount.value as string);
@@ -183,7 +184,7 @@ function init(): void {
 		rail: settings.value.rail,
 		resizedAmount: resizedAmount.value,
 		saveAmount: settings.value.saveHeight || settings.value.saveWidth,
-		storageName: storageName.value,
+		storageName: storageNameInternal.value,
 		storageType: settings.value.storageType,
 	});
 }
@@ -251,7 +252,7 @@ const handleContainerStyles = computed(() => useHandleContainerStyles({
 	iconSizeUnit: iconSizeUnit.value,
 	location: settings.value.location,
 	position: settings.value.handlePosition,
-	theme,
+	theme: themeInternal,
 }));
 
 const showHandle = computed(() => {
@@ -282,7 +283,7 @@ const isAllowedHandlePosition = computed<boolean>(() => {
 // -------------------------------------------------- Handle Icon //
 const handleIconStyles = computed(() => useHandleIconStyles({
 	color: props.handleColor,
-	theme,
+	theme: themeInternal,
 }));
 
 const handleIconClasses = computed(() => useHandleIconClasses({
@@ -303,10 +304,10 @@ const theHandleIcon = computed(() => {
 });
 
 
-const iconSizeUnit = ref(useUnitToPx(String(handleIconSize.value)));
+const iconSizeUnit = ref(useUnitToPx(String(handleIconSizeInternal.value)));
 
-if (Object.keys(iconSizes).some(key => key.includes(String(handleIconSize.value)))) {
-	iconSizeUnit.value = useUnitToPx(iconSizes[String(handleIconSize.value)]);
+if (Object.keys(iconSizes).some(key => key.includes(String(handleIconSizeInternal.value)))) {
+	iconSizeUnit.value = useUnitToPx(iconSizes[String(handleIconSizeInternal.value)]);
 }
 
 
@@ -466,7 +467,7 @@ function handleDoubleClick(e: Event): void {
 		rail: settings.value.rail,
 		resizedAmount: resizedAmount.value,
 		saveAmount: settings.value.saveHeight || settings.value.saveWidth,
-		storageName: storageName.value,
+		storageName: storageNameInternal.value,
 		storageType: settings.value.storageType,
 	});
 
@@ -558,7 +559,7 @@ function handleEnd(e: MouseEvent | TouchEvent): void {
 		rail: settings.value.rail,
 		resizedAmount: resizedAmount.value,
 		saveAmount: settings.value.saveHeight || settings.value.saveWidth,
-		storageName: storageName.value,
+		storageName: storageNameInternal.value,
 		storageType: settings.value.storageType,
 	});
 
@@ -593,7 +594,7 @@ const theTheme = computed(() => {
 		return settings.value.theme;
 	}
 
-	return theme.global.current.value?.dark === true ? 'dark' : 'light';
+	return themeInternal.global.current.value?.dark === true ? 'dark' : 'light';
 });
 
 
@@ -624,5 +625,5 @@ function removeListeners(): void {
 
 
 <style lang="scss">
-@use './styles/main.scss';
+@use './styles/main';
 </style>

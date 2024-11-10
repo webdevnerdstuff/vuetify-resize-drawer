@@ -69,6 +69,7 @@ function convertToHSL(color: string): string {
 	const min = Math.min(r, g, b);
 
 	// Color doesn't exist, return --v-theme-surface //
+	// eslint-disable-next-line no-constant-binary-expression
 	if (max === null || !min === null || isNaN(max) || isNaN(min)) {
 		const defaultColor = '0 0% 100% / 12%';
 

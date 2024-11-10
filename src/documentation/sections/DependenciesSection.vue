@@ -15,21 +15,25 @@
 
 		<v-col cols="12">
 			<a
-				:href="links.vuetify"
+				:href="store.links.vuetify"
 				target="_blank"
-			>Vuetify v3</a>
+			>
+				Vuetify v3
+			</a>
 			<br />
 			<a
-				:href="links.vue"
+				:href="store.links.vue"
 				target="_blank"
-			>Vue 3</a>
+			>
+				Vue 3
+			</a>
 		</v-col>
 	</v-row>
 </template>
 
-<script setup>
-import { inject } from 'vue';
+<script setup lang="ts">
+import { useCoreStore } from '@/stores/index';
 
-const classes = inject('classes');
-const links = inject('links');
+const classes = inject<Docs.GlobalClasses>('classes')!;
+const store = useCoreStore();
 </script>

@@ -14,31 +14,21 @@
 		</v-col>
 
 		<v-col cols="12">
-			<CodeBlock
+			<VCodeBlock
 				:code="codeTemplate"
 				:highlightjs="codeBlockSettings.plugin === 'highlightjs'"
 				lang="html"
 				:prismjs="codeBlockSettings.plugin === 'prismjs'"
 				:theme="codeBlockSettings.theme"
 			>
-			</CodeBlock>
+			</VCodeBlock>
 		</v-col>
 	</v-row>
 </template>
 
-<script setup>
-import { computed, inject } from 'vue';
-
-
-const props = defineProps({
-	codeBlockOptions: {
-		required: true,
-		type: Object,
-	},
-});
-
-const codeBlockSettings = computed(() => props.codeBlockOptions);
-const classes = inject('classes');
+<script setup lang="ts">
+const codeBlockSettings = inject<Docs.CodeBlockSettings>('codeBlockSettings')!;
+const classes = inject<Docs.GlobalClasses>('classes')!;
 
 const codeTemplate = `<template>
   <v-app>

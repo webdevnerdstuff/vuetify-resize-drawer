@@ -42,11 +42,6 @@
 				"./src/plugin/utils/*"
 			]
 		},
-		"plugins": [
-			{
-				"transform": "transformer-module"
-			}
-		],
 		"resolveJsonModule": true,
 		"rootDir": "src",
 		"skipLibCheck": true,
@@ -54,29 +49,36 @@
 		"target": "ESNext",
 		"typeRoots": [
 			"./src/plugin/types",
+			"./src/documentation/types",
 			"./node_modules/@types",
 			"./node_modules/vuetify"
 		],
 		"types": [
-			"node",
+			"jest",
+			"node"
 		],
 		"useDefineForClassFields": true
 	},
 	"exclude": [
+		"cypress.config.ts",
+		"cypress/**/*.ts",
+		"node_modules",
 		"playground",
 		"src/**/*.spec.ts",
 		"src/**/*.test.ts",
-		"src/App.vue",
-		"src/documentation/**/*.ts",
-		"src/documentation/**/*.vue",
-		"src/main.ts",
-		"src/playground/**/*.ts",
+		"src/playground/configs/templates/PlaygroundPage.vue",
 		"src/plugins/**/*.ts",
 		"src/stores/**/*.ts",
-		"node_modules"
 	],
 	"include": [
-		"src/playground/PlaygroundPage.vue",
+		"eslint.config.mjs",
+		"src/App.vue",
+		"src/main.ts",
+		"src/playground/**/*.ts",
+		"src/playground/**/*.vue",
+		"src/documentation/**/*.ts",
+		"src/documentation/**/*.tsx",
+		"src/documentation/**/*.vue",
 		"src/plugin/**/*.ts",
 		"src/plugin/**/*.tsx",
 		"src/plugin/**/*.vue"

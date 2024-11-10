@@ -3,8 +3,8 @@ import {
 	UseHandleContainerStyles,
 	UseHandleIconStyles,
 } from '@/plugin/types';
-import { useConvertToUnit } from '@composables/helpers';
 import { useGetColor } from '@composables/colors';
+import { useConvertToUnit } from '@composables/helpers';
 
 
 export const iconSizes = {
@@ -101,4 +101,3 @@ export const useHandleIconStyles: UseHandleIconStyles = (options) => {
 
 	return styles;
 };
-

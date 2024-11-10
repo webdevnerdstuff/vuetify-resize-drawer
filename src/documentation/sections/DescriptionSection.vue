@@ -17,7 +17,7 @@
 			The <code class="ic">vuetify-resize-drawer</code> component extends the
 			functionality of the
 			<a
-				:href="`${links.vuetify}/components/navigation-drawers/`"
+				:href="`${store.links.vuetify}/components/navigation-drawers/`"
 				target="_blank"
 			>v-navigation-drawer</a>
 			so that it is resizable by the user.
@@ -25,9 +25,10 @@
 	</v-row>
 </template>
 
-<script setup>
-import { inject } from 'vue';
+<script setup lang="ts">
+import { useCoreStore } from '@/stores/index';
 
-const classes = inject('classes');
-const links = inject('links');
+
+const classes = inject<Docs.GlobalClasses>('classes')!;
+const store = useCoreStore();
 </script>

@@ -22,7 +22,7 @@
 
 			<h3 class="mb-2 text-secondary">Setup the Playground</h3>
 
-			<CodeBlock
+			<VCodeBlock
 				class="mb-6"
 				code="git clone git@github.com:webdevnerdstuff/vuetify-resize-drawer.git"
 				:highlightjs="codeBlockSettings.plugin === 'highlightjs'"
@@ -36,9 +36,9 @@
 						target="blank"
 					>repository:</a>
 				</template>
-			</CodeBlock>
+			</VCodeBlock>
 
-			<CodeBlock
+			<VCodeBlock
 				code="pnpm i && pnpm play"
 				:highlightjs="codeBlockSettings.plugin === 'highlightjs'"
 				lang="plain"
@@ -48,7 +48,7 @@
 				<template #label>
 					Next run the following command to setup the Playground:
 				</template>
-			</CodeBlock>
+			</VCodeBlock>
 		</v-col>
 
 		<v-col cols="12">
@@ -79,20 +79,12 @@
 	</v-row>
 </template>
 
-<script setup>
-import { computed, inject } from 'vue';
+<script setup lang="ts">
 import { useCoreStore } from '@/stores/index';
 
-const props = defineProps({
-	codeBlockOptions: {
-		required: true,
-		type: Object,
-	},
-});
 
-
-const codeBlockSettings = computed(() => props.codeBlockOptions);
-const classes = inject('classes');
-const links = inject('links');
+const codeBlockSettings = inject<Docs.CodeBlockSettings>('codeBlockSettings')!;
+const classes = inject<Docs.GlobalClasses>('classes')!;
+const links = inject<Docs.Links>('links')!;
 const store = useCoreStore();
 </script>
