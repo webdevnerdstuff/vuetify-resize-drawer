@@ -86,7 +86,7 @@ const usageIndividual = `<template>
 </template>
 
 \<script setup\>
-  import VResizeDrawer from  '@wdns/vuetify-resize-drawer';
+  im${''}port VResizeDrawer from  '@wdns/vuetify-resize-drawer';
 
   const open = ref(true);
 \</script\>`;
