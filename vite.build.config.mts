@@ -11,6 +11,7 @@ import vue from '@vitejs/plugin-vue';
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 
+
 const scopedPackageName = pkg.name;
 const packageName = scopedPackageName.split('/')[1];
 
@@ -74,10 +75,12 @@ export default defineConfig({
 		}),
 		dts({
 			insertTypesEntry: true,
+			tsconfigPath: 'tsconfig.build.json',
 		}),
 		typescript({
 			check: true,
 			include: ['./src/plugin/**/*.vue'],
+			tsconfig: 'tsconfig.build.json',
 		}),
 		vuetify({
 			autoImport: true,

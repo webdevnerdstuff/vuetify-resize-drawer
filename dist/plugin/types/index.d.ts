@@ -1,7 +1,7 @@
 import { CSSProperties, MaybeRef } from 'vue';
 import { IconOptions, ThemeInstance } from 'vuetify';
-import { default as VResizeDrawer } from '../VResizeDrawer.vue';
 import { VIcon, VNavigationDrawer } from 'vuetify/components';
+import { default as VResizeDrawer } from '../VResizeDrawer.vue';
 export * from '../index';
 export type Classes = {
     [key: string]: boolean | undefined;
@@ -130,7 +130,7 @@ export interface UseGetIcon {
         name: Props['handlePosition'];
     }): Props['handleIcon'];
 }
-declare module "vue" {
+declare module 'vue' {
     interface ComponentCustomProperties {
     }
     interface GlobalComponents {
