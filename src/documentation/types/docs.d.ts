@@ -11,6 +11,7 @@ declare namespace Docs {
 		color: string;
 		dark: boolean;
 		elevation: number;
+		widthSnapBack?: boolean | undefined;
 	}
 
 	export interface Links {

@@ -1,0 +1,19 @@
+{
+	"exclude": [
+		"playground",
+		"src/**/*.spec.ts",
+		"src/**/*.test.ts",
+		"src/playground/**/*.ts",
+		"src/playground/**/*.vue",
+		"src/documentation/**/*.ts",
+		"src/documentation/**/*.tsx",
+		"src/documentation/**/*.vue",
+		"src/libraries/**/*.ts",
+		"src/plugins/**/*.ts",
+		"src/stores/**/*.ts",
+		"src/App.vue",
+		"src/main.ts",
+		"node_modules",
+	],
+	"extends": "./tsconfig.json"
+}

@@ -1,5 +1,5 @@
-import { Props } from './types';
 import { VNavigationDrawer } from 'vuetify/components';
+import { Props } from './types';
 declare function __VLS_template(): {
     slots: {
         handle?(_: {}): any;
@@ -20,9 +20,9 @@ declare function __VLS_template(): {
             tag: string;
             sticky: boolean;
             modelValue: boolean | null;
-            scrim: string | boolean;
             tile: boolean;
             floating: boolean;
+            scrim: string | boolean;
             touchless: boolean;
             disableResizeWatcher: boolean;
             disableRouteWatcher: boolean;
@@ -86,9 +86,9 @@ declare function __VLS_template(): {
             tag: string;
             sticky: boolean;
             modelValue: boolean | null;
-            scrim: string | boolean;
             tile: boolean;
             floating: boolean;
+            scrim: string | boolean;
             touchless: boolean;
             disableResizeWatcher: boolean;
             disableRouteWatcher: boolean;
@@ -148,9 +148,9 @@ declare function __VLS_template(): {
             sticky: boolean;
             modelValue: boolean | null;
             rounded: string | number | boolean;
-            scrim: string | boolean;
             tile: boolean;
             floating: boolean;
+            scrim: string | boolean;
             touchless: boolean;
             disableResizeWatcher: boolean;
             disableRouteWatcher: boolean;
@@ -184,9 +184,9 @@ declare function __VLS_template(): {
             tag: string;
             sticky: boolean;
             modelValue: boolean | null;
-            scrim: string | boolean;
             tile: boolean;
             floating: boolean;
+            scrim: string | boolean;
             touchless: boolean;
             disableResizeWatcher: boolean;
             disableRouteWatcher: boolean;
@@ -248,9 +248,9 @@ declare function __VLS_template(): {
             sticky: boolean;
             modelValue: boolean | null;
             rounded: string | number | boolean;
-            scrim: string | boolean;
             tile: boolean;
             floating: boolean;
+            scrim: string | boolean;
             touchless: boolean;
             disableResizeWatcher: boolean;
             disableRouteWatcher: boolean;
@@ -290,10 +290,11 @@ declare const __VLS_component: import('vue').DefineComponent<Props, {}, {}, {}, 
     "onHandle:touchstart"?: ((...args: any[]) => any) | undefined;
     "onUpdate:modelValue"?: ((...args: any[]) => any) | undefined;
 }>, {
+    location: "bottom" | "end" | "start" | "left" | "right" | "top";
+    absolute: VNavigationDrawer["absolute"];
     theme: string;
     tag: VNavigationDrawer["tag"];
     name: string;
-    absolute: VNavigationDrawer["absolute"];
     expandOnHover: VNavigationDrawer["expandOnHover"];
     floating: VNavigationDrawer["floating"];
     modelValue: VNavigationDrawer["modelValue"];
@@ -303,13 +304,13 @@ declare const __VLS_component: import('vue').DefineComponent<Props, {}, {}, {}, 
     temporary: VNavigationDrawer["temporary"];
     touchless: boolean;
     width: VNavigationDrawer["width"];
-    location: "bottom" | "top" | "start" | "end" | "left" | "right";
+    handlePosition: import('./types').HandlePositions;
+    handleIconSize: import('vuetify/lib/components/index.mjs').VIcon["size"];
+    handleIcon: string;
     saveWidth: boolean;
     saveHeight: boolean;
     storageName: string;
     storageType: import('./types').StorageType;
-    handlePosition: import('./types').HandlePositions;
-    handleIconSize: import('vuetify/lib/components/index.mjs').VIcon["size"];
     handleColor: string;
     height: string | number;
     maxWidth: VNavigationDrawer["width"];
@@ -318,7 +319,6 @@ declare const __VLS_component: import('vue').DefineComponent<Props, {}, {}, {}, 
     maxHeight: string | number;
     minHeight: string | number;
     handleBorderWidth: number | string;
-    handleIcon: string;
     resizable: boolean;
     widthSnapBack: boolean;
 }, {}, {}, {}, string, import('vue').ComponentProvideOptions, false, {}, any>;
