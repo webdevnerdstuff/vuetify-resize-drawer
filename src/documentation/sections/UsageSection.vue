@@ -14,7 +14,7 @@
 		</v-col>
 
 		<v-col cols="12">
-			<CodeBlock
+			<VCodeBlock
 				:code="usageGlobalPlugin"
 				:highlightjs="codeBlockSettings.plugin === 'highlightjs'"
 				lang="javascript"
@@ -26,11 +26,11 @@
 					<br>
 					<i>Global options have a higher precedence and will override local props</i>
 				</template>
-			</CodeBlock>
+			</VCodeBlock>
 		</v-col>
 
 		<v-col cols="12">
-			<CodeBlock
+			<VCodeBlock
 				:code="usageGlobalComponent"
 				:highlightjs="codeBlockSettings.plugin === 'highlightjs'"
 				label="Global Component Registration"
@@ -41,7 +41,7 @@
 		</v-col>
 
 		<v-col cols="12">
-			<CodeBlock
+			<VCodeBlock
 				:code="usageIndividual"
 				:highlightjs="codeBlockSettings.plugin === 'highlightjs'"
 				label="Local Registration"
@@ -53,23 +53,13 @@
 	</v-row>
 </template>
 
-<script setup>
-import { computed, inject } from 'vue';
-
-
-const props = defineProps({
-	codeBlockOptions: {
-		required: true,
-		type: Object,
-	},
-});
-
-const codeBlockSettings = computed(() => props.codeBlockOptions);
-const classes = inject('classes');
+<script setup lang="ts">
+const codeBlockSettings = inject<Docs.CodeBlockSettings>('codeBlockSettings')!;
+const classes = inject<Docs.GlobalClasses>('classes')!;
 
 const usageGlobalPlugin = `import { createApp } from 'vue';
 import App from './App.vue';
-import { createVResizeDrawer } from '@wdns/vuetify-resize-drawer';
+im${''}port { createVResizeDrawer } from '@wdns/vuetify-resize-drawer';
 
 const app = createApp(App);
 
@@ -81,7 +71,7 @@ app.mount('#app');`;
 
 const usageGlobalComponent = `import { createApp } from 'vue';
 import App from './App.vue';
-import { VResizeDrawer } from  '@wdns/vuetify-resize-drawer';
+im${''}port { VResizeDrawer } from  '@wdns/vuetify-resize-drawer';
 
 const app = createApp(App);
 
@@ -96,7 +86,7 @@ const usageIndividual = `<template>
 </template>
 
 \<script setup\>
-  import VResizeDrawer from  '@wdns/vuetify-resize-drawer';
+  im${''}port VResizeDrawer from  '@wdns/vuetify-resize-drawer';
 
   const open = ref(true);
 \</script\>`;

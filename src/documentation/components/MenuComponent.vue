@@ -18,15 +18,13 @@
 	</v-list>
 </template>
 
-<script setup>
-import { inject, onMounted, ref } from 'vue';
+<script setup lang="ts">
 import { useMenuStore } from '@/stores/menu';
 
-const drawerOptions = inject('drawerOptions');
+const drawerOptions = inject<Docs.DrawerOptions>('drawerOptions')!;
 const store = useMenuStore();
-
-const active = ref('');
-const menuItems = store.menuItems;
+const active = ref<string>('');
+const menuItems: Docs.MenuItem[] = store.menuItems;
 
 onMounted(() => {
 	smoothScroll();
@@ -34,25 +32,41 @@ onMounted(() => {
 	active.value = window.location.hash || '#home';
 });
 
-function smoothScroll() {
-	document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-		anchor.addEventListener('click', (e) => {
-			e.preventDefault();
+function scrollToHash(hash: string): void {
+	const id: string = hash.replace('#', '');
+	const yOffset: number = -55;
+	const element: HTMLElement | null = document.getElementById(id);
 
-			const hash = anchor.hash;
-			const id = hash.replace('#', '');
-			const yOffset = -55;
-			const element = document.getElementById(id);
-			const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+	if (element) {
+		const y: number = element.getBoundingClientRect().top + window.scrollY + yOffset;
 
-			active.value = hash;
+		active.value = hash;
 
-			window.location.hash = hash;
-			window.scrollTo({ behavior: 'smooth', top: y });
-		});
-	});
+		window.location.hash = hash;
+		window.scrollTo({ behavior: 'smooth', top: y });
+	}
 }
 
+function smoothScroll(): void {
+	document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach((anchor) => {
+		anchor.addEventListener('click', (e: MouseEvent) => {
+			e.preventDefault();
+
+			const hash: string = anchor.hash;
+
+			if (hash) {
+				scrollToHash(hash);
+			}
+		});
+	});
+
+	window.addEventListener('load', () => {
+		const hash = window.location.hash;
+		if (hash) {
+			scrollToHash(hash);
+		}
+	});
+}
 </script>
 
 <style lang="scss" scoped>

@@ -1,9 +1,9 @@
-import { componentName } from '@utils/globals';
 import {
 	UseDrawerClasses,
 	UseHandleContainerClasses,
 	UseHandleIconClasses,
 } from '@/plugin/types';
+import { componentName } from '@utils/globals';
 
 
 export const useDrawerClasses: UseDrawerClasses = (options) => {

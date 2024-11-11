@@ -59,11 +59,11 @@
 	</v-row>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { inject, ref } from 'vue';
 
-const classes = inject('classes');
-const links = inject('links');
+const classes = inject<Docs.GlobalClasses>('classes')!;
+const links = inject<Docs.Links>('links')!;
 
 const headers = [
 	{

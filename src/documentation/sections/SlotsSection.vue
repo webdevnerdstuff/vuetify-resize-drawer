@@ -47,10 +47,8 @@
 	</v-row>
 </template>
 
-<script setup>
-import { inject } from 'vue';
-
-const classes = inject('classes');
+<script setup lang="ts">
+const classes = inject<Docs.GlobalClasses>('classes')!;
 
 const headers = [
 	{
@@ -88,4 +86,3 @@ const items = [
 	},
 ];
 </script>
-

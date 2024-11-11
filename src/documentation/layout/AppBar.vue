@@ -15,7 +15,6 @@
 		</v-app-bar-nav-icon>
 
 		<v-app-bar-nav-icon
-			v-if="isPlayground"
 			class="nav-drawer-btn me-2 ms-1"
 			:height="iconSize.height"
 			:href="`/${store.packageName}/`"
@@ -24,7 +23,7 @@
 			<v-icon icon="mdi:mdi-home"></v-icon>
 		</v-app-bar-nav-icon>
 
-		<div class="site-title ms-1">Vuetify Resize Drawer</div>
+		<div class="site-title">Vuetify Resize Drawer</div>
 
 		<v-spacer></v-spacer>
 
@@ -42,7 +41,7 @@
 		>
 			<template #item="{ item }">
 				<v-list-item
-					:key="item.key"
+					:key="item.raw.key"
 					density="compact"
 					:href="item.raw.link"
 					:prepend-icon="item.raw.icon ? item.raw.icon : '$vuetify'"
@@ -106,11 +105,11 @@
 	</v-app-bar>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { onMounted, ref } from 'vue';
+import { useDisplay, useTheme } from 'vuetify';
 import { useCoreStore } from '@/stores/index';
 import { useMenuStore } from '@/stores/menu';
-import { useDisplay, useTheme } from 'vuetify';
 
 const emit = defineEmits(['changedTheme', 'updatedDrawer']);
 
@@ -135,26 +134,27 @@ const links = store.links;
 const themeName = ref('dark');
 const drawer = ref(true);
 
-const menuItems = [...menuStore.vuetifyLinks, ...menuStore.componentItems];
+const menuItems: Docs.MenuItem[] = [...menuStore.vuetifyLinks, ...menuStore.componentItems] as Docs.MenuItem[];
 
-const iconSize = ref({
+const iconSize = ref<{ height: number, width: number; }>({
 	height: 32,
 	width: 32,
 });
 
-function getTheme() {
-	themeName.value = store.getTheme();
+function getTheme(): void {
+	themeName.value = store.getTheme() as string;
+
 	if (!themeName.value) {
 		setTheme();
-		return false;
+		return;
 	}
 
 	theme.global.name.value = themeName.value;
 	emit('changedTheme', themeName.value);
 }
 
-function setTheme() {
-	themeName.value = store.setTheme(themeName.value);
+function setTheme(): void {
+	themeName.value = store.setTheme(themeName.value as string);
 	theme.global.name.value = themeName.value;
 	emit('changedTheme', themeName.value);
 }
@@ -164,5 +164,4 @@ function toggleDrawer() {
 }
 </script>
 
-<style lang="scss">
-</style>
+<style lang="scss"></style>

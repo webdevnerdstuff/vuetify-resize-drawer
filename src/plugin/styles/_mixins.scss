@@ -7,7 +7,7 @@
  * @source vuetify/packages/vuetify/src/styles/tools/_functions.sass
  */
 @function breakpoint-min($name, $breakpoints) {
-  $min: map-get($breakpoints, $name);
+  $min: map.get($breakpoints, $name);
   @return if($min !=0, $min, null);
 }
 
@@ -33,7 +33,7 @@
 }
 
 @mixin make-grid-columns($columns: settings.$grid-columns, $gutter: settings.$grid-gutter, $breakpoints: settings.$grid-breakpoints) {
-  @each $breakpoint in map-keys($breakpoints) {
+  @each $breakpoint in map.keys($breakpoints) {
     $infix: tools.breakpoint-infix($breakpoint, $breakpoints);
 
     @include media-breakpoint-up($breakpoint, $breakpoints) {

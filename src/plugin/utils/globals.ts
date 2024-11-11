@@ -4,5 +4,5 @@ const componentName = 'v-resize-drawer';
 
 export {
 	defaultWidth,
-	componentName
+	componentName,
 };
