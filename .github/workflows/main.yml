@@ -9,34 +9,56 @@ permissions:
   contents: write
   pages: write
   id-token: write
-  pull-requests: write
-  repository-projects: write
 
 jobs:
+  # Build job
   build:
     runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    strategy:
-      matrix:
-        node-version: [20]
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Install dependencies
+        run: pnpm install --g gh-pages && pnpm install
+
+      - name: Build Docs
+        run: pnpm build:docs
+
+      - name: Display structure of built files
+        run: ls -R ./docs
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          name: github-pages
+          path: ./docs
+
+  # Deploy job
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
 
     steps:
-    - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
+      - name: Download the build folder
+        uses: actions/download-artifact@v4
+        with:
+          name: github-pages
+          path: ./docs
 
-    - name: Build
-      run: |
-        git config --global user.email "webdevnerdstuff@gmail.com"
-        git config --global user.name "WebDevNerdStuff"
-        mkdir docs
-        npm install --g gh-pages
-        npm i
-        npm run build:docs
-        git remote set-url origin https://git:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
-        npm run deploy -u "github-actions-bot <support+actions@github.com>"
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Display structure of downloaded files
+        run: ls -R ./docs
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
