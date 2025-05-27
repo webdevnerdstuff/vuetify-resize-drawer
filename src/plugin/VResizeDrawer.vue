@@ -116,6 +116,19 @@ watchEffect(() => {
 	settings.value = { ...props, ...injectedOptions };
 });
 
+watch(() => props.width, (newVal) => {
+	defaultWidth.value = newVal;
+	resizedAmount.value = useConvertToUnit({ value: newVal }) || undefined;
+
+	useSetStorage({
+		rail: settings.value.rail,
+		resizedAmount: resizedAmount.value,
+		saveAmount: settings.value.saveHeight || settings.value.saveWidth,
+		storageName: storageNameInternal.value,
+		storageType: settings.value.storageType,
+	});
+});
+
 const handleIconSizeInternal = toRef(settings.value, 'handleIconSize');
 const handlePositionInternal = toRef(settings.value, 'handlePosition');
 
