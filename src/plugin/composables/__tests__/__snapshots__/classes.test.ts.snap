@@ -19,6 +19,7 @@ exports[`Classes Composable > useDrawerClasses > should return class object 1`] 
 
 exports[`Classes Composable > useHandleContainerClasses > should return class object 1`] = `
 {
+  "v-navigation-drawer__handle": true,
   "v-resize-drawer--handle-container": true,
   "v-resize-drawer--handle-container-parent-start": true,
   "v-resize-drawer--handle-container-position-center": true,
@@ -27,6 +28,7 @@ exports[`Classes Composable > useHandleContainerClasses > should return class ob
 
 exports[`Classes Composable > useHandleContainerClasses > should return class object 2`] = `
 {
+  "v-navigation-drawer__handle": true,
   "v-resize-drawer--handle-container": true,
   "v-resize-drawer--handle-container-parent-left": true,
   "v-resize-drawer--handle-container-position-top": true,

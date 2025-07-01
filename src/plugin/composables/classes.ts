@@ -36,6 +36,7 @@ export const useHandleContainerClasses: UseHandleContainerClasses = (options) =>
 	const { drawerLocation, handlePosition } = options;
 
 	const classes = {
+		'v-navigation-drawer__handle': true,
 		[`${componentName}--handle-container`]: true,
 		[`${componentName}--handle-container-position-${handlePosition}`]: true,
 		[`${componentName}--handle-container-parent-${drawerLocation}`]: true,
