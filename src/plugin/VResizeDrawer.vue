@@ -2,9 +2,9 @@
 	<v-navigation-drawer
 		v-bind="bindingSettings"
 		ref="resizeDrawer"
+		v-model="internalModelValue"
 		:class="drawerClasses"
 		:location="settings.location"
-		:model-value="modelValue"
 		:name="settings.name"
 		:style="drawerStyles"
 		:tag="settings.tag"
@@ -106,6 +106,8 @@ const emit = defineEmits([
 ]);
 
 
+const internalModelValue = defineModel<boolean>('modelValue', { default: false });
+
 // -------------------------------------------------- Props //
 const props = withDefaults(defineProps<Props>(), { ...AllProps });
 
@@ -204,7 +206,7 @@ function init(): void {
 
 
 // -------------------------------------------------- Model Watcher //
-watch(() => props.modelValue, (val) => {
+watch(() => internalModelValue, (val) => {
 	emit('update:modelValue', val);
 
 	if (!val) {

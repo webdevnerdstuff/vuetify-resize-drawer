@@ -46,7 +46,6 @@ export interface Props {
 	maxWidth?: VNavigationDrawer['width'];
 	minHeight?: Height;
 	minWidth?: VNavigationDrawer['width'];
-	modelValue?: VNavigationDrawer['modelValue'];
 	name?: VNavigationDrawer['name'];
 	rail?: VNavigationDrawer['rail'];
 	railWidth?: VNavigationDrawer['railWidth'];
