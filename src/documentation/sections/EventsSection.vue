@@ -144,7 +144,6 @@ const items = [
 		name: 'update:modelValue',
 	},
 ];
-const search = ref('');
 
 const responseCode = `{
   e: MouseEvent | TouchEvent,
