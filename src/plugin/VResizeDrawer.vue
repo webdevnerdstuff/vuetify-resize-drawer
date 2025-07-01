@@ -44,15 +44,21 @@
 		<!-- ============================== Slots  -->
 		<!-- Prepend Slot -->
 		<template v-if="slots.prepend">
-			<slot name="prepend"></slot>
+			<div class="v-navigation-drawer__prepend">
+				<slot name="prepend"></slot>
+			</div>
 		</template>
 
 		<!-- Default Slot -->
-		<slot name="default"></slot>
+		<div class="v-navigation-drawer__content">
+			<slot></slot>
+		</div>
 
 		<!-- Append Slot -->
 		<template v-if="slots.append">
-			<slot name="append"></slot>
+			<div class="v-navigation-drawer__append">
+				<slot name="append"></slot>
+			</div>
 		</template>
 	</v-navigation-drawer>
 </template>
