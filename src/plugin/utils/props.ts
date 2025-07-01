@@ -14,7 +14,6 @@ export const AllProps: Props = {
 	maxWidth: window.innerWidth,
 	minHeight: 56,
 	minWidth: 56,
-	modelValue: true,
 	name: undefined,
 	rail: false,
 	railWidth: 8,
