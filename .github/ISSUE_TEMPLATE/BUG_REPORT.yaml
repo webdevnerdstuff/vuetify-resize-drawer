@@ -30,6 +30,13 @@ body:
       label: Relevant log output
       description: If applicable, please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
       render: shell
+  - type: input
+    id: reproduction
+    attributes:
+      label: Reproduction link
+      description: Please only use [StackBlitz](https://stackblitz.com/), [CodeSandbox](https://codesandbox.io/s/vue) or a github repo. Issues submitted without a reproduction link will be closed.
+    validations:
+      required: true
   - type: textarea
     id: additional-context
     attributes:
@@ -39,7 +46,7 @@ body:
     id: terms
     attributes:
       label: Code of Conduct
-      description: By submitting this issue, you agree to follow our [Code of Conduct](https://github.com/webdevnerdstuff/vuetify3-resize-drawer/blob/main/CODE_OF_CONDUCT.md)
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://github.com/webdevnerdstuff/vuetify-resize-drawer/blob/main/CODE_OF_CONDUCT.md)
       options:
         - label: I agree to follow this project's Code of Conduct
           required: true
