@@ -64,7 +64,7 @@
 </template>
 
 <script setup lang="ts">
-import { IconOptions, useDisplay } from 'vuetify';
+import { IconOptions, useDisplay, useTheme } from 'vuetify';
 import { VNavigationDrawer } from 'vuetify/components';
 import {
 	EmitEventNames,
