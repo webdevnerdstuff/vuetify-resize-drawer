@@ -8,7 +8,7 @@
 		:name="settings.name"
 		:style="drawerStyles"
 		:tag="settings.tag"
-		:theme="theTheme"
+
 		:width="drawerWidth"
 		@mouseenter="drawerMouseenter"
 		@mouseleave="drawerMouseleave"
@@ -64,7 +64,7 @@
 </template>
 
 <script setup lang="ts">
-import { IconOptions, useDisplay, useTheme } from 'vuetify';
+import { IconOptions, useDisplay } from 'vuetify';
 import { VNavigationDrawer } from 'vuetify/components';
 import {
 	EmitEventNames,
@@ -607,16 +607,6 @@ function handleMouseUp(e: MouseEvent): void {
 function handleTouchend(e: TouchEvent): void {
 	handleEnd(e);
 }
-
-
-// -------------------------------------------------- Theme //
-const theTheme = computed(() => {
-	if (settings.value.theme) {
-		return settings.value.theme;
-	}
-
-	return themeInternal.global.current.value?.dark === true ? 'dark' : 'light';
-});
 
 
 // -------------------------------------------------- Misc Events //
