@@ -2,13 +2,11 @@
 
 exports[`Classes Composable > useDrawerClasses > should return class object 1`] = `
 {
-  "v-navigation-drawer--absolute": false,
   "v-navigation-drawer--custom-rail": true,
-  "v-navigation-drawer--fixed": true,
+  "v-navigation-drawer--expand-on-hover": false,
   "v-navigation-drawer--floating": null,
-  "v-navigation-drawer--is-mouseover": false,
+  "v-navigation-drawer--is-hovering": false,
   "v-navigation-drawer--left": true,
-  "v-navigation-drawer--open-on-hover": false,
   "v-navigation-drawer--rail": false,
   "v-navigation-drawer--right": false,
   "v-navigation-drawer--temporary": false,

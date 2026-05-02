@@ -44,7 +44,7 @@ const codeTemplate = `<template>
       @handle:drag="handleDrag"
       @handle:mousedown="handleMousedown"
       @handle:mouseup="handleMouseup"
-      @input="drawerInput"
+      @update:modelValue="drawerInput"
       @transitionend="drawerTransitionend"
     >
     <\/VResizeDrawer>

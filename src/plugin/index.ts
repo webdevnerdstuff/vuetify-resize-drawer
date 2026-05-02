@@ -20,6 +20,4 @@ export function createVResizeDrawer(options: GlobalOptions = {}) {
 
 export default VResizeDrawer;
 
-export {
-	VResizeDrawer,
-};
+export {VResizeDrawer};

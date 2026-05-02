@@ -41,12 +41,12 @@
 		>
 			<template #item="{ item }">
 				<v-list-item
-					:key="item.raw.key"
+					:key="item.key"
 					density="compact"
-					:href="item.raw.link"
-					:prepend-icon="item.raw.icon ? item.raw.icon : '$vuetify'"
+					:href="item.link"
+					:prepend-icon="item.icon ? item.icon : '$vuetify'"
 					target="_blank"
-					:title="item.raw?.topTitle || item.title"
+					:title="item?.topTitle || item.title"
 				>
 				</v-list-item>
 			</template>
@@ -149,13 +149,13 @@ function getTheme(): void {
 		return;
 	}
 
-	theme.global.name.value = themeName.value;
+	theme.change(themeName.value);
 	emit('changedTheme', themeName.value);
 }
 
 function setTheme(): void {
 	themeName.value = store.setTheme(themeName.value as string);
-	theme.global.name.value = themeName.value;
+	theme.change(themeName.value);
 	emit('changedTheme', themeName.value);
 }
 

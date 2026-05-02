@@ -224,7 +224,6 @@ watch(() => internalModelValue, (val) => {
 
 // -------------------------------------------------- Drawer Classes & Styles //
 const drawerClasses = computed(() => useDrawerClasses({
-	absolute: settings.value.absolute,
 	expandOnHover: settings.value.expandOnHover,
 	floating: settings.value.floating,
 	isMouseover,

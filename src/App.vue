@@ -81,7 +81,7 @@
 			@handle:drag="handleDrag"
 			@handle:mousedown="handleMousedown"
 			@handle:mouseup="handleMouseup"
-			@input="drawerInput"
+			@update:modelValue="drawerInput"
 		>
 			<!-- <template #handle>
 				<v-icon>mdi mdi-cog</v-icon>
@@ -163,11 +163,10 @@ const { smAndUp } = useDisplay();
 const isSmAndUp = computed<boolean>(() => smAndUp.value);
 const store = useCoreStore();
 const drawer = ref<boolean>(isSmAndUp.value);
-const drawerOffset = ref('256px');
+const drawerOffset = ref<string|number>('256px');
 const drawerOptions: Ref<Docs.DrawerOptions> = ref<Docs.DrawerOptions>({
 	absolute: false,
 	color: '',
-	dark: true,
 	elevation: 10,
 	expandOnHover: true,
 	floating: true,
@@ -197,12 +196,12 @@ const gridDrawerOptions = ref({
 	absolute: false,
 	color: '',
 	elevation: 0,
-	location: 'right',
+	location: 'right' as const,
 	maxWidth: '100%',
 	minWidth: '256px',
 	saveWidth: false,
-	snapBack: true,
 	temporary: true,
+	widthSnapBack: true,
 });
 const gridDrawerWidth = ref('256px');
 const computedWidth = ref(gridDrawerWidth.value);
@@ -224,7 +223,6 @@ function updateCodeBlockTheme(val) {
 	}
 
 	drawerOptions.value.theme = val;
-	drawerOptions.value.dark = val === 'dark';
 }
 
 provide<Docs.CodeBlockSettings>('codeBlockSettings', codeBlockSettings.value);
@@ -254,7 +252,7 @@ function eventTriggered(eventName, eventValue = null) {
 }
 
 function getLocalStorage() {
-	updateDrawerOffset(localStorage.getItem(drawerOptions.value.storageName) || drawerOffset.value);
+	updateDrawerOffset(localStorage.getItem(String(drawerOptions.value.storageName)) || drawerOffset.value);
 }
 
 function handleClick(evt) {

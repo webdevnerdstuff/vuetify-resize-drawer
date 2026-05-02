@@ -97,7 +97,6 @@ export interface UseSetStorage {
 export interface UseDrawerClasses {
 	(
 		options: {
-			absolute?: Props['absolute'],
 			expandOnHover?: Props['expandOnHover'],
 			floating?: Props['floating'],
 			isMouseover?: MaybeRef<boolean>,
