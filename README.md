@@ -26,12 +26,12 @@ The `vuetify-resize-drawer` component extends the functionality of the [v-naviga
  
 Using [pnpm](https://pnpm.io/):
 ```
-pnpm add @wdns/vuetify-resize-drawer
+pnpm add @wdns/vuetify-resize-drawer@^3
 ```
  
 Using npm:
 ```
-npm i @wdns/vuetify-resize-drawer
+npm i @wdns/vuetify-resize-drawer@^3
 ```
 
 ## Documentation
