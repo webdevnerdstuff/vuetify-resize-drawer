@@ -1,6 +1,21 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Classes Composable > useDrawerClasses > should return class object 1`] = `
+exports[`Classes Composable > useDrawerClasses > should mark bottom classes for location bottom 1`] = `
+{
+  "v-navigation-drawer--custom-rail": false,
+  "v-navigation-drawer--expand-on-hover": false,
+  "v-navigation-drawer--floating": null,
+  "v-navigation-drawer--is-hovering": false,
+  "v-navigation-drawer--left": false,
+  "v-navigation-drawer--rail": false,
+  "v-navigation-drawer--right": false,
+  "v-navigation-drawer--temporary": false,
+  "v-resize-drawer": true,
+  "v-resize-drawer--bottom": true,
+}
+`;
+
+exports[`Classes Composable > useDrawerClasses > should mark custom-rail class when railWidth differs from 56 1`] = `
 {
   "v-navigation-drawer--custom-rail": true,
   "v-navigation-drawer--expand-on-hover": false,
@@ -15,16 +30,151 @@ exports[`Classes Composable > useDrawerClasses > should return class object 1`] 
 }
 `;
 
-exports[`Classes Composable > useHandleContainerClasses > should return class object 1`] = `
+exports[`Classes Composable > useDrawerClasses > should mark expand-on-hover class when expandOnHover is true 1`] = `
 {
-  "v-navigation-drawer__handle": true,
-  "v-resize-drawer--handle-container": true,
-  "v-resize-drawer--handle-container-parent-start": true,
-  "v-resize-drawer--handle-container-position-center": true,
+  "v-navigation-drawer--custom-rail": false,
+  "v-navigation-drawer--expand-on-hover": true,
+  "v-navigation-drawer--floating": null,
+  "v-navigation-drawer--is-hovering": false,
+  "v-navigation-drawer--left": true,
+  "v-navigation-drawer--rail": false,
+  "v-navigation-drawer--right": false,
+  "v-navigation-drawer--temporary": false,
+  "v-resize-drawer": true,
+  "v-resize-drawer--start": false,
 }
 `;
 
-exports[`Classes Composable > useHandleContainerClasses > should return class object 2`] = `
+exports[`Classes Composable > useDrawerClasses > should mark is-hovering class when isMouseover is true 1`] = `
+{
+  "v-navigation-drawer--custom-rail": false,
+  "v-navigation-drawer--expand-on-hover": false,
+  "v-navigation-drawer--floating": null,
+  "v-navigation-drawer--is-hovering": true,
+  "v-navigation-drawer--left": true,
+  "v-navigation-drawer--rail": false,
+  "v-navigation-drawer--right": false,
+  "v-navigation-drawer--temporary": false,
+  "v-resize-drawer": true,
+  "v-resize-drawer--start": false,
+}
+`;
+
+exports[`Classes Composable > useDrawerClasses > should mark left classes for location left 1`] = `
+{
+  "v-navigation-drawer--custom-rail": false,
+  "v-navigation-drawer--expand-on-hover": false,
+  "v-navigation-drawer--floating": null,
+  "v-navigation-drawer--is-hovering": false,
+  "v-navigation-drawer--left": true,
+  "v-navigation-drawer--rail": false,
+  "v-navigation-drawer--right": false,
+  "v-navigation-drawer--temporary": false,
+  "v-resize-drawer": true,
+  "v-resize-drawer--left": false,
+}
+`;
+
+exports[`Classes Composable > useDrawerClasses > should mark left classes for location start 1`] = `
+{
+  "v-navigation-drawer--custom-rail": true,
+  "v-navigation-drawer--expand-on-hover": false,
+  "v-navigation-drawer--floating": null,
+  "v-navigation-drawer--is-hovering": false,
+  "v-navigation-drawer--left": true,
+  "v-navigation-drawer--rail": false,
+  "v-navigation-drawer--right": false,
+  "v-navigation-drawer--temporary": false,
+  "v-resize-drawer": true,
+  "v-resize-drawer--start": false,
+}
+`;
+
+exports[`Classes Composable > useDrawerClasses > should mark rail class when rail is true 1`] = `
+{
+  "v-navigation-drawer--custom-rail": false,
+  "v-navigation-drawer--expand-on-hover": false,
+  "v-navigation-drawer--floating": null,
+  "v-navigation-drawer--is-hovering": false,
+  "v-navigation-drawer--left": true,
+  "v-navigation-drawer--rail": true,
+  "v-navigation-drawer--right": false,
+  "v-navigation-drawer--temporary": false,
+  "v-resize-drawer": true,
+  "v-resize-drawer--start": false,
+}
+`;
+
+exports[`Classes Composable > useDrawerClasses > should mark right classes for location end 1`] = `
+{
+  "v-navigation-drawer--custom-rail": false,
+  "v-navigation-drawer--expand-on-hover": false,
+  "v-navigation-drawer--floating": null,
+  "v-navigation-drawer--is-hovering": false,
+  "v-navigation-drawer--left": false,
+  "v-navigation-drawer--rail": false,
+  "v-navigation-drawer--right": true,
+  "v-navigation-drawer--temporary": false,
+  "v-resize-drawer": true,
+  "v-resize-drawer--end": false,
+}
+`;
+
+exports[`Classes Composable > useDrawerClasses > should mark right classes for location right 1`] = `
+{
+  "v-navigation-drawer--custom-rail": false,
+  "v-navigation-drawer--expand-on-hover": false,
+  "v-navigation-drawer--floating": null,
+  "v-navigation-drawer--is-hovering": false,
+  "v-navigation-drawer--left": false,
+  "v-navigation-drawer--rail": false,
+  "v-navigation-drawer--right": true,
+  "v-navigation-drawer--temporary": false,
+  "v-resize-drawer": true,
+  "v-resize-drawer--right": false,
+}
+`;
+
+exports[`Classes Composable > useDrawerClasses > should mark temporary class when temporary is true 1`] = `
+{
+  "v-navigation-drawer--custom-rail": false,
+  "v-navigation-drawer--expand-on-hover": false,
+  "v-navigation-drawer--floating": null,
+  "v-navigation-drawer--is-hovering": false,
+  "v-navigation-drawer--left": true,
+  "v-navigation-drawer--rail": false,
+  "v-navigation-drawer--right": false,
+  "v-navigation-drawer--temporary": true,
+  "v-resize-drawer": true,
+  "v-resize-drawer--start": false,
+}
+`;
+
+exports[`Classes Composable > useDrawerClasses > should mark top classes for location top 1`] = `
+{
+  "v-navigation-drawer--custom-rail": false,
+  "v-navigation-drawer--expand-on-hover": false,
+  "v-navigation-drawer--floating": null,
+  "v-navigation-drawer--is-hovering": false,
+  "v-navigation-drawer--left": false,
+  "v-navigation-drawer--rail": false,
+  "v-navigation-drawer--right": false,
+  "v-navigation-drawer--temporary": false,
+  "v-resize-drawer": true,
+  "v-resize-drawer--top": true,
+}
+`;
+
+exports[`Classes Composable > useHandleContainerClasses > should return class object for bottom location with bottom position 1`] = `
+{
+  "v-navigation-drawer__handle": true,
+  "v-resize-drawer--handle-container": true,
+  "v-resize-drawer--handle-container-parent-bottom": true,
+  "v-resize-drawer--handle-container-position-bottom": true,
+}
+`;
+
+exports[`Classes Composable > useHandleContainerClasses > should return class object for left location with top position 1`] = `
 {
   "v-navigation-drawer__handle": true,
   "v-resize-drawer--handle-container": true,
@@ -33,7 +183,54 @@ exports[`Classes Composable > useHandleContainerClasses > should return class ob
 }
 `;
 
-exports[`Classes Composable > useHandleIconClasses > should return class object with fa classes as false 1`] = `
+exports[`Classes Composable > useHandleContainerClasses > should return class object for right location with center position 1`] = `
+{
+  "v-navigation-drawer__handle": true,
+  "v-resize-drawer--handle-container": true,
+  "v-resize-drawer--handle-container-parent-right": true,
+  "v-resize-drawer--handle-container-position-center": true,
+}
+`;
+
+exports[`Classes Composable > useHandleContainerClasses > should return class object for start location with center position 1`] = `
+{
+  "v-navigation-drawer__handle": true,
+  "v-resize-drawer--handle-container": true,
+  "v-resize-drawer--handle-container-parent-start": true,
+  "v-resize-drawer--handle-container-position-center": true,
+}
+`;
+
+exports[`Classes Composable > useHandleContainerClasses > should return class object for top location with border position 1`] = `
+{
+  "v-navigation-drawer__handle": true,
+  "v-resize-drawer--handle-container": true,
+  "v-resize-drawer--handle-container-parent-top": true,
+  "v-resize-drawer--handle-container-position-border": true,
+}
+`;
+
+exports[`Classes Composable > useHandleIconClasses > should mark user-icon class when isUserIcon is true 1`] = `
+{
+  "v-resize-drawer--handle-container-icon": true,
+  "v-resize-drawer--handle-container-icon-center-start": true,
+  "v-resize-drawer--handle-container-icon-fa": false,
+  "v-resize-drawer--handle-container-icon-fa-center": false,
+  "v-resize-drawer--handle-container-icon-user-icon": true,
+}
+`;
+
+exports[`Classes Composable > useHandleIconClasses > should return class object for right location 1`] = `
+{
+  "v-resize-drawer--handle-container-icon": true,
+  "v-resize-drawer--handle-container-icon-center-right": true,
+  "v-resize-drawer--handle-container-icon-fa": false,
+  "v-resize-drawer--handle-container-icon-fa-center": false,
+  "v-resize-drawer--handle-container-icon-user-icon": false,
+}
+`;
+
+exports[`Classes Composable > useHandleIconClasses > should return class object with fa classes as false when defaultSet is mdi 1`] = `
 {
   "v-resize-drawer--handle-container-icon": true,
   "v-resize-drawer--handle-container-icon-fa": false,
@@ -43,7 +240,7 @@ exports[`Classes Composable > useHandleIconClasses > should return class object 
 }
 `;
 
-exports[`Classes Composable > useHandleIconClasses > should return class object with fa classes as true 1`] = `
+exports[`Classes Composable > useHandleIconClasses > should return class object with fa classes as true when defaultSet is fa 1`] = `
 {
   "v-resize-drawer--handle-container-icon": true,
   "v-resize-drawer--handle-container-icon-center-left": true,

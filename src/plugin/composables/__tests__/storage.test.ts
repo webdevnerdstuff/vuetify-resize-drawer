@@ -24,13 +24,30 @@ beforeEach(() => {
 });
 
 describe('Storage Composable', () => {
+	describe('useGetStorage', () => {
+		test('returns null from localStorage when nothing set', () => {
+			const result = useGetStorage('local', storageName);
+			expect(result).toBeNull();
+		});
+
+		test('returns null from sessionStorage when nothing set', () => {
+			const result = useGetStorage('session', storageName);
+			expect(result).toBeNull();
+		});
+
+		test('returns empty string for unknown storageType', () => {
+			const result = useGetStorage('unknown', storageName);
+			expect(result).toBe('');
+		});
+	});
+
 	describe('localStorage', () => {
-		test('useSetStorage - action update', () => {
+		test('useSetStorage - action update calls setItem', () => {
 			useSetStorage({
 				action: 'update',
 				rail: false,
-				resizedWidth: '100px',
-				saveWidth: true,
+				resizedAmount: '100px',
+				saveAmount: true,
 				storageName,
 				storageType: 'local',
 			});
@@ -38,12 +55,12 @@ describe('Storage Composable', () => {
 			expect(window.localStorage.setItem).toHaveBeenCalled();
 		});
 
-		test('useSetStorage - action set', () => {
+		test('useSetStorage - action set calls setItem', () => {
 			useSetStorage({
 				action: 'set',
 				rail: false,
-				resizedWidth: '100px',
-				saveWidth: true,
+				resizedAmount: '100px',
+				saveAmount: true,
 				storageName,
 				storageType: 'local',
 			});
@@ -51,12 +68,12 @@ describe('Storage Composable', () => {
 			expect(window.localStorage.setItem).toHaveBeenCalled();
 		});
 
-		test('useSetStorage & useGetStorage - action update', () => {
+		test('useSetStorage action update stores and useGetStorage retrieves the value', () => {
 			useSetStorage({
 				action: 'update',
 				rail: false,
-				resizedWidth: '100px',
-				saveWidth: true,
+				resizedAmount: '100px',
+				saveAmount: true,
 				storageName,
 				storageType: 'local',
 			});
@@ -66,15 +83,15 @@ describe('Storage Composable', () => {
 			useGetStorage('local', storageName);
 
 			expect(window.localStorage.getItem).toHaveBeenCalled();
-			expect(window.localStorage.getItem(storageName)).toMatchInlineSnapshot(`"undefined"`);
+			expect(window.localStorage.getItem(storageName)).toMatchInlineSnapshot(`"100px"`);
 		});
 
-		test('useSetStorage & useGetStorage - action set', () => {
+		test('useSetStorage action set stores and useGetStorage retrieves the value', () => {
 			useSetStorage({
 				action: 'set',
 				rail: false,
-				resizedWidth: '100px',
-				saveWidth: true,
+				resizedAmount: '100px',
+				saveAmount: true,
 				storageName,
 				storageType: 'local',
 			});
@@ -84,24 +101,40 @@ describe('Storage Composable', () => {
 			useGetStorage('local', storageName);
 
 			expect(window.localStorage.getItem).toHaveBeenCalled();
-			expect(window.localStorage.getItem(storageName)).toMatchInlineSnapshot(`"undefined"`);
+			expect(window.localStorage.getItem(storageName)).toMatchInlineSnapshot(`"100px"`);
 		});
 
-		test('useGetStorage that has not been set, and return null value', () => {
+		test('useGetStorage returns null when nothing has been set', () => {
 			useGetStorage('local', storageName);
 
 			expect(window.localStorage.getItem).toHaveBeenCalled();
 			expect(window.localStorage.getItem(storageName)).toMatchInlineSnapshot(`null`);
 		});
+
+		test('useSetStorage does not call setItem when rail is true and saveAmount is false', () => {
+			const setItemSpy = vi.spyOn(window.localStorage, 'setItem');
+			setItemSpy.mockClear();
+
+			useSetStorage({
+				action: 'update',
+				rail: true,
+				resizedAmount: '100px',
+				saveAmount: false,
+				storageName,
+				storageType: 'local',
+			});
+
+			expect(setItemSpy).not.toHaveBeenCalled();
+		});
 	});
 
 	describe('sessionStorage', () => {
-		test('useSetStorage - action update', () => {
+		test('useSetStorage - action update calls setItem', () => {
 			useSetStorage({
 				action: 'update',
 				rail: false,
-				resizedWidth: '100px',
-				saveWidth: true,
+				resizedAmount: '100px',
+				saveAmount: true,
 				storageName,
 				storageType: 'session',
 			});
@@ -109,12 +142,12 @@ describe('Storage Composable', () => {
 			expect(window.sessionStorage.setItem).toHaveBeenCalled();
 		});
 
-		test('useSetStorage - action set', () => {
+		test('useSetStorage - action set calls setItem', () => {
 			useSetStorage({
 				action: 'set',
 				rail: false,
-				resizedWidth: '100px',
-				saveWidth: true,
+				resizedAmount: '100px',
+				saveAmount: true,
 				storageName,
 				storageType: 'session',
 			});
@@ -122,12 +155,12 @@ describe('Storage Composable', () => {
 			expect(window.sessionStorage.setItem).toHaveBeenCalled();
 		});
 
-		test('useSetStorage & useGetStorage - action update', () => {
+		test('useSetStorage action update stores and useGetStorage retrieves the value', () => {
 			useSetStorage({
 				action: 'update',
 				rail: false,
-				resizedWidth: '100px',
-				saveWidth: true,
+				resizedAmount: '100px',
+				saveAmount: true,
 				storageName,
 				storageType: 'session',
 			});
@@ -137,15 +170,15 @@ describe('Storage Composable', () => {
 			useGetStorage('session', storageName);
 
 			expect(window.sessionStorage.getItem).toHaveBeenCalled();
-			expect(window.sessionStorage.getItem(storageName)).toMatchInlineSnapshot(`"undefined"`);
+			expect(window.sessionStorage.getItem(storageName)).toMatchInlineSnapshot(`"100px"`);
 		});
 
-		test('useSetStorage & useGetStorage - action set', () => {
+		test('useSetStorage action set stores and useGetStorage retrieves the value', () => {
 			useSetStorage({
 				action: 'set',
 				rail: false,
-				resizedWidth: '100px',
-				saveWidth: true,
+				resizedAmount: '100px',
+				saveAmount: true,
 				storageName,
 				storageType: 'session',
 			});
@@ -155,30 +188,30 @@ describe('Storage Composable', () => {
 			useGetStorage('session', storageName);
 
 			expect(window.sessionStorage.getItem).toHaveBeenCalled();
-			expect(window.sessionStorage.getItem(storageName)).toMatchInlineSnapshot(`"undefined"`);
+			expect(window.sessionStorage.getItem(storageName)).toMatchInlineSnapshot(`"100px"`);
 		});
 
-		test('useGetStorage that has not been set, and return null value', () => {
+		test('useGetStorage returns null when nothing has been set', () => {
 			useGetStorage('session', storageName);
 
 			expect(window.sessionStorage.getItem).toHaveBeenCalled();
 			expect(window.sessionStorage.getItem(storageName)).toMatchInlineSnapshot(`null`);
 		});
 
-		test('useSetStorage to set supplied value, and return supplied value', () => {
+		test('useSetStorage does not call setItem when rail is true and saveAmount is false', () => {
+			const setItemSpy = vi.spyOn(window.sessionStorage, 'setItem');
+			setItemSpy.mockClear();
+
 			useSetStorage({
-				action: 'set',
-				rail: false,
-				resizedWidth: '100px',
-				saveWidth: true,
+				action: 'update',
+				rail: true,
+				resizedAmount: '100px',
+				saveAmount: false,
 				storageName,
 				storageType: 'session',
 			});
 
-			useGetStorage('session', storageName);
-
-			expect(window.sessionStorage.getItem).toHaveBeenCalled();
-			expect(window.sessionStorage.getItem(storageName)).toMatchInlineSnapshot(`"undefined"`);
+			expect(setItemSpy).not.toHaveBeenCalled();
 		});
 	});
 });
