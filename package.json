@@ -76,7 +76,7 @@
 		"wdns"
 	],
 	"dependencies": {
-		"vue": "^3.5.17",
+		"vue": "^3.5.33",
 		"vuetify": "^3.8.11"
 	},
 	"devDependencies": {
