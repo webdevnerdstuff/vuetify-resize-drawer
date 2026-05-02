@@ -67,7 +67,7 @@
 import { IconOptions, useDisplay, useTheme } from 'vuetify';
 import { VNavigationDrawer } from 'vuetify/components';
 import {
-	EmitEventNames,
+	HandleEmitEventNames,
 	Props,
 } from '@/plugin/types';
 import {
@@ -609,7 +609,7 @@ function handleTouchend(e: TouchEvent): void {
 
 
 // -------------------------------------------------- Misc Events //
-function emitEvent(name: EmitEventNames, e: Event | MouseEvent): void {
+function emitEvent(name: HandleEmitEventNames, e: Event | MouseEvent): void {
 	const widthInt = parseInt(checkMaxMinAmount(resizedAmount.value as string)) ?? 0 as number;
 
 	const drawerData = {

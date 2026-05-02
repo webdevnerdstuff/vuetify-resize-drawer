@@ -9,7 +9,7 @@
 @function breakpoint-min ($name, $breakpoints) {
 	$min: map.get($breakpoints, $name);
 
-	@return if($min !=0, $min, null);
+	@return if(sass($min != 0): $min);
 }
 
 /*
