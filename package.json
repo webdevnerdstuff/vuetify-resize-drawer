@@ -22,10 +22,7 @@
 		"prepare": "husky install",
 		"test:dev": "NODE_OPTIONS='--no-warnings' vitest",
 		"test:all": "vitest --run",
-		"test:build": "vitest --run --bail 1",
-		"cy:run": "npx cypress run --headless --browser electron",
-		"cy:run:dev": "cypress run --browser chrome",
-		"cy:open": "cypress open --browser chrome"
+		"test:build": "vitest --run --bail 1"
 	},
 	"lint-staged": {
 		"src/**/*.{js,ts,vue}": [
@@ -103,7 +100,6 @@
 		"@wdns/stylelint-config-wdns": "^2.0.1",
 		"@wdns/vue-code-block": "^2.3.5",
 		"autoprefixer": "^10.5.0",
-		"cypress": "^14.5.4",
 		"eslint": "^9.39.4",
 		"eslint-config-prettier": "^10.1.8",
 		"eslint-import-resolver-typescript": "^4.4.4",
