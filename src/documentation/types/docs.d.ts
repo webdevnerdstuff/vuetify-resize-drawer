@@ -17,6 +17,8 @@ declare global {
 
 		export interface Links {
 			changeLog: string;
+			demo: string;
+			demoGrid: string;
 			github: string;
 			githubProfile: string;
 			license: string;

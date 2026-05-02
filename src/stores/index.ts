@@ -10,8 +10,8 @@ export const useCoreStore = defineStore('core', () => {
 	const repoBaseUrl = `https://github.com/webdevnerdstuff/${packageName}`;
 	const links = {
 		changeLog: `${repoBaseUrl}/blob/main/CHANGELOG.md`,
-		demo: 'https://stackblitz.com/edit/vuetify-resize-drawer?file=src%2Fcomponents%2FResizeDrawerExample.vue',
-		demoGrid: 'https://stackblitz.com/edit/vuetify-resize-drawer?file=src%2Fcomponents%2FGridDrawerExample.vue',
+		demo: 'https://stackblitz.com/edit/vuetify-resize-drawer-v4?file=src%2Fcomponents%2FResizeDrawerExample.vue',
+		demoGrid: 'https://stackblitz.com/edit/vuetify-resize-drawer-v4?file=src%2Fcomponents%2FGridDrawerExample.vue',
 		discord: 'https://discord.com/users/979453275369783346',
 		github: repoBaseUrl,
 		githubProfile: 'https://github.com/webdevnerdstuff',
