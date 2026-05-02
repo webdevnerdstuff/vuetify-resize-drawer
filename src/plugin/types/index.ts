@@ -9,19 +9,18 @@ import type {
 } from 'vuetify/components';
 import VResizeDrawer from '../VResizeDrawer.vue';
 
-export * from '../index';
-
-
 export type Classes = {
 	[key: string]: boolean | undefined;
 };
 
-export type EmitEventNames = 'handle:click' | 'handle:dblclick' | 'handle:drag' | 'handle:mousedown' | 'handle:mouseup' | 'handle:touchend' | 'handle:touchmove' | 'handle:touchstart';
+export type HandleEmitEventNames = 'handle:click' | 'handle:dblclick' | 'handle:drag' | 'handle:mousedown' | 'handle:mouseup' | 'handle:touchend' | 'handle:touchmove' | 'handle:touchstart';
+export type DrawerEmitEventNames = 'close' | 'drawer:mouseenter' | 'drawer:mouseleave' | 'update:modelValue';
+export type EmitEventNames = HandleEmitEventNames | DrawerEmitEventNames;
 export type StorageType = 'local' | 'session';
 export type HandlePositions = 'bottom' | 'border' | 'center' | 'top';
 export type DrawerLocations = 'bottom' | 'end' | 'start' | 'left' | 'right' | 'top' | undefined;
 
-type Height = number | string | undefined;
+export type Height = number | string | undefined;
 
 // -------------------------------------------------- Colors //
 export type HEXColor = string;
@@ -97,7 +96,6 @@ export interface UseSetStorage {
 export interface UseDrawerClasses {
 	(
 		options: {
-			absolute?: Props['absolute'],
 			expandOnHover?: Props['expandOnHover'],
 			floating?: Props['floating'],
 			isMouseover?: MaybeRef<boolean>,

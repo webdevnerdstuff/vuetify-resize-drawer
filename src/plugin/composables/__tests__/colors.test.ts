@@ -55,7 +55,7 @@ describe('Colors Composable', () => {
 		const logSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
 
 		it('should console warn when color prop "foobar" doesn\'t exist in colors', () => {
-			logSpy.mockReset();
+			logSpy.mockClear();
 
 			useGetColor('foobar', theme);
 
@@ -64,7 +64,7 @@ describe('Colors Composable', () => {
 		});
 
 		it('should console warn when color prop "--v-foobar" doesn\'t exist in colors', () => {
-			logSpy.mockReset();
+			logSpy.mockClear();
 
 			useGetColor('--v-foobar', theme);
 

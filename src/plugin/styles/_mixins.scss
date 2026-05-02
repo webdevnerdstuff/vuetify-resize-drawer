@@ -9,7 +9,7 @@
 @function breakpoint-min ($name, $breakpoints) {
 	$min: map.get($breakpoints, $name);
 
-	@return if($min !=0, $min, null);
+	@return if(sass($min != 0): $min);
 }
 
 /*
@@ -55,12 +55,15 @@
 
 	@each $size,
 		$media_query in settings.$display-breakpoints {
+
+		/* stylelint-disable-next-line container-name-pattern */
 		@container v-resize-drawer #{$media_query} {
 			.hidden-#{$size} {
 				display: none !important;
 			}
 		}
 
+		/* stylelint-disable-next-line container-name-pattern */
 		@container v-resize-drawer #{$media_query} {
 			@each $val in map.get($display, 'values') {
 				.#{map.get($display, 'class')}-#{$size}-#{$val} {

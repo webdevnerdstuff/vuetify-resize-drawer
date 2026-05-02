@@ -1,5 +1,5 @@
+import { type App, defineAsyncComponent } from 'vue';
 import type { GlobalOptions } from './types';
-import type { App } from 'vue';
 import './styles/main.scss';
 import VResizeDrawer from './VResizeDrawer.vue';
 
@@ -20,6 +20,6 @@ export function createVResizeDrawer(options: GlobalOptions = {}) {
 
 export default VResizeDrawer;
 
-export {
-	VResizeDrawer,
-};
+export {VResizeDrawer};
+
+export * from './types';

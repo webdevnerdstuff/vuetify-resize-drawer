@@ -3,7 +3,6 @@
 		<v-col cols="12">
 			<v-img
 				class="my-3"
-				contain
 				height="200"
 				src="../assets/vuetify-logo.svg"
 			/>
@@ -11,7 +10,7 @@
 
 		<v-col class="mb-4">
 			<h1 class="v-heading text-h3 text-sm-h3 mb-4">
-				Vuetify 3 Resize Drawer
+				Vuetify Resize Drawer
 			</h1>
 			<p class="mb-4 text-grey-darken-1">by WebDevNerdStuff</p>
 			<v-chip
@@ -118,7 +117,7 @@ const codeBlockSettings = inject<Docs.CodeBlockSettings>('codeBlockSettings')!;
 const links = inject<Docs.Links>('links')!;
 
 const classes = reactive({
-	appLink: 'app-link text-decoration-none primary--text font-weight-medium d-inline-block font-weight-bold',
+	appLink: 'app-link text-decoration-none text-primary font-weight-medium d-inline-block font-weight-bold',
 	h2: 'text-primary v-heading text-h4 text-sm-h4 mb-2',
 	h3: 'text-blue-darken-2 v-heading text-h5 text-sm-h5 mb-0',
 	h4: 'text-secondary v-heading text-h6 text-sm-h6 mb-0',
