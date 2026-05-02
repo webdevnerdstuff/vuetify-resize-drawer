@@ -40,8 +40,16 @@ npm i @wdns/vuetify-resize-drawer
 
 ## Dependencies
  
-[Vuetify v3](https://vuetifyjs.com/)  
+[Vuetify v3](https://v3.vuetifyjs.com)  
 [Vue 3](https://vuejs.org/)
+
+
+## Versions
+
+| Version | Branch |
+|---|---|
+| Vuetify v4 | [main](https://github.com/webdevnerdstuff/vuetify-resize-drawer) |
+| Vuetify v3 | [vuetify-v3](https://github.com/webdevnerdstuff/vuetify-resize-drawer/tree/vuetify-v3) |
 
 
 ## Change Log
